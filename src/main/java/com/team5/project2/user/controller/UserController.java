@@ -2,15 +2,18 @@ package com.team5.project2.user.controller;
 
 import com.team5.project2.user.domain.User;
 import com.team5.project2.user.dto.UserPostDto;
+import com.team5.project2.user.dto.UserPutDto;
 import com.team5.project2.user.mapper.UserMapper;
 import com.team5.project2.user.service.UserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,9 +46,23 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody UserPostDto userPostDto) {
+    public ResponseEntity<User> createUser(@RequestBody UserPostDto userPostDto) {
         User user = userMapper.userPostDtoToUser(userPostDto);
         User newUser = userService.createUser(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    }
+
+    @PutMapping({"/{id}"})
+    public ResponseEntity updateUser(@PathVariable("id") Long id, @RequestBody UserPutDto userPutDto) {
+        User user = userMapper.userPutDtoToUser(userPutDto);
+        user.setId(id);
+        User updateUser = userService.updateUser(user);
+        return new ResponseEntity<>(updateUser, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

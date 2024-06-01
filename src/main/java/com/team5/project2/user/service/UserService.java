@@ -27,7 +27,7 @@ public class UserService {
     }
 
     public User updateUser(User user) {
-        User findUser = this.findUserById(user.getId());
+        User findUser = findUserById(user.getId());
         if (user.getName() != null) {
             findUser.setName(user.getName());
         }
