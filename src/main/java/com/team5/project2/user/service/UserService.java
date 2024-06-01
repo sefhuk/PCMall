@@ -3,7 +3,9 @@ package com.team5.project2.user.service;
 import com.team5.project2.user.domain.User;
 import com.team5.project2.user.repository.JpaUserRepository;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserService {
     private final JpaUserRepository jpaUserRepository;
 
@@ -12,17 +14,16 @@ public class UserService {
     }
 
     public List<User> findUserAll() {
-        return this.jpaUserRepository.findAll();
+        return jpaUserRepository.findAll();
     }
 
     public User findUserById(Long id) {
-        return (User)this.jpaUserRepository.findById(id).orElseThrow(() -> {
-            return new RuntimeException();
-        });
+        return jpaUserRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException());
     }
 
     public User createUser(User user) {
-        return (User)this.jpaUserRepository.save(user);
+        return jpaUserRepository.save(user);
     }
 
     public User updateUser(User user) {
@@ -47,10 +48,10 @@ public class UserService {
             findUser.setAddress(user.getAddress());
         }
 
-        return (User)this.jpaUserRepository.save(findUser);
+        return jpaUserRepository.save(findUser);
     }
 
     public void deleteUser(Long userId) {
-        this.jpaUserRepository.deleteById(userId);
+        jpaUserRepository.deleteById(userId);
     }
 }

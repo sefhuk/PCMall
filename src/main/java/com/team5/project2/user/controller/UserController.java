@@ -28,27 +28,24 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getUserAll() {
+    public ResponseEntity getUserAll() {
         List<User> users = userService.findUserAll();
-        if(users == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(users.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping({"/{userId}"})
-    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
-        User findUser = this.userService.findUserById(userId);
-        if(findUser == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping({"/{id}"})
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
+        User findUser = userService.findUserById(id);
         return new ResponseEntity<>(findUser, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<User> addUser(@RequestBody UserPostDto userPostDto) {
         User user = userMapper.userPostDtoToUser(userPostDto);
-        User newUser = this.userService.createUser(user);
+        User newUser = userService.createUser(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 }
