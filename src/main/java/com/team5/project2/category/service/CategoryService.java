@@ -1,6 +1,7 @@
-package com.team5.project2.category;
+package com.team5.project2.category.service;
 
 
+import com.team5.project2.category.dto.CategoryDTO;
 import java.util.List;
 
 public interface CategoryService {

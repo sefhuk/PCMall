@@ -1,4 +1,4 @@
-package com.team5.project2.category;
+package com.team5.project2.category.entity;
 
 import com.team5.project2.common.entity.BaseTime;
 import jakarta.persistence.Column;

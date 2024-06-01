@@ -1,5 +1,7 @@
-package com.team5.project2.category;
+package com.team5.project2.category.mapper;
 
+import com.team5.project2.category.dto.CategoryDTO;
+import com.team5.project2.category.entity.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

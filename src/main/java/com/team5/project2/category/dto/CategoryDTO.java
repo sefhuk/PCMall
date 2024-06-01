@@ -1,4 +1,4 @@
-package com.team5.project2.category;
+package com.team5.project2.category.dto;
 import lombok.Data;
 
 @Data
