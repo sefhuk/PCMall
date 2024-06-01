@@ -1,8 +1,6 @@
 package com.team5.project2.order.entity;
 
-import com.team5.project2.common.entity.BaseTime;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,23 +13,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "order")
-public class Order extends BaseTime {
-
+@Table(name = "order_detail")
+public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    private User user;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
-    private String status;
+//    @ManyToOne
+//    @JoinColumn(name = "product_id")
+//    private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "refund_id")
-    private Refund refund;
+    private Long count;
+    private Long price;
 }
