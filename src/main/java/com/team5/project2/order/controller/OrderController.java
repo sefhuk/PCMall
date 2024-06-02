@@ -36,7 +36,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> createCategory(@RequestBody OrderDto orderDto) {
+    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
         return ResponseEntity.ok(orderService.createOrder(orderDto));
     }
 
