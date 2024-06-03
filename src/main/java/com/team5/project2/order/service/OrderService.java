@@ -6,18 +6,15 @@ import com.team5.project2.order.mapper.OrderMapper;
 import com.team5.project2.order.repository.JpaOrderRepository;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 @Service
 public class OrderService {
 
-    private JpaOrderRepository orderRepository;
-
-    @Autowired
-    public OrderService(JpaOrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
+    private final JpaOrderRepository orderRepository;
 
     public OrderDto createOrder(OrderDto orderDto) {
         Order order = OrderMapper.INSTANCE.OrderDtoToOrder(orderDto);

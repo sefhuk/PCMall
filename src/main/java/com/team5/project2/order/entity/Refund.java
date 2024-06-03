@@ -16,7 +16,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "refund")
 public class Refund {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
