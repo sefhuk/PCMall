@@ -1,5 +1,6 @@
 package com.team5.project2.category.entity;
 
+import com.team5.project2.category.dto.CategoryDTO;
 import com.team5.project2.common.entity.BaseTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,22 +8,32 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
-    @Entity
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public class Category extends BaseTime {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
 
-        @Column(nullable = false)
-        private String name;
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@EqualsAndHashCode(of = "id", callSuper = false)
+@ToString
+public class Category extends BaseTime {
 
-        private Long parentId;
-        private String type;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(nullable = false)
+    private String name;
+    private Long parentId;
+    private String type;
+
+
+    public void update(CategoryDTO categoryDTO) {
+        this.name = categoryDTO.getName();
+        this.parentId = categoryDTO.getParentId();
+        this.type = categoryDTO.getType();
     }
+
+}
 
 
