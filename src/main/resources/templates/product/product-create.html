@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" th:href="@{/product/css/product.css}" />
+    <title>PC Mall</title>
+  </head>
+  <body>
+    <main class="mb-[50px]">
+      <h1 class="h-[200px] text-center text-4xl font-bold leading-[200px]">
+        상품 수정/관리 - 관리자
+      </h1>
+
+      <div class="flex justify-evenly items-center my-[70px]" id="preview">
+        <button
+          class="flex flex-col justify-evenly items-center w-[250px] h-[250px] text-4xl font-bold border-solid border-2 border-black"
+          onclick="handleImageUpload()"
+        >
+          <p class="mt-[50px]">+</p>
+          <p id="image-count" class="text-2xl font-light">0/4</p>
+          <input
+            type="file"
+            name="imageInput"
+            id="image-input"
+            onchange="previewImages()"
+            accept="image/png, image/jpg, image/jpeg"
+            hidden
+            multiple
+          />
+        </button>
+      </div>
+
+      <form class="flex flex-col items-center" id="inputForm">
+        <div
+          class="flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-y-2 border-black"
+        >
+          <label class="w-[35%]" for="category">카테고리</label>
+          <select
+            class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center"
+            name="category"
+            id="category"
+          >
+            <option value="CPU">CPU</option>
+            <option value="RAM">RAM</option>
+            <option value="GPU">GPU</option>
+            <option value="HDD">HDD</option>
+            <option value="SSD">SSD</option>
+            <option value="POWER SUPPLY">PowerSupply</option>
+            <option value="MAINBOARD">Mainboard</option>
+          </select>
+        </div>
+        <div
+          class="flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
+        >
+          <label class="w-[35%]" for="brand">제조사</label>
+          <select
+            class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center"
+            name="brand"
+            id="brand"
+          >
+            <option value="Intel">Intel</option>
+            <option value="Ryzen">Ryzen</option>
+          </select>
+        </div>
+        <div
+            class="flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
+        >
+          <label class="w-[35%]" for="stock">제품명</label>
+          <input
+              class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
+              type="text"
+              name="name"
+              id="name"
+              placeholder="입력해주세요"
+          />
+        </div>
+        <div
+          class="flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
+        >
+          <label class="w-[35%]" for="stock">재고</label>
+          <input
+            class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
+            type="text"
+            name="stock"
+            id="stock"
+            placeholder="숫자만 입력해주세요"
+            onchange="formatNumber(this)"
+          />
+        </div>
+        <div
+          class="flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
+        >
+          <label class="w-[35%]" for="price">가격</label>
+          <input
+            class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
+            type="text"
+            name="price"
+            id="price"
+            placeholder="숫자만 입력해주세요"
+            onchange="formatNumber(this)"
+          />
+        </div>
+        <div
+          class="flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
+        >
+          <label class="w-[35%]" for="core_count">코어 수</label>
+          <input
+            class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
+            type="text"
+            name="core_count"
+            id="core_count"
+            placeholder="숫자만 입력해주세요"
+            onchange="formatNumber(this)"
+          />
+        </div>
+        <div
+          class="flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
+        >
+          <label class="w-[35%]" for="thread_count">스레드 수</label>
+          <input
+            class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
+            type="text"
+            name="thread_count"
+            id="thread_count"
+            placeholder="숫자만 입력해주세요"
+            onchange="formatNumber(this)"
+          />
+        </div>
+        <div
+          class="flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
+        >
+          <label class="w-[35%]" for="base_clock_speed">기본 클럭속도</label>
+          <input
+            class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
+            type="text"
+            name="base_clock_speed"
+            id="base_clock_speed"
+            placeholder="숫자만 입력해주세요 (단위 GHz)"
+          />
+        </div>
+        <div
+          class="flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
+        >
+          <label class="w-[35%]" for="boost_clock_speed">최대 클럭속도</label>
+          <input
+            class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
+            type="text"
+            name="boost_clock_speed"
+            id="boost_clock_speed"
+            placeholder="숫자만 입력해주세요 (단위 GHz)"
+          />
+        </div>
+      </form>
+
+      <div class="flex justify-center mt-[50px] text-4xl">
+        <button class="bg-gray-300 w-[24%] py-[10px] mr-[2%]">취소</button>
+        <button
+          class="bg-gray-300 w-[24%] py-[10px]"
+          type="submit"
+          onclick="uploadImage()"
+        >
+          상품 등록
+        </button>
+      </div>
+    </main>
+    <script th:src="@{/product/js/product.js}"></script>
+    <script th:src="@{/product/js/config.js}"></script>
+  </body>
+</html>
