@@ -1,16 +1,12 @@
-let imageCount = document.getElementById('image-count');
-let images = []; // 미리보기 이미지 리스트
+const imageCount = document.getElementById('image-count');
+const images = []; // 미리보기 이미지 리스트
 
 // 상품 설명 폼 데이터
-let category = document.getElementById("category");
-let brand = document.getElementById("brand");
-let name = document.getElementById("name");
-let stock = document.getElementById("stock");
-let price = document.getElementById("price");
-let coreCount = document.getElementById("core_count");
-let threadCount = document.getElementById("thread_count");
-let baseClockSpeed = document.getElementById("base_clock_speed");
-let boostClockSpeed = document.getElementById("boost_clock_speed");
+const part = document.getElementById("part");
+const brand = document.getElementById("brand");
+const name = document.getElementById("name");
+const stock = document.getElementById("stock");
+const price = document.getElementById("price");
 
 // 숫자 입력 형태 포맷
 function formatNumber(input) {
@@ -30,8 +26,8 @@ function handleImageUpload() {
 
 // 첨부된 이미지 미리보기
 function previewImages() {
-  let preview = document.getElementById('preview');
-  let files = document.getElementById('image-input').files;
+  const preview = document.getElementById('preview');
+  const files = document.getElementById('image-input').files;
 
   if (files.length + images.length > 4) {
     alert('최대 4장까지 첨부할 수 있습니다.');
@@ -39,12 +35,12 @@ function previewImages() {
   }
 
   for (let i = 0; i < files.length; i++) {
-    let file = files[i];
+    const file = files[i];
 
-    let container = document.createElement('div');
+    const container = document.createElement('div');
     container.style.position = 'relative';
 
-    let img = document.createElement('img');
+    const img = document.createElement('img');
     img.classList.add('preview-image');
     img.style.display = 'flex';
     img.style.width = '300px';
@@ -54,7 +50,7 @@ function previewImages() {
     preview.appendChild(container);
 
     // 이미지 삭제 버튼 태그
-    let imgDeleteBtn = document.createElement('button');
+    const imgDeleteBtn = document.createElement('button');
     imgDeleteBtn.classList.add('img-delete');
     imgDeleteBtn.style.position = 'absolute';
     imgDeleteBtn.style.right = '1px';
@@ -69,7 +65,7 @@ function previewImages() {
     // 이미지 삭제 이벤트
     imgDeleteBtn.addEventListener('click', function () {
       // 등록된 이미지 src 속성 값
-      let imgSrc = this.parentNode.getElementsByTagName('img')[0].src;
+      const imgSrc = this.parentNode.getElementsByTagName('img')[0].src;
 
       // 이미지 목록 리스트에서 제거
       images.splice(images.indexOf(imgSrc), 1);
@@ -83,7 +79,7 @@ function previewImages() {
 
     container.appendChild(imgDeleteBtn);
 
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = function (e) {
       img.src = e.target.result;
       images.push(files[i]);
@@ -95,26 +91,37 @@ function previewImages() {
 
 // 서버로 이미지 전송
 function uploadImage() {
-  let formData = new FormData();
+  const formData = new FormData();
 
   images.forEach((e) => {
     formData.append('images', e);
   });
 
+  formData.append("part", part.value);
+  formData.append("brand", brand.value);
+  formData.append("name", brand.value);
+  formData.append("stock", convertToNumber(stock.value));
+  formData.append("price", convertToNumber(price.value));
+
   const data = {
-    categoryId: category.value,
+    part: part.value,
     brand: brand.value,
     name: name.value,
     stock: convertToNumber(stock.value),
     price: convertToNumber(price.value),
-    coreCount: convertToNumber(coreCount.value),
-    threadCount: convertToNumber(threadCount.value),
-    baseClockSpeed: baseClockSpeed.value,
-    boostClockSpeed: boostClockSpeed.value,
+    description: {},
+  }
+
+  for (let i = 5; i < descInputs.length; i++) {
+    if (descInputs[i].classList.contains(part.value.toLowerCase())) {
+      const input = descInputs[i].childNodes[3];
+      data.description[input.id] = input.value;
+    }
   }
 
   const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-  formData.append("desc", blob);
+  formData.append("description", blob);
+
 
   fetch('/product', {
     method: 'POST',
@@ -123,6 +130,7 @@ function uploadImage() {
   .then((res) => {
     if (res.status === 200 || res.status === 201) {
       alert("등록 완료");
+      return res.json();
     } else {
       alert("요청 오류");
     }
@@ -130,4 +138,21 @@ function uploadImage() {
   .catch(() => {
     alert("문제 발생");
   });
+}
+
+const descInputs = document.getElementById("inputForm").getElementsByTagName(
+    "div");
+
+// 부품 선택에 따른 입력 폼 변화 주기
+function handleChangePart() {
+  const partName = part.value;
+
+  for (let i = 5; i < descInputs.length; i++) {
+    if (!descInputs[i].classList.contains(partName.toLowerCase())) {
+      descInputs[i].classList.add("hidden");
+      continue;
+    }
+
+    descInputs[i].classList.remove("hidden");
+  }
 }
