@@ -100,28 +100,19 @@ function uploadImage() {
   formData.append("part", part.value);
   formData.append("brand", brand.value);
   formData.append("name", brand.value);
-  formData.append("stock", convertToNumber(stock.value));
-  formData.append("price", convertToNumber(price.value));
+  formData.append("stock", stock.value);
+  formData.append("price", price.value);
 
-  const data = {
-    part: part.value,
-    brand: brand.value,
-    name: name.value,
-    stock: convertToNumber(stock.value),
-    price: convertToNumber(price.value),
-    description: {},
-  }
+  const description = {};
 
   for (let i = 5; i < descInputs.length; i++) {
     if (descInputs[i].classList.contains(part.value.toLowerCase())) {
       const input = descInputs[i].childNodes[3];
-      data.description[input.id] = input.value;
+      description[input.id] = input.value;
     }
   }
 
-  const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-  formData.append("description", blob);
-
+  formData.append("description", JSON.stringify(description));
 
   fetch('/product', {
     method: 'POST',
@@ -130,7 +121,6 @@ function uploadImage() {
   .then((res) => {
     if (res.status === 200 || res.status === 201) {
       alert("등록 완료");
-      return res.json();
     } else {
       alert("요청 오류");
     }
