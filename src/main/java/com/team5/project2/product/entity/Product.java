@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -48,4 +49,22 @@ public class Product extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    @Builder
+    public Product(Long id, String name, String brand, String description, Long stock, Long price,
+        List<ProductImage> images, Category category) {
+        this.id = id;
+        this.name = name;
+        this.brand = brand;
+        this.description = description;
+        this.stock = stock;
+        this.price = price;
+        this.images = images;
+        this.category = category;
+    }
+
+    public void addImage(ProductImage productImage) {
+        images.add(productImage);
+        productImage.updateProduct(this);
+    }
 }

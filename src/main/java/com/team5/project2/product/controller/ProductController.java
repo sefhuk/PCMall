@@ -1,17 +1,13 @@
 package com.team5.project2.product.controller;
 
-import com.google.cloud.storage.Bucket;
-import com.team5.project2.category.entity.Category;
-import com.team5.project2.category.repository.CategoryRepository;
-import com.team5.project2.product.dto.request.CpuRequestDto;
-import com.team5.project2.product.mapper.ProductMapper;
+import com.team5.project2.product.dto.request.ProductRequestDto;
+import com.team5.project2.product.entity.Product;
 import com.team5.project2.product.service.ProductService;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.C;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,12 +31,11 @@ public class ProductController {
 
     @PostMapping
     @ResponseBody
-    public String  productSave(@RequestPart("desc") CpuRequestDto cpuRequestDto,
-        @RequestPart(value = "images", required = false) List<MultipartFile> images) {
-
-//        return cpuRequestDto;
-        return images.get(0).getOriginalFilename();
+    public ResponseEntity<Product> productSave(
+        @RequestPart(value = "description", required = false) ProductRequestDto productRequestDto,
+        @RequestPart(value = "images", required = false) List<MultipartFile> images)
+        throws IOException {
+        return ResponseEntity.ok(productService.addProduct(productRequestDto, images));
     }
-
 
 }
