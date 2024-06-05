@@ -30,7 +30,7 @@ public class Order extends BaseTime {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String status;
+    private OrderStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "refund_id")
