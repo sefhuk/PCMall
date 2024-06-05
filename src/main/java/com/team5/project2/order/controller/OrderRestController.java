@@ -1,7 +1,7 @@
 package com.team5.project2.order.controller;
 
 import com.team5.project2.order.dto.OrderDto;
-import com.team5.project2.order.service.OrderService;
+import com.team5.project2.order.service.OrderServiceImpl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,18 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/orders")
-public class OrderApiController {
+public class OrderRestController {
 
-    private final OrderService orderService;
+    private final OrderServiceImpl orderServiceImpl;
 
     @Autowired
-    public OrderApiController(OrderService orderService) {
-        this.orderService = orderService;
+    public OrderRestController(OrderServiceImpl orderServiceImpl) {
+        this.orderServiceImpl = orderServiceImpl;
     }
 
     @GetMapping
     public ResponseEntity getAllOrders() {
-        List<OrderDto> orders = orderService.getAllOrders();
+        List<OrderDto> orders = orderServiceImpl.getAllOrders();
         if (orders.isEmpty()) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
@@ -37,29 +37,29 @@ public class OrderApiController {
 
     @PostMapping
     public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
-        return ResponseEntity.ok(orderService.createOrder(orderDto));
+        return ResponseEntity.ok(orderServiceImpl.createOrder(orderDto));
     }
 
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderDto> getOrderById(@PathVariable Long id) {
-        OrderDto orderDto = orderService.findOrderById(id);
+        OrderDto orderDto = orderServiceImpl.findOrderById(id);
         return new ResponseEntity<>(orderDto, HttpStatus.OK);
 
     }
 
     @PutMapping("/{orderId}")
     public ResponseEntity updateOrder(@PathVariable Long orderId, @RequestBody String status) {
-        OrderDto orderDto = orderService.findOrderById(orderId);
+        OrderDto orderDto = orderServiceImpl.findOrderById(orderId);
         orderDto.setStatus(status);
 
-        orderService.updateOrder(orderDto);
+        orderServiceImpl.updateOrder(orderDto);
         return new ResponseEntity<>(orderDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable("id") Long id) {
-        orderService.deleteOrder(id);
+        orderServiceImpl.deleteOrder(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
