@@ -2,7 +2,7 @@ package com.team5.project2.category.controller;
 
 import com.team5.project2.category.dto.CategoryDTO;
 import com.team5.project2.category.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,18 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/categories")
 public class CategoryController {
 
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @GetMapping
     public String listCategories(Model model) {
         List<CategoryDTO> categories = getFixedCategories();
         model.addAttribute("categories", categories);
         model.addAttribute("selectedCategory", categories.isEmpty() ? null : categories.get(0).getId());
-        return "category/categories"; // 템플릿 경로와 일치하도록 수정
+        return "category/categories";
     }
 
     private List<CategoryDTO> getFixedCategories() {

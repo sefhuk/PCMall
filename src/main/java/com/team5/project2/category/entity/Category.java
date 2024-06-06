@@ -26,6 +26,7 @@ public class Category extends BaseTime {
     private Long parentId;
     private String type;
 
+
     public void update(String name, Long parentId, String type) {
         this.name = name;
         this.parentId = parentId;

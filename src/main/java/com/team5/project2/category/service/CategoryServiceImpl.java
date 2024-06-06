@@ -4,19 +4,18 @@ import com.team5.project2.category.dto.CategoryDTO;
 import com.team5.project2.category.entity.Category;
 import com.team5.project2.category.mapper.CategoryMapper;
 import com.team5.project2.category.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    private CategoryMapper categoryMapper;
+    private final CategoryMapper categoryMapper;
 
     @Override
     public List<CategoryDTO> getAllCategories() {
@@ -28,6 +27,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDTO> getSubCategories(Long parentId) {
         return categoryRepository.findByParentId(parentId).stream()
+            .map(categoryMapper::toCategoryDTO)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CategoryDTO> getCategoryByName(String name) {
+        return categoryRepository.findByName(name).stream()
             .map(categoryMapper::toCategoryDTO)
             .collect(Collectors.toList());
     }
@@ -50,4 +56,6 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategory(Long id) {
         categoryRepository.deleteById(id);
     }
+
+
 }

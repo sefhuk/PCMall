@@ -9,4 +9,5 @@ public interface CategoryService {
     CategoryDTO addCategory(String name, Long parentId, String type);
     CategoryDTO editCategory(Long id, String name);
     void deleteCategory(Long id);
+    List<CategoryDTO> getCategoryByName(String name);
 }
