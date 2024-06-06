@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,10 +33,18 @@ public class ProductController {
     @PostMapping
     @ResponseBody
     public ResponseEntity<Product> productSave(
-        @RequestPart(value = "description", required = false) ProductRequestDto productRequestDto,
-        @RequestPart(value = "images", required = false) List<MultipartFile> images)
-        throws IOException {
-        return ResponseEntity.ok(productService.addProduct(productRequestDto, images));
-    }
+        @RequestPart(value = "images", required = false) List<MultipartFile> images,
+        @RequestParam("brand") String brand,
+        @RequestParam("part") String part,
+        @RequestParam("name") String name,
+        @RequestParam("stock") Long stock,
+        @RequestParam("price") Long price,
+        @RequestParam("description") String description) throws IOException {
 
+        Product newProduct = Product.builder().brand(brand).name(name).stock(stock).price(price)
+            .description(description)
+            .build();
+
+        return ResponseEntity.ok(productService.addProduct(newProduct, part, images));
+    }
 }
