@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order List</title>
+    <title>Admin Home</title>
     <style>
       table {
         width: 100%;
@@ -11,61 +9,75 @@
       }
       table, th, td {
         border: 1px solid black;
-      }
-      th, td {
-        padding: 10px;
+        padding: 8px;
         text-align: left;
       }
     </style>
 </head>
 <body>
-    <h1>Order List</h1>
+    <h1>All Orders</h1>
     <table>
         <thead>
         <tr>
             <th>Order ID</th>
-            <th>Order Status</th>
-            <th>Order Date</th>
-            <!-- Add other columns as needed -->
+            <th>User ID</th>
+            <th>Status</th>
+            <th>Refund ID</th>
+            <th>Delete</th>
         </tr>
         </thead>
-        <tbody id="orderTableBody">
-        <!-- Orders will be appended here -->
+        <tbody>
+        
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}"></td>
+            <td th:text="${order.userId}"></td>
+            <td>
+                <input id="orderIdInput" type="hidden" name="_method" th:value="${order.id}"/>
+                <select th:id="'status'+${order.id}" name="status">
+                    <option value="SHIPPING" th:selected="${order.status.name() == 'SHIPPING'}">배송 중</option>
+                    <option value="DELIVERED" th:selected="${order.status.name() == 'DELIVERED'}">배송 완료</option>
+                    <option value="CANCELED" th:selected="${order.status.name() == 'CANCELED'}">취소</option>
+                    <option value="CONFIRMED" th:selected="${order.status.name() == 'CONFIRMED'}">주문 확인</option>
+                </select>
+                <button th:onclick="updateOrder([[${order.id}]])" th:text="Update"></button>
+            </td>
+            <td th:text="${order.refundId}"></td>
+            <td>
+                <input type="hidden" name="_method" value="delete"/>
+                <button th:onclick="deleteOrder([[${order.id}]])" th:text="Delete"></button>
+            </td>
+        </tr>
         </tbody>
     </table>
-    
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        fetchOrders();
-      });
+    <script th:inline="javascript">
+      const orderDeleteButton = document.getElementById("orderDeleteButton");
 
-      function fetchOrders() {
-        fetch('/order')
-        .then(response => {
-          if (response.status === 204) {
-            document.getElementById('orderTableBody').innerHTML = '<tr><td colspan="3">No orders found.</td></tr>';
-            return [];
-          }
-          return response.json();
-        })
-        .then(orders => {
-          let tableBody = document.getElementById('orderTableBody');
-          tableBody.innerHTML = '';
-          orders.forEach(order => {
-            let row = document.createElement('tr');
-            row.innerHTML = `
-                            <td>${order.id}</td>
-                            <td>${order.status}</td>
-                            <td>${order.orderDate}</td>
-                            <!-- Add other columns as needed -->
-                        `;
-            tableBody.appendChild(row);
-          });
-        })
-        .catch(error => {
-          console.error('Error fetching orders:', error);
+      const updateOrder = async (orderId) => {
+        const orderStatus = document.getElementById("status" + orderId).value;
+
+        console.log(orderId, orderStatus);
+        const updateResult = await fetch(`/api/orders/${orderId}`, {
+          method: "put",
+          body: JSON.stringify({orderId, orderStatus}),
+          headers: {"Content-Type": "application/json"}
+        }).then(res => res.json());
+        console.log(updateResult);
+      };
+
+
+      const deleteOrder = async (orderId) => {
+
+        console.log(orderId);
+        const deleteResult = await fetch(`/api/orders/${orderId}`, {
+          method: "delete",
+          headers: {"Content-Type": "application/json"}
         });
-      }
+        
+        console.log(deleteResult);
+
+        window.location.reload();
+      };
+      
     </script>
 </body>
 </html>

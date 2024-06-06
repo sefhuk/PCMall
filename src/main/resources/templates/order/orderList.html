@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>User Orders</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1>User Orders</h1>
+  <table>
+    <thead>
+    <tr>
+      <th>Order ID</th>
+<!--      <th>User ID</th>-->
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}">
+      <td th:text="${order.id}"></td>
+<!--      <td th:text="${order.userId}"></td>-->
+      <td th:text="${order.status}"></td>
+      <td>
+        <button id = "refundButton" th:value="${order.id}">환불신청</button>
+        <button id = "showDetailButton" th:value="${order.id}">상세보기</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  
+  <script>
+    const refundButton = document.getElementById("refundButton")
+    const showDetailButton = document.getElementById("showDetailButton")
+    function requestRefund(orderId) {
+      // 환불신청 처리
+      alert("주문 ID: " + orderId);
+    }
+    
+    function viewDetails(orderId) {
+      // 상세보기 처리
+      alert("주문 ID: " + orderId);
+    }
+    
+    refundButton.addEventListener("click", () => {
+      requestRefund(document.getElementById("refundButton").value);
+    });
+    
+    showDetailButton.addEventListener("click", () => {
+      viewDetails(document.getElementById("showDetailButton").value);
+    })
+  </script>
+</body>
+</html>
+

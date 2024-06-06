@@ -2,7 +2,6 @@ package com.team5.project2.order.controller;
 
 import com.team5.project2.order.dto.OrderDto;
 import com.team5.project2.order.service.OrderService;
-import com.team5.project2.order.service.OrderServiceImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -29,6 +28,6 @@ public class OrderController {
     public String getUserOrders(@PathVariable Long userId, Model model) {
         List<OrderDto> orders = orderService.getOrders(userId);
         model.addAttribute("orders", orders);
-        return "order/order";
+        return "/order/orderList";
     }
 }
