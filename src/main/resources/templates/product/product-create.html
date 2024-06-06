@@ -42,13 +42,7 @@
                 id="part"
                 onchange="handleChangePart()"
             >
-                <option value="CPU">CPU</option>
-                <option value="RAM">RAM</option>
-                <option value="GPU">그래픽카드</option>
-                <option value="HDD">HDD</option>
-                <option value="SSD">SSD</option>
-                <option value="POWERSUPPLY">파워서플라이</option>
-                <option value="MAINBOARD">메인보드</option>
+                <option th:each="part: ${parts}" th:value="${part.name}" th:text="${part.name}"/>
             </select>
         </div>
         <div
@@ -57,11 +51,12 @@
             <label class="w-[35%]" for="brand">제조사</label>
             <select
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center"
-                name="brand"
+                name="제조사"
                 id="brand"
             >
-                <option value="Intel">Intel</option>
-                <option value="Ryzen">Ryzen</option>
+                <option th:each="option: ${options}" th:value="${option.name}"
+                        th:text="${option.name}"
+                        th:class="|${option.classAttribute} brandOption hidden|"/>
             </select>
         </div>
         <div
@@ -71,7 +66,7 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="text"
-                name="name"
+                name="제품명"
                 id="name"
                 placeholder="입력해주세요"
             />
@@ -83,7 +78,7 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="text"
-                name="stock"
+                name="재고"
                 id="stock"
                 placeholder="숫자만 입력해주세요"
             />
@@ -95,7 +90,7 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="price"
+                name="가격"
                 id="price"
                 placeholder="숫자만 입력해주세요"
             />
@@ -107,7 +102,7 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="coreCount"
+                name="코어 수"
                 id="coreCount"
                 placeholder="숫자만 입력해주세요"
             />
@@ -119,7 +114,7 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="threadCount"
+                name="스레드"
                 id="threadCount"
                 placeholder="숫자만 입력해주세요"
             />
@@ -131,7 +126,7 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="baseClockSpeed"
+                name="기본 클럭속도"
                 id="baseClockSpeed"
                 placeholder="숫자만 입력해주세요 (단위 GHz)"
             />
@@ -143,7 +138,7 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="boostClockSpeed"
+                name="최대 클럭속도"
                 id="boostClockSpeed"
                 placeholder="숫자만 입력해주세요 (단위 GHz)"
             />
@@ -155,7 +150,7 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="capacity"
+                name="용량"
                 id="capacity"
                 placeholder="숫자만 입력해주세요 (단위 GB)"
             />
@@ -167,25 +162,54 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="speed"
+                name="속도"
                 id="speed"
                 placeholder="숫자만 입력해주세요 (단위 MHz)"
             />
         </div>
         <div
-            class="ram gpu flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
+            class="ram flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
         >
-            <label class="w-[35%]" for="type">분류</label>
+            <label class="w-[35%]" for="ramType">메모리 분류</label>
             <select
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center"
-                name="type"
-                id="type"
+                name="메모리 분류"
+                id="ramType"
             >
-                <option value="ddr">DDR</option>
-                <option value="ddr2">DDR2</option>
-                <option value="ddr3">DDR3</option>
-                <option value="ddr4">DDR4</option>
-                <option value="ddr5">DDR5</option>
+                <option value="DDR">DDR</option>
+                <option value="DDR2">DDR2</option>
+                <option value="DDR3">DDR3</option>
+                <option value="DDR4">DDR4</option>
+                <option value="DDR5">DDR5</option>
+            </select>
+        </div>
+        <div
+            class="case flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
+        >
+            <label class="w-[35%]" for="caseType">케이스 분류</label>
+            <select
+                class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center"
+                name="케이스 분류"
+                id="caseType"
+            >
+                <option value="ATX">ATX</option>
+                <option value="M-ATX">M-ATX</option>
+                <option value="RTX">RTX</option>
+                <option value="미니 ITX">미니 ITX</option>
+            </select>
+        </div>
+        <div
+            class="case flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
+        >
+            <label class="w-[35%]" for="caseSize">케이스 크기</label>
+            <select
+                class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
+                name="케이스 크기"
+                id="caseSize"
+            >
+                <option value="빅타워">빅타워</option>
+                <option value="미들타워">미들타워</option>
+                <option value="미니타워">미니타워</option>
             </select>
         </div>
         <div
@@ -194,7 +218,7 @@
             <label class="w-[35%]" for="usageType">사용 용도</label>
             <select
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center"
-                name="usageType"
+                name="사용 용도"
                 id="usageType"
             >
                 <option value="desktop">데스크탑</option>
@@ -208,22 +232,25 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="vramCapacity"
+                name="VRAM 용량"
                 id="vramCapacity"
                 placeholder="숫자만 입력해주세요 (단위 GB)"
             />
         </div>
         <div
-            class="ssd hdd flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
+            class="ssd flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
         >
             <label class="w-[35%]" for="interface">인터페이스</label>
-            <input
+            <select
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
-                type="text"
-                name="interface"
+                name="인터페이스"
                 id="interface"
-                placeholder="입력해주세요"
-            />
+            >
+                <option value="SATA3">SATA3</option>
+                <option value="PCIe3.0x4">PCIe3.0x4</option>
+                <option value="PCIe4.0x4">PCIe4.0x4</option>
+                <option value="PCIe5.0x4">PCIe5.0x4</option>
+            </select>
         </div>
         <div
             class="cpu gpu mainboard flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
@@ -232,7 +259,7 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="powerConsumption"
+                name="소비 전력"
                 id="powerConsumption"
                 placeholder="숫자만 입력해주세요 (단위 W)"
             />
@@ -244,7 +271,7 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="readS"
+                name="읽기 속도"
                 id="readSpeed"
                 placeholder="숫자만 입력해주세요 (단위 MB/s)"
             />
@@ -256,7 +283,7 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="writeSpeed"
+                name="쓰기 속도"
                 id="writeSpeed"
                 placeholder="숫자만 입력해주세요 (단위 MB/s)"
             />
@@ -268,7 +295,7 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="rotationSpeed"
+                name="회전 속도"
                 id="rotationSpeed"
                 placeholder="숫자만 입력해주세요 (단위 RPM)"
             />
@@ -280,7 +307,7 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="wattage"
+                name="정격 출력"
                 id="wattage"
                 placeholder="숫자만 입력해주세요 (단위 W)"
             />
@@ -292,7 +319,7 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="ramSlots"
+                name="램 슬롯"
                 id="ramSlots"
                 placeholder="숫자만 입력해주세요"
             />
@@ -304,7 +331,7 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="maxRamCapacity"
+                name="최대 램 용량"
                 id="maxRamCapacity"
                 placeholder="숫자만 입력해주세요 (단위 GB)"
             />
@@ -316,9 +343,48 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="sataSlots"
+                name="SATA 포트"
                 id="sataSlots"
                 placeholder="숫자만 입력해주세요"
+            />
+        </div>
+        <div
+            class="cooler flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
+        >
+            <label class="w-[35%]" for="coolerType">제품 분류</label>
+            <select
+                class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center"
+                name="제품 분류"
+                id="coolerType"
+            >
+                <option value="CPU 쿨러">CPU 쿨러</option>
+                <option value="시스템 쿨러">시스템 쿨러</option>
+                <option value="RAM 쿨러">RAM 쿨러</option>
+            </select>
+        </div>
+        <div
+            class="cooler flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
+        >
+            <label class="w-[35%]" for="coolingType">냉각 방식</label>
+            <select
+                class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center"
+                name="냉각 방식"
+                id="coolingType"
+            >
+                <option value="공랭">공랭</option>
+                <option value="수랭">수랭</option>
+            </select>
+        </div>
+        <div
+            class="cooler flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
+        >
+            <label class="w-[35%]" for="height">높이</label>
+            <input
+                class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center"
+                type="number"
+                name="높이"
+                id="height"
+                placeholder="숫자만 입력해주세요 (단위 mm)"
             />
         </div>
     </form>

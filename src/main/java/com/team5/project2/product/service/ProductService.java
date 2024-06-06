@@ -5,7 +5,6 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 import com.team5.project2.category.entity.Category;
 import com.team5.project2.category.repository.CategoryRepository;
-import com.team5.project2.product.dto.request.ProductRequestDto;
 import com.team5.project2.product.entity.Product;
 import com.team5.project2.product.entity.ProductImage;
 import com.team5.project2.product.repository.ProductImageRepository;
@@ -28,11 +27,12 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final Bucket bucket;
 
-    public Product addProduct(ProductRequestDto productRequestDto, List<MultipartFile> images)
+    public Product addProduct(Product productRequestDto, String part, List<MultipartFile> images)
         throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Category category = categoryRepository.findById(1L).orElse(null);
 
+        Category category = categoryRepository.findByName(part).orElse(null);
+
+        ObjectMapper objectMapper = new ObjectMapper();
         Product newProduct = Product.builder().name(productRequestDto.getName())
             .category(category)
             .price(productRequestDto.getPrice())
@@ -41,8 +41,8 @@ public class ProductService {
             .brand(productRequestDto.getBrand()).build();
 
         Product savedProduct = productRepository.save(newProduct);
-        if (images != null) {
 
+        if (images != null) {
             for (MultipartFile image : images) {
                 byte[] bytes = image.getBytes();
                 Blob blob = bucket.create(
