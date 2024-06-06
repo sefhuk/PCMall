@@ -8,13 +8,6 @@ const name = document.getElementById("name");
 const stock = document.getElementById("stock");
 const price = document.getElementById("price");
 
-// 숫자 입력 형태 포맷
-function formatNumber(input) {
-  let value = input.value.replace(/\D/g, ''); // 숫자 이외의 문자 제거
-  value = value.replace(/^0+/, ''); // 맨 앞의 연속된 0 제거
-  input.value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // 콤마로 구분된 문자열로 변경하여 입력값에 설정
-}
-
 function handleImageUpload() {
   if (images.length === 4) {
     alert('최대 4장까지 첨부할 수 있습니다.');
@@ -99,15 +92,22 @@ function uploadImage() {
 
   formData.append("part", part.value);
   formData.append("brand", brand.value);
-  formData.append("name", brand.value);
+  formData.append("name", name.value);
   formData.append("stock", stock.value);
   formData.append("price", price.value);
 
   const description = {};
 
   for (let i = 5; i < descInputs.length; i++) {
-    if (descInputs[i].classList.contains(part.value.toLowerCase())) {
+    if (descInputs[i].classList.contains(convertToEngName(part.value))) {
       const input = descInputs[i].childNodes[3];
+
+      if (input.value === null || input.value === undefined || input.value
+          === "") {
+        alert("모든 항목을 입력해주세요.");
+        return;
+      }
+
       description[input.id] = input.value;
     }
   }
@@ -132,17 +132,39 @@ function uploadImage() {
 
 const descInputs = document.getElementById("inputForm").getElementsByTagName(
     "div");
+const brandOptions = document.getElementsByClassName("brandOption");
 
 // 부품 선택에 따른 입력 폼 변화 주기
 function handleChangePart() {
   const partName = part.value;
 
+  // description 변화
   for (let i = 5; i < descInputs.length; i++) {
-    if (!descInputs[i].classList.contains(partName.toLowerCase())) {
+    if (!descInputs[i].classList.contains(convertToEngName(partName))) {
       descInputs[i].classList.add("hidden");
       continue;
     }
 
     descInputs[i].classList.remove("hidden");
+  }
+
+  // 제조사 변화
+  let selected = false;
+  for (let i = 0; i < brandOptions.length; i++) {
+    if (!brandOptions[i].classList.contains(convertToEngName(partName))) {
+      brandOptions[i].classList.add("hidden");
+      brandOptions[i].selected = true;
+      continue;
+    }
+
+    brandOptions[i].classList.remove("hidden");
+    brandOptions[i].selected = false;
+  }
+}
+
+// 브랜드 option 목록 초기화
+for (let i = 0; i < brandOptions.length; i++) {
+  if (brandOptions[i].classList.contains("cpu")) {
+    brandOptions[i].classList.remove("hidden");
   }
 }
