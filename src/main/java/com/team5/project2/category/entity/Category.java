@@ -1,6 +1,5 @@
 package com.team5.project2.category.entity;
 
-import com.team5.project2.category.dto.CategoryDTO;
 import com.team5.project2.common.entity.BaseTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,11 +26,10 @@ public class Category extends BaseTime {
     private Long parentId;
     private String type;
 
-
-    public void update(CategoryDTO categoryDTO) {
-        this.name = categoryDTO.getName();
-        this.parentId = categoryDTO.getParentId();
-        this.type = categoryDTO.getType();
+    public void update(String name, Long parentId, String type) {
+        this.name = name;
+        this.parentId = parentId;
+        this.type = type;
     }
 
 }
