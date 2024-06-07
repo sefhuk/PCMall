@@ -121,9 +121,13 @@ function uploadImage() {
   .then((res) => {
     if (res.status === 200 || res.status === 201) {
       alert("등록 완료");
+      return res.json();
     } else {
       alert("요청 오류");
     }
+  })
+  .then((data) => {
+    location.href=`/product/${data.id}`
   })
   .catch(() => {
     alert("문제 발생");
