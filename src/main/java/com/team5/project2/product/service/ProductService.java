@@ -7,7 +7,6 @@ import com.team5.project2.category.entity.Category;
 import com.team5.project2.category.repository.CategoryRepository;
 import com.team5.project2.product.entity.Product;
 import com.team5.project2.product.entity.ProductImage;
-import com.team5.project2.product.repository.ProductImageRepository;
 import com.team5.project2.product.repository.ProductRepository;
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductImageRepository productImageRepository;
     private final CategoryRepository categoryRepository;
     private final Bucket bucket;
 
@@ -45,8 +43,6 @@ public class ProductService {
             .description(objectMapper.writeValueAsString(productRequestDto.getDescription()))
             .brand(productRequestDto.getBrand()).build();
 
-        Product savedProduct = productRepository.save(newProduct);
-
         if (images != null) {
             for (MultipartFile image : images) {
                 byte[] bytes = image.getBytes();
@@ -56,11 +52,10 @@ public class ProductService {
                     image.getContentType());
 
                 ProductImage newImage = ProductImage.builder().url(blob.getMediaLink()).build();
-                newImage.updateProduct(savedProduct);
-                productImageRepository.save(newImage);
+                newProduct.addImage(newImage);
             }
         }
 
-        return savedProduct;
+        return productRepository.save(newProduct);
     }
 }
