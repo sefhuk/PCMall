@@ -2,6 +2,7 @@ package com.team5.project2.product.entity;
 
 import com.team5.project2.category.entity.Category;
 import com.team5.project2.common.entity.BaseTime;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +24,8 @@ import org.hibernate.type.SqlTypes;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Product extends BaseTime {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
@@ -43,25 +47,13 @@ public class Product extends BaseTime {
     @Column(nullable = false)
     private Long price;
 
-    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    @Builder.Default
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
-
-    @Builder
-    public Product(Long id, String name, String brand, String description, Long stock, Long price,
-        List<ProductImage> images, Category category) {
-        this.id = id;
-        this.name = name;
-        this.brand = brand;
-        this.description = description;
-        this.stock = stock;
-        this.price = price;
-        this.images = images;
-        this.category = category;
-    }
 
     public void addImage(ProductImage productImage) {
         images.add(productImage);
