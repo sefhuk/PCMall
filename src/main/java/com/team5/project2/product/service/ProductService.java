@@ -30,7 +30,12 @@ public class ProductService {
     public Product addProduct(Product productRequestDto, String part, List<MultipartFile> images)
         throws IOException {
 
-        Category category = categoryRepository.findByName(part).get(0);
+        Category category;
+        try {
+            category = categoryRepository.findByName(part).get(0);
+        } catch (Exception e) {
+            throw new RuntimeException("해당 부품 카테고리가 존재하지 않습니다.");
+        }
 
         ObjectMapper objectMapper = new ObjectMapper();
         Product newProduct = Product.builder().name(productRequestDto.getName())
