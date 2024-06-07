@@ -30,7 +30,7 @@ public class ProductService {
     public Product addProduct(Product productRequestDto, String part, List<MultipartFile> images)
         throws IOException {
 
-        Category category = categoryRepository.findByName(part).orElse(null);
+        Category category = categoryRepository.findByName(part).get(0);
 
         ObjectMapper objectMapper = new ObjectMapper();
         Product newProduct = Product.builder().name(productRequestDto.getName())
