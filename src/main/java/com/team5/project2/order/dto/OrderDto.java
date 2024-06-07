@@ -8,5 +8,5 @@ public class OrderDto {
     private Long id;
     private Long userId;
     private OrderStatus status;
-    private Long refundId;
+    private Long totalPrice;
 }

@@ -49,34 +49,6 @@ public class OrderRestController {
 
     }
 
-//    @PostMapping("/{orderId}")
-//    public ResponseEntity updateOrder(@PathVariable Long orderId, String status) {
-//        OrderDto orderDto = orderService.findOrderById(orderId);
-//        try {
-//            OrderStatus orderStatus = OrderStatus.fromString(status);
-//            orderDto.setStatus(orderStatus);
-//        } catch (IllegalArgumentException e) {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//
-//        orderService.updateOrder(orderDto);
-//        return new ResponseEntity<>(orderDto, HttpStatus.OK);
-//    }
-
-//    @PostMapping("/api/orders/{orderId}")
-//    public ResponseEntity<?> updateOrder(@PathVariable Long orderId, @RequestBody Map<String, String> status) {
-//        OrderDto orderDto = orderService.findOrderById(orderId);
-//
-//        try {
-//            OrderStatus orderStatus = OrderStatus.fromString(status.get("orderStatus"));
-//            orderDto.setStatus(orderStatus);
-//        } catch (IllegalArgumentException e) {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//
-//        orderService.updateOrder(orderDto);
-//        return new ResponseEntity<>(orderDto, HttpStatus.OK);
-//    }
 
     @Data
     @AllArgsConstructor

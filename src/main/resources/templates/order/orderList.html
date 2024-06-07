@@ -23,45 +23,80 @@
     <thead>
     <tr>
       <th>Order ID</th>
-<!--      <th>User ID</th>-->
       <th>Status</th>
+      <th>Total Price</th>
       <th>Action</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="order : ${orders}">
       <td th:text="${order.id}"></td>
-<!--      <td th:text="${order.userId}"></td>-->
       <td th:text="${order.status}"></td>
+      <td th:text="${order.totalPrice}"></td>
       <td>
-        <button id = "refundButton" th:value="${order.id}">환불신청</button>
-        <button id = "showDetailButton" th:value="${order.id}">상세보기</button>
+        <!-- Show Details 버튼에 클릭 이벤트 추가 -->
+        <button th:onclick="'viewDetails(' + ${order.id} + ')'">상세보기</button>
+        <button th:onclick="'cancelOrder(' + ${order.id} + ')'" th:unless="${order.status.getStatus().equals('취소')}">취소</button>
+        <button th:unless="${order.status.getStatus().equals('취소') || order.status.getStatus().equals('배송 완료')}">수정</button>
       </td>
     </tr>
     </tbody>
   </table>
   
   <script>
-    const refundButton = document.getElementById("refundButton")
-    const showDetailButton = document.getElementById("showDetailButton")
-    function requestRefund(orderId) {
-      // 환불신청 처리
-      alert("주문 ID: " + orderId);
-    }
-    
     function viewDetails(orderId) {
-      // 상세보기 처리
-      alert("주문 ID: " + orderId);
+      window.location.href = '/orders/detail/' + orderId;
     }
     
-    refundButton.addEventListener("click", () => {
-      requestRefund(document.getElementById("refundButton").value);
-    });
+    const cancelOrder = async (orderId) => {
+      const cancelData = { orderStatus: "CANCELED" };
+      
+      try {
+        const updateResult = await fetch(`/api/orders/${orderId}`, {
+          method: "PUT",
+          body: JSON.stringify(cancelData),
+          headers: { "Content-Type": "application/json" }
+        });
+        
+        if (updateResult.ok) {
+          // 취소가 성공하면 페이지를 새로고침하여 변경된 주문 목록을 업데이트합니다.
+          window.location.reload();
+        } else {
+          // 취소에 실패한 경우 에러 메시지를 표시합니다.
+          console.error("주문 취소에 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("오류:", error);
+      }
+    };
     
-    showDetailButton.addEventListener("click", () => {
-      viewDetails(document.getElementById("showDetailButton").value);
-    })
+    
+    // function cancelOrder(orderId) {
+    //   // AJAX를 사용하여 서버로 주문 취소 요청 전송
+    //   fetch('/api/orders/' + orderId, {
+    //     method: 'PUT',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({status: 'CANCELED'})
+    //   })
+    //   .then(response => {
+    //     if (response.ok) {
+    //       // 취소가 성공적으로 처리되었을 때 페이지 새로고침
+    //       window.location.reload();
+    //     } else {
+    //       // 취소에 실패한 경우 에러 메시지 출력
+    //       alert('주문 취소에 실패했습니다.');
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.error('Error:', error);
+    //   });
+    // }
+  
   </script>
 </body>
 </html>
+
+
 

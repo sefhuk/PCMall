@@ -40,10 +40,6 @@ public class Order extends BaseTime {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "refund_id")
-    private Refund refund;
-
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderDetail> orderDetails = new ArrayList<>();
 
@@ -55,5 +51,15 @@ public class Order extends BaseTime {
     public void removeOrderDetail(OrderDetail orderDetail) {
         orderDetails.remove(orderDetail);
         orderDetail.setOrder(null);
+    }
+
+    public Long getTotalPrice() {
+        Long result = 0L;
+
+        for (OrderDetail orderDetail : orderDetails) {
+            result += orderDetail.getCount() * orderDetail.getPrice();
+        }
+
+        return result;
     }
 }

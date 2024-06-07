@@ -22,7 +22,6 @@
             <th>Order ID</th>
             <th>User ID</th>
             <th>Status</th>
-            <th>Refund ID</th>
             <th>Delete</th>
         </tr>
         </thead>
@@ -41,7 +40,6 @@
                 </select>
                 <button th:onclick="updateOrder([[${order.id}]])" th:text="Update"></button>
             </td>
-            <td th:text="${order.refundId}"></td>
             <td>
                 <input type="hidden" name="_method" value="delete"/>
                 <button th:onclick="deleteOrder([[${order.id}]])" th:text="Delete"></button>

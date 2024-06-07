@@ -1,5 +1,6 @@
 package com.team5.project2.order.controller;
 
+import com.team5.project2.order.dto.OrderDetailDto;
 import com.team5.project2.order.dto.OrderDto;
 import com.team5.project2.order.service.OrderService;
 import java.util.List;
@@ -29,5 +30,14 @@ public class OrderController {
         List<OrderDto> orders = orderService.getOrders(userId);
         model.addAttribute("orders", orders);
         return "/order/orderList";
+    }
+
+    @GetMapping("/detail/{orderId}")
+    public String showDetail(@PathVariable Long orderId, Model model) {
+        OrderDto order = orderService.getOrderById(orderId);
+        List<OrderDetailDto> orderDetails = orderService.getOrderDetails(orderId);
+        model.addAttribute("order", order);
+        model.addAttribute("orderDetails", orderDetails);
+        return "/order/orderDetail";
     }
 }
