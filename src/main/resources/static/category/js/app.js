@@ -31,19 +31,19 @@ function loadDefaultManufacturers() {
 function editManufacturer(button) {
   const row = button.closest('tr');
   const id = row.dataset.id;
-  const nameCell = row.querySelector('td');
-  const newName = prompt('제조사 이름 수정:', nameCell.textContent);
-  if (newName) {
+  const name = prompt('새 이름을 입력하세요:', row.cells[0].textContent);
+
+  if (name) {
     fetch('/categories/edit', {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: new URLSearchParams({ id, name: newName })
+      body: new URLSearchParams({ id, name })
     })
     .then(response => response.json())
     .then(data => {
-      nameCell.textContent = data.name;
+      row.cells[0].textContent = data.name;
     });
   }
 }
@@ -51,17 +51,21 @@ function editManufacturer(button) {
 function deleteManufacturer(button) {
   const row = button.closest('tr');
   const id = row.dataset.id;
-  fetch('/categories/delete', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams({ id })
-  })
-  .then(() => {
-    row.remove();
-  });
+
+  if (confirm('정말 삭제하시겠습니까?')) {
+    fetch('/categories/delete', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({ id })
+    })
+    .then(() => {
+      row.remove();
+    });
+  }
 }
+
 
 function addManufacturer() {
   const input = document.getElementById('newManufacturer');
