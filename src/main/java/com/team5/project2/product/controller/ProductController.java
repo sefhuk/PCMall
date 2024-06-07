@@ -2,15 +2,18 @@ package com.team5.project2.product.controller;
 
 import com.team5.project2.category.dto.CategoryDTO;
 import com.team5.project2.category.service.CategoryService;
-
+import com.team5.project2.product.dto.response.ProductResponseDto;
 import com.team5.project2.product.dto.response.SelectOptionDto;
 import com.team5.project2.product.entity.Product;
+import com.team5.project2.product.entity.ProductImage;
+import com.team5.project2.product.mapper.ProductImageMapper;
 import com.team5.project2.product.mapper.ProductMapper;
 import com.team5.project2.product.service.ProductService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,10 +31,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductController {
 
     private final ProductService productService;
-    private final CategoryService categoryService;
     private final ProductMapper productMapper;
+    private final ProductImageMapper productImageMapper;
+    private final CategoryService categoryService;
 
-    @GetMapping
+    @GetMapping("/new")
     public String getProductSavePage(Model model) {
 
         List<CategoryDTO> parts = categoryService.getAllCategories();
@@ -72,7 +76,7 @@ public class ProductController {
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<Product> productSave(
+    public ResponseEntity<ProductResponseDto> productSave(
         @RequestPart(value = "images", required = false) List<MultipartFile> images,
         @RequestParam("brand") String brand,
         @RequestParam("part") String part,
@@ -85,8 +89,17 @@ public class ProductController {
             .description(description)
             .build();
 
-        productService.addProduct(newProduct, part, images);
+        Product product = productService.addProduct(newProduct, part, images);
+        ProductResponseDto response = productMapper.productToProductResponseDto(product);
 
-        return ResponseEntity.ok().build();
+
+        if (product.getImages() != null) {
+            for (ProductImage image : product.getImages()) {
+                response.getImages()
+                    .add(productImageMapper.productImageToProductImageResponseDto(image));
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
