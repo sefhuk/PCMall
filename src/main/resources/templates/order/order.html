@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table, th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+</head>
+<body>
+    <h1>Order Details</h1>
+    <table>
+        <thead>
+        <tr>
+<!--            <th>Product ID</th>-->
+            <th>Count</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orderDetail : ${orderDetails}">
+<!--            <td th:text="${orderDetail.productId}"></td>-->
+            <td th:text="${orderDetail.count}"></td>
+            <td th:text="${orderDetail.price}"></td>
+        </tr>
+        </tbody>
+    </table>
+    
+    <button onclick="placeOrder()">주문하기</button>
+    
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      const userId = [[${userId}]];
+      const orderDetails = [[${orderDetails}]];
+
+      function placeOrder() {
+        fetch('/api/orders/' + userId, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(orderDetails)
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          window.location.href = '/orders/' + userId;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      }
+      /*]]>*/
+    </script>
+</body>
+</html>

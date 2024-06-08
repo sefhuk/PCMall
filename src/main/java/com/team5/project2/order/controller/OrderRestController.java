@@ -1,8 +1,12 @@
 package com.team5.project2.order.controller;
 
+import com.team5.project2.order.dto.OrderDetailDto;
 import com.team5.project2.order.dto.OrderDto;
+import com.team5.project2.order.entity.Order;
 import com.team5.project2.order.entity.OrderStatus;
+import com.team5.project2.order.mapper.OrderMapper;
 import com.team5.project2.order.service.OrderService;
+import com.team5.project2.user.domain.User;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -11,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,8 +41,17 @@ public class OrderRestController {
         return new ResponseEntity(orders, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
+    @PostMapping("/{userId}")
+    public ResponseEntity<OrderDto> createOrder(@PathVariable Long userId, @RequestBody List<OrderDetailDto> orderDetails) {
+        Order order = new Order();
+//        User user = userService.findById(userId);
+//        order.setUser(user);
+        order.setStatus(OrderStatus.CONFIRMED);
+//        order.setOrderDetails();
+        OrderDto orderDto = OrderMapper.INSTANCE.OrderToOrderDto(order);
+        orderDto.setOrderDetails(orderDetails);
+        orderDto.setTotalPrice(orderDto.getTotalPrice());
+
         return ResponseEntity.ok(orderService.createOrder(orderDto));
     }
 
