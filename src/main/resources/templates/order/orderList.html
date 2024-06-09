@@ -45,14 +45,14 @@
   
   <script>
     function viewDetails(orderId) {
-      window.location.href = '/orders/detail/' + orderId;
+      window.location.href = '/order/detail/' + orderId;
     }
     
     const cancelOrder = async (orderId) => {
       const cancelData = { orderStatus: "CANCELED" };
       
       try {
-        const updateResult = await fetch(`/api/orders/${orderId}`, {
+        const updateResult = await fetch(`/api/order/${orderId}`, {
           method: "PUT",
           body: JSON.stringify(cancelData),
           headers: { "Content-Type": "application/json" }
@@ -73,7 +73,7 @@
     
     // function cancelOrder(orderId) {
     //   // AJAX를 사용하여 서버로 주문 취소 요청 전송
-    //   fetch('/api/orders/' + orderId, {
+    //   fetch('/api/order/' + orderId, {
     //     method: 'PUT',
     //     headers: {
     //       'Content-Type': 'application/json'

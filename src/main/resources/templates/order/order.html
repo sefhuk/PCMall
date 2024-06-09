@@ -44,7 +44,7 @@
       const orderDetails = [[${orderDetails}]];
 
       function placeOrder() {
-        fetch('/api/orders/' + userId, {
+        fetch('/api/order/' + userId, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -54,7 +54,7 @@
         .then(response => response.json())
         .then(data => {
           console.log(data);
-          window.location.href = '/orders/' + userId;
+          window.location.href = '/order/' + userId;
         })
         .catch(error => {
           console.error('Error:', error);

@@ -1,5 +1,6 @@
 package com.team5.project2.order.entity;
 
+import com.team5.project2.product.entity.Product;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,9 +27,9 @@ public class OrderDetail {
     @JoinColumn(name = "order_id")
     private Order order;
 
-//    @ManyToOne
-//    @JoinColumn(name = "product_id")
-//    private Product product;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     private Long count;
     private Long price;
