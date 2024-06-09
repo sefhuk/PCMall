@@ -2,6 +2,7 @@ package com.team5.project2.product.entity;
 
 import com.team5.project2.category.entity.Category;
 import com.team5.project2.common.entity.BaseTime;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,12 +15,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Getter
@@ -37,9 +38,9 @@ public class Product extends BaseTime {
     @Column(nullable = false)
     private String brand;
 
-    @Column(nullable = false)
-    @JdbcTypeCode(SqlTypes.JSON)
-    private String description;
+    @Type(JsonType.class)
+    @Column(nullable = false, columnDefinition = "longtext")
+    private Map<String, String> description;
 
     @Column(nullable = false)
     private Long stock;
