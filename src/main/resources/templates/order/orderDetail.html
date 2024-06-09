@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Details</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      table, th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+    </style>
+</head>
+<body>
+    <h1>Order Details</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Order Detail ID</th>
+<!--            <th>Product ID</th>-->
+            <th>Count</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 상세 주문 목록을 표시하는 반복문 -->
+        <tr th:each="orderDetail : ${orderDetails}">
+            <td th:text="${orderDetail.id}"></td>
+<!--            <td th:text="${orderDetail.productId}"></td>-->
+            <td th:text="${orderDetail.count}"></td>
+            <td th:text="${orderDetail.price}"></td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>
