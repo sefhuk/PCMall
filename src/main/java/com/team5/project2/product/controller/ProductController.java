@@ -6,6 +6,7 @@ import com.team5.project2.product.entity.ProductImage;
 import com.team5.project2.product.mapper.ProductImageMapper;
 import com.team5.project2.product.mapper.ProductMapper;
 import com.team5.project2.product.service.ProductService;
+import com.team5.project2.product.util.JsonMapper;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductController {
 
     private final ProductService productService;
+    private final JsonMapper jsonMapper;
 
     @PostMapping
     @ResponseBody
@@ -38,7 +40,7 @@ public class ProductController {
         @RequestParam("description") String description) throws IOException {
 
         Product newProduct = Product.builder().brand(brand).name(name).stock(stock).price(price)
-            .description(description)
+            .description(jsonMapper.toMap(description))
             .build();
 
         Product product = productService.addProduct(newProduct, part, images);
