@@ -1,6 +1,5 @@
 package com.team5.project2.product.controller;
 
-import com.team5.project2.category.service.CategoryService;
 import com.team5.project2.product.dto.response.ProductResponseDto;
 import com.team5.project2.product.entity.Product;
 import com.team5.project2.product.entity.ProductImage;
@@ -26,8 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductMapper productMapper;
-    private final ProductImageMapper productImageMapper;
 
     @PostMapping
     @ResponseBody
@@ -45,12 +42,12 @@ public class ProductController {
             .build();
 
         Product product = productService.addProduct(newProduct, part, images);
-        ProductResponseDto response = productMapper.productToProductResponseDto(product);
+        ProductResponseDto response = ProductMapper.INSTANCE.productToProductResponseDto(product);
 
         if (product.getImages() != null) {
             for (ProductImage image : product.getImages()) {
                 response.getImages()
-                    .add(productImageMapper.productImageToProductImageResponseDto(image));
+                    .add(ProductImageMapper.INSTANCE.productImageToProductImageResponseDto(image));
             }
         }
 

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ProductViewController {
 
     private final CategoryService categoryService;
-    private final ProductMapper productMapper;
 
     @GetMapping("/new")
     public String getProductSavePage(Model model) {
@@ -28,7 +27,7 @@ public class ProductViewController {
         List<SelectOptionDto> options = new ArrayList<>();
         for (CategoryDTO category : parts) {
             for (CategoryDTO subCategory : categoryService.getSubCategories(category.getId())) {
-                SelectOptionDto option = productMapper.CategoryDtoToSelectOptionDto(
+                SelectOptionDto option = ProductMapper.INSTANCE.CategoryDtoToSelectOptionDto(
                     subCategory);
 
                 if (subCategory.getParentId() == 1L) {
