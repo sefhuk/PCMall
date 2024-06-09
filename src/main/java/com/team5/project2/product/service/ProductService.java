@@ -24,6 +24,10 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final Bucket bucket;
 
+    public List<Product> findProductAll() {
+        return productRepository.findAll();
+    }
+
     public Product addProduct(Product product, String part, List<MultipartFile> images)
         throws IOException {
 
