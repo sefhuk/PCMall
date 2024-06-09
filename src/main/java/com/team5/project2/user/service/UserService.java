@@ -36,4 +36,16 @@ public class UserService {
     public void deleteUser(Long userId) {
         jpaUserRepository.deleteById(userId);
     }
+
+    public User login(String email, String password) {
+
+        // 지시사항을 참고하여 코드를 작성해 보세요.
+        User findUser = jpaUserRepository.findByEmail(email);
+
+        if(!findUser.getPassword().equals(password)) {
+            return null;
+        }
+
+        return findUser;
+    }
 }
