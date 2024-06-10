@@ -22,7 +22,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private final Bucket bucket;
+//    private final Bucket bucket;
 
     public List<Product> findProductAll() {
         return productRepository.findAll();
@@ -38,18 +38,18 @@ public class ProductService {
             throw new RuntimeException("해당 부품 카테고리가 존재하지 않습니다.");
         }
 
-        if (images != null) {
-            for (MultipartFile image : images) {
-                byte[] bytes = image.getBytes();
-                Blob blob = bucket.create(
-                    UUID.randomUUID().toString() + image.getOriginalFilename(),
-                    bytes,
-                    image.getContentType());
-
-                ProductImage newImage = ProductImage.builder().url(blob.getMediaLink()).build();
-                product.addImage(newImage);
-            }
-        }
+//        if (images != null) {
+//            for (MultipartFile image : images) {
+//                byte[] bytes = image.getBytes();
+//                Blob blob = bucket.create(
+//                    UUID.randomUUID().toString() + image.getOriginalFilename(),
+//                    bytes,
+//                    image.getContentType());
+//
+//                ProductImage newImage = ProductImage.builder().url(blob.getMediaLink()).build();
+//                product.addImage(newImage);
+//            }
+//        }
 
         return productRepository.save(product);
     }

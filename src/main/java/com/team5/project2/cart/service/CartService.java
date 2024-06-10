@@ -6,7 +6,7 @@ import com.team5.project2.cart.dto.response.CartResponse;
 public interface CartService {
 
     /* 사용자 장바구니 목록 조회 */
-    CartResponse.CartItemsDto getCart(Integer cartNo);
+    CartResponse.CartItemsDto getCart(long cartNo);
 
     /* 장바구니 상품 추가 */
     CartResponse.CreateCartItemDto createCartItem(CartRequest.CreateCartItemDto requestDto);

@@ -1,11 +1,13 @@
 package com.team5.project2.cart.dto;
 import com.team5.project2.cart.dto.request.CartRequest;
+import lombok.Data;
 
+@Data
 /* 장바구니 아이템 생성 (Service -> Dao) DTO */
 public class CreateCartItem {
-    private Integer cartItemNo;
-    private Integer productNo;
-    private Integer cartNo;
+    private Long cartItemNo;
+    private Long productNo;
+    private Long cartNo;
     private Integer cartItemCount;
 
     public CreateCartItem(CartRequest.CreateCartItemDto reqDto) {
@@ -14,11 +16,12 @@ public class CreateCartItem {
         this.cartItemCount = reqDto.getCartItemCount();
     }
 
-    public Integer getCartItemNo() {
-        return cartItemNo;
+    public CartItem toDomain() {
+        CartItem cartItem = new CartItem();
+        cartItem.setCartItemNo(this.cartNo);
+        cartItem.setProductNo(this.productNo);
+        cartItem.setCartItemCount(this.cartItemCount);
+        return cartItem;
     }
 
-    public void setCartItemNo(Integer cartItemNo) {
-        this.cartItemNo = cartItemNo;
-    }
 }

@@ -29,18 +29,19 @@ public class UserViewController {
 
     @GetMapping("/home")
     public String showHome() {
-        return "home";
+        return "/user/home";
     }
+
     @GetMapping("/sign-up")
     public String showSignupForm(Model model) {
         model.addAttribute("userPostDto", new UserPostDto());
-        return "sign-up";
+        return "/user/sign-up";
     }
 
     @PostMapping("/sign-up")
     public String processSignup(@Validated UserPostDto userPostDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors() || !userPostDto.getPassword().equals(userPostDto.getConfirmPassword())) {
-            return "sign-up";
+            return "/user/sign-up";
         }
         User user = userMapper.userPostDtoToUser(userPostDto);
         String rawPassword = user.getPassword();
@@ -54,7 +55,7 @@ public class UserViewController {
     @GetMapping("/")
     public String showLoginForm(Model model) {
         model.addAttribute("userLoginDto", new UserLoginDto());
-        return "login-form";
+        return "/user/login-form";
     }
 
 //    @PostMapping("/login")
