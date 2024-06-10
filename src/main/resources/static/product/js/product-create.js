@@ -100,15 +100,16 @@ function uploadImage() {
 
   for (let i = 5; i < descInputs.length; i++) {
     if (descInputs[i].classList.contains(convertToEngName(part.value))) {
-      const input = descInputs[i].childNodes[3];
+      const keyNode = descInputs[i].childNodes[1];
+      const valueNode = descInputs[i].childNodes[3];
 
-      if (input.value === null || input.value === undefined || input.value
+      if (valueNode.value === null || valueNode.value === undefined || valueNode.value
           === "") {
         alert("모든 항목을 입력해주세요.");
         return;
       }
 
-      description[input.id] = input.value;
+      description[keyNode.innerText] = valueNode.value;
     }
   }
 
