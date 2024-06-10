@@ -3,10 +3,14 @@ package com.team5.project2.order.controller;
 import com.team5.project2.order.dto.OrderDetailDto;
 import com.team5.project2.order.dto.OrderDto;
 import com.team5.project2.order.entity.Order;
+import com.team5.project2.order.entity.OrderDetail;
 import com.team5.project2.order.entity.OrderStatus;
+import com.team5.project2.order.mapper.OrderDetailMapper;
 import com.team5.project2.order.mapper.OrderMapper;
 import com.team5.project2.order.service.OrderService;
 import com.team5.project2.user.domain.User;
+import com.team5.project2.user.service.UserService;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -27,10 +31,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/orders")
+@RequestMapping("/api/order")
 public class OrderRestController {
 
     private final OrderService orderService;
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity getAllOrders() {
@@ -42,14 +47,20 @@ public class OrderRestController {
     }
 
     @PostMapping("/{userId}")
-    public ResponseEntity<OrderDto> createOrder(@PathVariable Long userId, @RequestBody List<OrderDetailDto> orderDetails) {
+    public ResponseEntity<OrderDto> createOrder(@PathVariable Long userId, @RequestBody List<OrderDetailDto> orderDetailDtos) {
         Order order = new Order();
-//        User user = userService.findById(userId);
-//        order.setUser(user);
+        User user = userService.findUserById(userId);
+        order.setUser(user);
         order.setStatus(OrderStatus.CONFIRMED);
-//        order.setOrderDetails();
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        for (OrderDetailDto orderDetailDto : orderDetailDtos) {
+            OrderDetail orderDetail = OrderDetailMapper.INSTANCE.OrderDetailDtoToOrderDetail(orderDetailDto);
+            orderDetail.setOrder(order);
+            orderDetails.add(orderDetail);
+        }
+        order.setOrderDetails(orderDetails);
         OrderDto orderDto = OrderMapper.INSTANCE.OrderToOrderDto(order);
-        orderDto.setOrderDetails(orderDetails);
+        orderDto.setOrderDetails(orderDetailDtos);
         orderDto.setTotalPrice(orderDto.getTotalPrice());
 
         return ResponseEntity.ok(orderService.createOrder(orderDto));
