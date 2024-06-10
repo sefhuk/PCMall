@@ -37,6 +37,10 @@ public class Order extends BaseTime {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private String userName;
+    private String address;
+    private String phoneNumber;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 

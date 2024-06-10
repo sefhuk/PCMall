@@ -18,18 +18,18 @@
     </style>
 </head>
 <body>
-    <h1>Order Details</h1>
+    <h1>Order Sheet</h1>
     <table>
         <thead>
         <tr>
-<!--            <th>Product ID</th>-->
+            <th>Product ID</th>
             <th>Count</th>
             <th>Price</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="orderDetail : ${orderDetails}">
-<!--            <td th:text="${orderDetail.productId}"></td>-->
+            <td th:text="${orderDetail.productId}"></td>
             <td th:text="${orderDetail.count}"></td>
             <td th:text="${orderDetail.price}"></td>
         </tr>
@@ -39,7 +39,6 @@
     <button onclick="placeOrder()">주문하기</button>
     
     <script th:inline="javascript">
-      /*<![CDATA[*/
       const userId = [[${userId}]];
       const orderDetails = [[${orderDetails}]];
 
@@ -60,7 +59,6 @@
           console.error('Error:', error);
         });
       }
-      /*]]>*/
     </script>
 </body>
 </html>

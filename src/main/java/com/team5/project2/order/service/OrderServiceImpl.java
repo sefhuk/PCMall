@@ -8,6 +8,8 @@ import com.team5.project2.order.entity.OrderStatus;
 import com.team5.project2.order.mapper.OrderDetailMapper;
 import com.team5.project2.order.mapper.OrderMapper;
 import com.team5.project2.order.repository.OrderRepository;
+import com.team5.project2.product.entity.Product;
+import com.team5.project2.product.repository.ProductRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
 
     public OrderDto createOrder(OrderDto orderDto) {
         Order order = OrderMapper.INSTANCE.OrderDtoToOrder(orderDto);
@@ -52,7 +55,12 @@ public class OrderServiceImpl implements OrderService {
         List<OrderDetail> orderDetails = order.getOrderDetails();
 
         return orderDetails.stream()
-            .map(OrderDetailMapper.INSTANCE::OrderDetailToOrderDetailDto)
+            .map(orderDetail -> {
+                OrderDetailDto dto = OrderDetailMapper.INSTANCE.OrderDetailToOrderDetailDto(orderDetail);
+                Product product = orderDetail.getProduct();
+                dto.setProductName(product.getName());
+                return dto;
+            })
             .collect(Collectors.toList());
     }
 

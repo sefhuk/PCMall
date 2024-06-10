@@ -7,6 +7,7 @@ public class OrderDetailDto {
     private Long id;
     private Long orderId;
     private Long productId;
+    private String productName;
     private Long count;
     private Long price;
 }
