@@ -1,10 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Website</title>
+  <link rel="stylesheet" th:href="@{/user/css/login-form.css}">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    header {
+        background-color: #f8f8f8;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+    }
+
+    .user-icon {
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const myPageLink = document.getElementById('myPageLink');
+
+        myPageLink.addEventListener('click', (event) => {
+        });
+    });
+  </script>
 </head>
 <body>
-  <p>메인페이지</p>
+<header>
+  <div class="header-right">
+    <a th:href="@{/myPage}" id="myPageLink">
+      <img th:src="@{/user/css/user.png}" alt="User Icon" class="user-icon">
+    </a>
+  </div>
+</header>
 </body>
 </html>

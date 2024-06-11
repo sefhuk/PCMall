@@ -1,6 +1,7 @@
 package com.team5.project2.user.auth;
 
 import com.team5.project2.user.repository.UserRepository;
+import com.team5.project2.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,15 +13,14 @@ import com.team5.project2.user.domain.User;
 @RequiredArgsConstructor
 public class UserDetailService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
-        User user = userRepository.findByEmail(email);
-        if(user != null){
-            return new UserDetail(user);
+        User user = userService.findUserByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with email: " + email);
         }
-        return null;
+        return new UserDetail(user);
     }
 }
