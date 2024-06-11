@@ -45,22 +45,8 @@
                 <p class="font-semibold text-lg"
                    th:text="${#numbers.formatCurrency(product.price)}"></p>
             </div>
-<!--            <div class="w-[22%] h-[250px]">-->
-<!--                <div-->
-<!--                    class="flex flex-col justify-evenly items-center h-[95%] text-3xl font-semibold">-->
-<!--                    <button-->
-<!--                        class="buyButton w-[200px] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white">-->
-<!--                        바로 구매-->
-<!--                    </button>-->
-<!--                    <button-->
-<!--                        class="cartButton w-[200px] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white">-->
-<!--                        장바구니 담기-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--            </div>-->
         </a>
     </div>
-<!--    <h1 th:text="${user.}"></h1>-->
     <div th:if="${products.isEmpty()}">
         <h1 class="text-center text-6xl">상품이 존재하지 않습니다.</h1>
     </div>
