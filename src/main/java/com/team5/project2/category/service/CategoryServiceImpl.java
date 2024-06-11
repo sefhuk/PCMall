@@ -21,8 +21,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryMapper categoryMapper;
 
-
-
     @PostConstruct
     @Transactional
     public void init() {
