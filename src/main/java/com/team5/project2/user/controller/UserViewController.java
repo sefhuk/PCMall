@@ -8,6 +8,7 @@ import com.team5.project2.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,6 +58,14 @@ public class UserViewController {
         model.addAttribute("userLoginDto", new UserLoginDto());
         return "/user/login-form";
     }
+    @GetMapping("/myPage")
+    public String showMyPage(Principal principal, Model model) {
+        String userEmail = principal.getName();
+        User user = userService.findUserByEmail(userEmail);
+        model.addAttribute("user", user);
+        return "user/myPage";
+    }
+
 
 //    @PostMapping("/login")
 //    public String processLogin(@Validated @ModelAttribute UserLoginDto userLoginDto, BindingResult bindingResult, HttpServletRequest request) {

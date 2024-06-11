@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원 정보 조회</title>
+  <link rel="stylesheet" th:href="@{/user/css/myPage.css}">
+  <script th:src="@{/user/js/myPage.js}"></script>
+</head>
+<body>
+<div class="container">
+  <h1>회원 정보 조회</h1>
+  <div class="profile-card">
+    <div class="profile-image">
+      <img th:src="@{/user/css/user.png}" alt="User Icon">
+    </div>
+    <div class="profile-info">
+      <p>이름: <span th:text="${user.name}">xxx</span></p>
+      <p>이메일: <span th:text="${user.email}">example@elice.io</span></p>
+      <p>주소: <span th:text="${user.address}">대구시 달서구 ...</span></p>
+      <p>전화번호: <span th:text="${user.phone_number}">010-1234-1234</span></p>
+    </div>
+  </div>
+  <div class="actions">
+    <button onclick="location.href='/order'">주문 조회</button>
+    <button onclick="location.href='/edit'">정보 수정</button>
+    <button onclick="logout()">로그아웃</button>
+    <button onclick="deleteAccount()">회원 탈퇴</button>
+  </div>
+</div>
+</body>
+</html>

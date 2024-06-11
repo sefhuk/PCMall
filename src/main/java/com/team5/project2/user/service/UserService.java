@@ -22,6 +22,10 @@ public class UserService {
             .orElseThrow(() -> new RuntimeException());
     }
 
+    public User findUserByEmail(String email) {
+        return jpaUserRepository.findByEmail(email);
+    }
+
     public User createUser(User user) {
         return jpaUserRepository.save(user);
     }

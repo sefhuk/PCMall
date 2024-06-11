@@ -27,7 +27,7 @@ public class SecurityConfiguration {
                 authorizeRequests
                     .requestMatchers("/", "/login", "/sign-up", "/home", "/login-form").permitAll()
                     .requestMatchers("/admin/**").hasRole("ADMIN")
-                    .requestMatchers("/user/**").hasRole("USER")
+                    .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                     .anyRequest().permitAll()
             )
             .formLogin(formLogin -> formLogin
