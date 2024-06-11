@@ -109,7 +109,8 @@ function uploadImage() {
         return;
       }
 
-      description[keyNode.innerText] = valueNode.value;
+      const unit = valueNode.getAttribute("unit");
+      description[keyNode.innerText] = valueNode.value + (unit ? unit : "");
     }
   }
 

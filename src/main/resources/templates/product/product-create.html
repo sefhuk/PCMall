@@ -120,7 +120,7 @@
             />
         </div>
         <div
-            class="gpu flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
+            class="cpu gpu flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
         >
             <label class="w-[35%]" for="baseClockSpeed">기본 클럭속도</label>
             <input
@@ -129,6 +129,7 @@
                 name="기본 클럭속도"
                 id="baseClockSpeed"
                 placeholder="숫자만 입력해주세요 (단위 GHz)"
+                unit=" GHz"
             />
         </div>
         <div
@@ -141,6 +142,7 @@
                 name="최대 클럭속도"
                 id="boostClockSpeed"
                 placeholder="숫자만 입력해주세요 (단위 GHz)"
+                unit=" GHz"
             />
         </div>
         <div
@@ -153,6 +155,7 @@
                 name="용량"
                 id="capacity"
                 placeholder="숫자만 입력해주세요 (단위 GB)"
+                unit="GB"
             />
         </div>
         <div
@@ -165,6 +168,7 @@
                 name="속도"
                 id="speed"
                 placeholder="숫자만 입력해주세요 (단위 MHz)"
+                unit=" MHz"
             />
         </div>
         <div
@@ -235,6 +239,7 @@
                 name="VRAM 용량"
                 id="vramCapacity"
                 placeholder="숫자만 입력해주세요 (단위 GB)"
+                unit="GB"
             />
         </div>
         <div
@@ -262,6 +267,7 @@
                 name="소비 전력"
                 id="powerConsumption"
                 placeholder="숫자만 입력해주세요 (단위 W)"
+                unit="W"
             />
         </div>
         <div
@@ -274,6 +280,7 @@
                 name="읽기 속도"
                 id="readSpeed"
                 placeholder="숫자만 입력해주세요 (단위 MB/s)"
+                unit=" MB/s"
             />
         </div>
         <div
@@ -286,6 +293,7 @@
                 name="쓰기 속도"
                 id="writeSpeed"
                 placeholder="숫자만 입력해주세요 (단위 MB/s)"
+                unit=" MB/s"
             />
         </div>
         <div
@@ -298,6 +306,7 @@
                 name="회전 속도"
                 id="rotationSpeed"
                 placeholder="숫자만 입력해주세요 (단위 RPM)"
+                unit=" RPM"
             />
         </div>
         <div
@@ -310,6 +319,7 @@
                 name="정격 출력"
                 id="wattage"
                 placeholder="숫자만 입력해주세요 (단위 W)"
+                unit="W"
             />
         </div>
         <div
@@ -334,6 +344,7 @@
                 name="최대 램 용량"
                 id="maxRamCapacity"
                 placeholder="숫자만 입력해주세요 (단위 GB)"
+                unit="GB"
             />
         </div>
         <div
@@ -385,13 +396,14 @@
                 name="높이"
                 id="height"
                 placeholder="숫자만 입력해주세요 (단위 mm)"
+                unit="mm"
             />
         </div>
     </form>
     <div class="flex justify-center mt-[50px] text-4xl">
-        <button class="bg-gray-300 w-[24%] py-[10px] mr-[2%]">취소</button>
+        <button class="bg-[skyblue] w-[24%] py-[10px] mr-[2%] hover:bg-[#33adff] hover:text-white">취소</button>
         <button
-            class="bg-gray-300 w-[24%] py-[10px]"
+            class="bg-[skyblue] w-[24%] py-[10px] hover:bg-[#33adff] hover:text-white"
             type="submit"
             onclick="uploadImage()"
         >
