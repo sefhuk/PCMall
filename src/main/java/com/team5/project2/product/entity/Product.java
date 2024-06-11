@@ -56,6 +56,10 @@ public class Product extends BaseTime {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    public void updateCategory(Category category) {
+        this.category = category;
+    }
+
     public void addImage(ProductImage productImage) {
         images.add(productImage);
         productImage.updateProduct(this);
