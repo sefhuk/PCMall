@@ -401,7 +401,9 @@
         </div>
     </form>
     <div class="flex justify-center mt-[50px] text-4xl">
-        <button class="bg-[skyblue] w-[24%] py-[10px] mr-[2%] hover:bg-[#33adff] hover:text-white">취소</button>
+        <button class="bg-[skyblue] w-[24%] py-[10px] mr-[2%] hover:bg-[#33adff] hover:text-white">
+            취소
+        </button>
         <button
             class="bg-[skyblue] w-[24%] py-[10px] hover:bg-[#33adff] hover:text-white"
             type="submit"
@@ -411,6 +413,10 @@
         </button>
     </div>
 </main>
+<div id="modal"
+     class="fixed top-0 left-0 flex justify-center items-center w-[100%] h-[100%] bg-zinc-500 z-10 opacity-90 hidden">
+    <h1 class="text-center text-7xl">잠시만 기다려주세요..</h1>
+</div>
 <script th:src="@{/product/js/product-create.js}"></script>
 <script th:src="@{/product/js/config.js}"></script>
 </body>

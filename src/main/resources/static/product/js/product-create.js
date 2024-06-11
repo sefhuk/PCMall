@@ -28,6 +28,13 @@ function previewImages() {
   }
 
   for (let i = 0; i < files.length; i++) {
+    if (files[i].size / (1024 * 1024) > 10) {
+      alert("한 이미지 용량이 10MB를 초과할 수 없습니다.");
+      return;
+    }
+  }
+
+  for (let i = 0; i < files.length; i++) {
     const file = files[i];
 
     const container = document.createElement('div');
@@ -84,6 +91,12 @@ function previewImages() {
 
 // 서버로 이미지 전송
 function uploadImage() {
+  const isAccepted =  confirm("등록하시겠습니까?");
+
+  if (!isAccepted) {
+    alert("등록이 취소되었습니다.");
+    return;
+  }
   const formData = new FormData();
 
   images.forEach((e) => {
@@ -116,6 +129,8 @@ function uploadImage() {
 
   formData.append("description", JSON.stringify(description));
 
+  document.getElementById("modal").classList.remove("hidden");
+
   fetch('/product', {
     method: 'POST',
     body: formData,
@@ -126,6 +141,7 @@ function uploadImage() {
       return res.json();
     } else {
       alert("요청 오류");
+      document.getElementById("modal").classList.add("hidden");
     }
   })
   .then((data) => {
@@ -133,6 +149,7 @@ function uploadImage() {
   })
   .catch(() => {
     alert("문제 발생");
+    document.getElementById("modal").classList.add("hidden");
   });
 }
 
@@ -155,16 +172,15 @@ function handleChangePart() {
   }
 
   // 제조사 변화
-  let selected = false;
   for (let i = 0; i < brandOptions.length; i++) {
     if (!brandOptions[i].classList.contains(convertToEngName(partName))) {
       brandOptions[i].classList.add("hidden");
-      brandOptions[i].selected = true;
+      brandOptions[i].selected = false;
       continue;
     }
 
     brandOptions[i].classList.remove("hidden");
-    brandOptions[i].selected = false;
+    brandOptions[i].selected = true;
   }
 }
 
