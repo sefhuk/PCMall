@@ -9,6 +9,7 @@ import com.team5.project2.product.entity.ProductImage;
 import com.team5.project2.product.repository.ProductRepository;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -54,11 +55,18 @@ public class ProductService {
                     bytes,
                     image.getContentType());
 
-                ProductImage newImage = ProductImage.builder().url(blob.getMediaLink()).build();
+                ProductImage newImage = ProductImage.builder().url(blob.getMediaLink())
+                    .name(blob.getName()).build();
                 product.addImage(newImage);
             }
         }
 
         return productRepository.save(product);
+    }
+
+    public Optional<Product> removeProduct(Long id) {
+        productRepository.deleteById(id);
+
+        return productRepository.findById(id);
     }
 }
