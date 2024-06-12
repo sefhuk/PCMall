@@ -89,14 +89,15 @@ function previewImages() {
   }
 }
 
-// 서버로 이미지 전송
-function uploadImage() {
+// 상품 등록
+function upload() {
   const isAccepted =  confirm("등록하시겠습니까?");
 
   if (!isAccepted) {
     alert("등록이 취소되었습니다.");
     return;
   }
+
   const formData = new FormData();
 
   images.forEach((e) => {
@@ -122,8 +123,7 @@ function uploadImage() {
         return;
       }
 
-      const unit = valueNode.getAttribute("unit");
-      description[keyNode.innerText] = valueNode.value + (unit ? unit : "");
+      description[keyNode.innerText] = valueNode.value;
     }
   }
 
@@ -182,6 +182,17 @@ function handleChangePart() {
     brandOptions[i].classList.remove("hidden");
     brandOptions[i].selected = true;
   }
+}
+
+// 상품 등록 취소 버튼
+function cancel() {
+  const isCanceled = confirm("상품 등록을 취소하시겠습니까?");
+
+  if (!isCanceled) {
+    return;
+  }
+
+  location.href = "/product";
 }
 
 // 브랜드 option 목록 초기화
