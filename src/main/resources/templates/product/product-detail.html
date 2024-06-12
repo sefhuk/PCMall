@@ -66,9 +66,11 @@
                         <div
                             class="flex items-center w-[100%] h-[50px] text-2xl text-left font-bold border-b-2 border-black py-[15px]">
                             <label for="buyCount" class="w-[30%]">수량</label>
-                            <input id="buyCount" type="number" min="1" max="10" value="1" class="w-[10%] outline focus:outline-black
+                            <input id="buyCount" type="number" min="1" th:max="${product.stock}"
+                                   value="1" class="w-[15%] outline focus:outline-black
                                 focus:outline-2 font-light text-center placeholder:text-[15px]">
-                            <p class="text-[red] ml-[50px] font-bold text-base" th:text="|* 남은 수량: ${product.stock}|"></p>
+                            <p class="text-[red] ml-[50px] font-bold text-base"
+                               th:text="|* 남은 수량: ${product.stock}|"></p>
                         </div>
                         <div
                             class="flex items-center w-[100%] h-[50px] text-2xl text-left font-bold border-b-2 border-black py-[15px]">
@@ -93,7 +95,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </main>
 <script th:src=" @{/product/js/product-detail.js}"></script>
