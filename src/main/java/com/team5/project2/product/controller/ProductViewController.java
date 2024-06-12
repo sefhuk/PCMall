@@ -96,6 +96,20 @@ public class ProductViewController {
         return "product/product-create";
     }
 
+    @GetMapping("/{id}/edit")
+    public String getProductManagePage(@PathVariable("id") Long id, Model model) {
+
+        ProductResponseDto product = ProductMapper.INSTANCE.productToProductResponseDto(
+            productService.findProduct(id));
+
+        List<CategoryDTO> brands = categoryService.getSubCategories(product.getCategoryId());
+
+        model.addAttribute("brands", brands);
+        model.addAttribute("product", product);
+
+        return "product/product-manage";
+    }
+
     private String getPartNameById(Long id) {
         if (id == 1L) return "cpu";
         if (id == 2L) return "cooler";
