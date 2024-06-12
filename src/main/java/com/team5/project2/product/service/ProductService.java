@@ -32,7 +32,15 @@ public class ProductService {
             .orElseThrow(() -> new RuntimeException("해당 상품이 존재하지 않습니다."));
     }
 
-    public Page<Product> findProductAll(Long categoryId,Pageable pageable) {
+    public List<Product> findProductAll(Long id) {
+        return productRepository.findAll();
+    }
+
+    public List<Product> findProductByCategoryId(Long categoryId) {
+        return productRepository.findByCategoryId(categoryId);
+    }
+
+    public Page<Product> findProductByCategoryIdPaging(Long categoryId, Pageable pageable) {
         return productRepository.findByCategoryId(categoryId, pageable);
     }
 
