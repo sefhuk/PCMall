@@ -10,6 +10,7 @@ import com.team5.project2.order.mapper.OrderMapper;
 import com.team5.project2.order.service.OrderService;
 import com.team5.project2.user.domain.User;
 import com.team5.project2.user.service.UserService;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,10 +47,12 @@ public class OrderRestController {
         return new ResponseEntity(orders, HttpStatus.OK);
     }
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<OrderDto> createOrder(@PathVariable Long userId, @RequestBody List<OrderDetailDto> orderDetailDtos) {
+    @PostMapping
+    public ResponseEntity<OrderDto> createOrder(Principal principal, @RequestBody List<OrderDetailDto> orderDetailDtos) {
+        String userEmail = principal.getName();
+        User user = userService.findUserByEmail(userEmail);
+
         Order order = new Order();
-        User user = userService.findUserById(userId);
         order.setUser(user);
         order.setStatus(OrderStatus.CONFIRMED);
         List<OrderDetail> orderDetails = new ArrayList<>();
@@ -67,13 +70,12 @@ public class OrderRestController {
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long id) {
-        OrderDto orderDto = orderService.findOrderById(id);
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long orderId) {
+        OrderDto orderDto = orderService.findOrderById(orderId);
         return new ResponseEntity<>(orderDto, HttpStatus.OK);
 
     }
-
 
     @Data
     @AllArgsConstructor
