@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" th:href="@{/product/css/product.css}"/>
+    <title>PC Mall</title>
+</head>
+<body>
+<header class="mt-[60px]">
+    <div class="flex justify-evenly items-center h-[120px] bg-[skyblue] text-xl px-[150px]">
+        <a th:each="category: ${categories}"
+           class="flex justify-center items-center w-[10%] bg-[skyblue] hover:text-white h-[100%] hover:bg-[#33adff]"
+           th:href="@{/product(category=${category.name})}"><span
+            th:text="${category.name}">CPU</span></a>
+    </div>
+</header>
+<main class="my-[30px]">
+    <div class="flex flex-col justify-center items-center w-[100%]">
+        <a
+            class="flex justify-between items-center p-1 w-[90%] h-[220px] border-2 border-solid border-[skyblue]
+                mb-[30px] hover:underline hover:italic"
+            th:each="product: ${products}"
+            th:href="@{/product/{id}(id=${product.id})}">
+            <div
+                class="relative box-border border-2 border-solid border-[skyblue]">
+                <div class="flex w-[200px] h-[200px]">
+                    <div th:if="${!product.images.isEmpty()}"
+                         th:class="|w-[200px] bg-[url('${product.images[0].url}')] bg-no-repeat bg-cover|"
+                    ></div>
+                    <div th:if="${product.images.isEmpty()}"
+                         class="flex justify-center items-center w-[198px] font-bold text-xl">
+                        <span>이미지 없음</span>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="flex flex-col justify-around w-[80%] h-[95%] pl-[100px]">
+                <p class="font-bold text-2xl" th:text="${product.name}"></p>
+                <div>
+                    <span th:each="desc: ${product.description}"
+                          th:text="|${desc.key}: ${desc.value}${descStat.last ? '' : ', '} |"></span>
+                </div>
+                <p class="font-semibold text-lg"
+                   th:text="${#numbers.formatCurrency(product.price)}"></p>
+            </div>
+        </a>
+    </div>
+    <div th:if="${products.isEmpty()}">
+        <h1 class="text-center text-6xl">상품이 존재하지 않습니다.</h1>
+    </div>
+    <div th:if="${!products.isEmpty()}"  class="flex justify-evenly w-[70%] overflow-hidden m-auto">
+        <a class="block w-[60px] h-[70px] text-center leading-[70px] border-2 border-black border-solid font-bold text-2xl"
+                th:each="pageNo: ${#numbers.sequence(1, totalPages)}" th:text="${pageNo}"
+                th:href="@{/product(category=${category}, page=${pageNo - 1}, size=${size})}">
+        </a>
+    </div>
+</main>
+<script th:src=" @{/product/js/product-list.js}"></script>
+</body>
+</html>

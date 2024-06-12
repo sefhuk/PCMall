@@ -28,6 +28,13 @@ function previewImages() {
   }
 
   for (let i = 0; i < files.length; i++) {
+    if (files[i].size / (1024 * 1024) > 10) {
+      alert("한 이미지 용량이 10MB를 초과할 수 없습니다.");
+      return;
+    }
+  }
+
+  for (let i = 0; i < files.length; i++) {
     const file = files[i];
 
     const container = document.createElement('div');
@@ -82,8 +89,15 @@ function previewImages() {
   }
 }
 
-// 서버로 이미지 전송
-function uploadImage() {
+// 상품 등록
+function upload() {
+  const isAccepted =  confirm("등록하시겠습니까?");
+
+  if (!isAccepted) {
+    alert("등록이 취소되었습니다.");
+    return;
+  }
+
   const formData = new FormData();
 
   images.forEach((e) => {
@@ -100,19 +114,22 @@ function uploadImage() {
 
   for (let i = 5; i < descInputs.length; i++) {
     if (descInputs[i].classList.contains(convertToEngName(part.value))) {
-      const input = descInputs[i].childNodes[3];
+      const keyNode = descInputs[i].childNodes[1];
+      const valueNode = descInputs[i].childNodes[3];
 
-      if (input.value === null || input.value === undefined || input.value
+      if (valueNode.value === null || valueNode.value === undefined || valueNode.value
           === "") {
         alert("모든 항목을 입력해주세요.");
         return;
       }
 
-      description[input.id] = input.value;
+      description[keyNode.innerText] = valueNode.value;
     }
   }
 
   formData.append("description", JSON.stringify(description));
+
+  document.getElementById("modal").classList.remove("hidden");
 
   fetch('/product', {
     method: 'POST',
@@ -124,6 +141,7 @@ function uploadImage() {
       return res.json();
     } else {
       alert("요청 오류");
+      document.getElementById("modal").classList.add("hidden");
     }
   })
   .then((data) => {
@@ -131,6 +149,7 @@ function uploadImage() {
   })
   .catch(() => {
     alert("문제 발생");
+    document.getElementById("modal").classList.add("hidden");
   });
 }
 
@@ -153,17 +172,27 @@ function handleChangePart() {
   }
 
   // 제조사 변화
-  let selected = false;
   for (let i = 0; i < brandOptions.length; i++) {
     if (!brandOptions[i].classList.contains(convertToEngName(partName))) {
       brandOptions[i].classList.add("hidden");
-      brandOptions[i].selected = true;
+      brandOptions[i].selected = false;
       continue;
     }
 
     brandOptions[i].classList.remove("hidden");
-    brandOptions[i].selected = false;
+    brandOptions[i].selected = true;
   }
+}
+
+// 상품 등록 취소 버튼
+function cancel() {
+  const isCanceled = confirm("상품 등록을 취소하시겠습니까?");
+
+  if (!isCanceled) {
+    return;
+  }
+
+  location.href = "/product";
 }
 
 // 브랜드 option 목록 초기화

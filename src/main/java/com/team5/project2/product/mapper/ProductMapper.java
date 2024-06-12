@@ -22,6 +22,7 @@ public interface ProductMapper {
 
     @Mapping(target = "images", expression = "java(mapImages(product.getImages()))")
     @Mapping(source = "category.name", target = "part")
+    @Mapping(source = "category.id", target = "categoryId")
     ProductResponseDto productToProductResponseDto(Product product);
 
     default List<ProductImageResponseDto> mapImages(List<ProductImage> images) {

@@ -16,6 +16,7 @@ import lombok.Setter;
 @Builder
 public class ProductResponseDto {
     private Long id;
+    private Long categoryId;
     private String part;
     private String brand;
     private String name;
