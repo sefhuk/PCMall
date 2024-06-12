@@ -46,7 +46,7 @@ public class ProductViewController {
         }
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Product> pagedProducts = productService.findProductAll(findCategory.getId(), pageable);
+        Page<Product> pagedProducts = productService.findProductByCategoryIdPaging(findCategory.getId(), pageable);
 
         List<ProductResponseDto> products = pagedProducts.getContent().stream()
             .filter(p -> Objects.equals(p.getCategory().getName(), category))
