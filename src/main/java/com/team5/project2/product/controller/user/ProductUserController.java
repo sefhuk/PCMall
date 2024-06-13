@@ -6,12 +6,14 @@ import com.team5.project2.product.dto.response.ProductResponseDto;
 import com.team5.project2.product.entity.Product;
 import com.team5.project2.product.mapper.ProductMapper;
 import com.team5.project2.product.service.ProductService;
+import com.team5.project2.user.auth.UserDetail;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +34,7 @@ public class ProductUserController {
         @RequestParam(value = "category", defaultValue = "CPU") String category,
         @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
         @RequestParam(value = "size", defaultValue = "10", required = false) Integer size,
+        @AuthenticationPrincipal UserDetail user,
         Model model) {
 
         List<CategoryDTO> categories = categoryService.getAllCategories();
@@ -51,12 +54,16 @@ public class ProductUserController {
             .map(ProductMapper.INSTANCE::productToProductResponseDto)
             .toList();
 
+        String role = user.getAuthorities().iterator().next().getAuthority();
+
         model.addAttribute("category", category);
         model.addAttribute("categories", categories);
         model.addAttribute("products", products);
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         model.addAttribute("totalPages", pagedProducts.getTotalPages());
+        model.addAttribute("user", user);
+        model.addAttribute("role", role);
 
         return "product/product-list";
     }

@@ -47,13 +47,13 @@
                     <div th:if="${!product.images.isEmpty()}"
                          class="flex justify-evenly items-center w-[60%] mx-auto py-[10px]">
                         <button id="prevButton" class="w-[40px] h-[40px]"><img
-                            th:src="@{img/prev.png}"
+                            th:src="@{/product/img/prev.png}"
                             alt="앞으로"></button>
                         <div id="imagePage" class="text-xl" th:text="|1/${product.images.size()}|">
                             1/4
                         </div>
                         <button id="nextButton" class="w-[40px] h-[40px]"><img
-                            th:src="@{img/next.png}"
+                            th:src="@{/product/img/next.png}"
                             alt="뒤로"></button>
                     </div>
                 </div>
