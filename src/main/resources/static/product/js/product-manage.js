@@ -66,17 +66,21 @@ function deleteReq(productId) {
     return;
   }
 
+  document.getElementById("modal").classList.remove("hidden");
+
   fetch(`/admin/product?productId=${productId}`, {
     method: "DELETE"
   })
   .then((res) => {
-    if (res.status === 204) {
-      alert("삭제 되었습니다.");
-      location.href = "/user/product";
-    }
+    return res.json();
+  })
+  .then((data) => {
+    alert("삭제 되었습니다.");
+    location.href = "/admin/product";
   })
   .catch((err) => {
     alert("서버가 원할하지 않습니다. 잠시후에 이용해주세요.");
+    document.getElementById("modal").classList.add("hidden");
   });
 }
 
