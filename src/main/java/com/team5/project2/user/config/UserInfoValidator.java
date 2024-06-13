@@ -1,4 +1,4 @@
-package com.team5.project2.user.auth;
+package com.team5.project2.user.config;
 
 import com.team5.project2.user.dto.UserPostDto;
 import org.springframework.stereotype.Component;

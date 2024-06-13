@@ -1,10 +1,145 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>PC Mall</title>
-  </head>
-  <body></body>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원정보 수정</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+    }
+    header {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        background-color: #f8f9fa;
+        max-width: 960px;
+        margin: 0 auto;
+    }
+    .header-left span {
+        font-weight: bold;
+        font-size: 24px;
+    }
+
+    .header-right a {
+        text-decoration: none;
+        color: #007bff;
+    }
+
+    h1 {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    main {
+        padding: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .info-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .info-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .info-table th {
+        background-color: #f1f1f1;
+        width: 150px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+    }
+
+    button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 3px;
+        margin-left: 1em;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    input[type="password"] {;
+        margin-bottom: 10px;
+        padding: 8px;
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+  </style>
+
+</head>
+<body>
+<header>
+  <div class="header-left">
+    <a th:href="@{/}">
+      <span>PC Mall</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a th:href="@{/myPage}">마이페이지</a>/
+    <a th:href="@{/logout}">로그아웃</a>/
+    <a th:href="@{/cart}">카트</a>
+  </div>
+</header>
+<main>
+  <h1>회원정보 수정</h1>
+  <hr>
+  <form class="info-form">
+    <table class="info-table">
+      <tr>
+        <th>아이디(이메일)</th>
+        <td>
+          <span th:text="${user.email}">이메일</span>
+          <button type="button" onclick="toggleEdit('email')">이메일 변경</button>
+          <div class="verify-email">
+            <input type="text" id="verification-code" placeholder="이메일 입력">
+            <button type="button" onclick="verifyCode()">인증메일 전송</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>이름</th>
+        <td>
+          <span th:text="${user.name}">이름</span>
+          <button type="button" onclick="toggleEdit('name')">이름 변경</button>
+        </td>
+      </tr>
+      <tr>
+        <th>휴대폰 번호</th>
+        <td>
+          <span th:text="${user.phone_number}">전화번호</span>
+          <button type="button" onclick="toggleEdit('phone')">전화번호 변경</button>
+        </td>
+      </tr>
+      <tr>
+        <th>비밀번호 변경</th>
+        <td colspan="2">
+          <input type="password" placeholder="현재 비밀번호">
+          <input type="password" placeholder="새 비밀번호">
+          <input type="password" placeholder="비밀번호 다시 입력">
+          <button type="button">비밀번호 변경</button>
+        </td>
+      </tr>
+      <tr>
+        <th>배송지</th>
+        <td><a href="#">배송지 관리</a></td>
+      </tr>
+    </table>
+  </form>
+</main>
+</body>
 </html>

@@ -25,7 +25,7 @@ public class SecurityConfiguration {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests((authorizeRequests) ->
                 authorizeRequests
-                    .requestMatchers("/", "/login", "/sign-up", "/home", "/login-form").permitAll()
+                    .requestMatchers("/", "/login", "/sign-up", "/login-form").permitAll()
                     .requestMatchers("/admin/**").hasRole("ADMIN")
                     .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                     .anyRequest().permitAll()
@@ -33,7 +33,7 @@ public class SecurityConfiguration {
             .formLogin(formLogin -> formLogin
                 .loginPage("/login-form")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/home", true)
+                .defaultSuccessUrl("/user/product", false)
                 .failureUrl("/login-form?error")
                 .usernameParameter("email")
                 .passwordParameter("password")
