@@ -131,7 +131,7 @@ function upload() {
 
   document.getElementById("modal").classList.remove("hidden");
 
-  fetch('/product', {
+  fetch('/admin/product', {
     method: 'POST',
     body: formData,
   })

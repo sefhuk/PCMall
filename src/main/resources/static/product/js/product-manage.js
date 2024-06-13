@@ -28,7 +28,7 @@ function deleteReq(productId) {
     return;
   }
 
-  fetch(`/product?productId=${productId}`, {
+  fetch(`/admin/product?productId=${productId}`, {
     method: "DELETE"
   })
   .then((res) => {
