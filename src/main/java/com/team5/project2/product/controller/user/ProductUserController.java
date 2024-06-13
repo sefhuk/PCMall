@@ -69,13 +69,19 @@ public class ProductUserController {
     }
 
     @GetMapping("/{id}")
-    public String getProductDetailPage(@PathVariable Long id, Model model) {
+    public String getProductDetailPage(@PathVariable Long id,
+        @AuthenticationPrincipal UserDetail user, Model model) {
+
         List<CategoryDTO> categories = categoryService.getAllCategories();
         ProductResponseDto product = ProductMapper.INSTANCE.productToProductResponseDto(
             productService.findProduct(id));
 
+        String role = user.getAuthorities().iterator().next().getAuthority();
+        
         model.addAttribute("categories", categories);
         model.addAttribute("product", product);
+        model.addAttribute("user", user);
+        model.addAttribute("role", role);
 
         return "product/product-detail";
     }
