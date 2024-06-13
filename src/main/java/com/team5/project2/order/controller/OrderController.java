@@ -40,11 +40,12 @@ public class OrderController {
 
         List<OrderDetailDto> orderDetails = new ArrayList<>();
         for (int i = 0; i < productIds.size(); i++) {
-//            Product product = productService.getProductById();
+            Product product = productService.findProduct(productIds.get(i));
             OrderDetailDto orderDetailDto = new OrderDetailDto();
             orderDetailDto.setProductId(productIds.get(i));
+            orderDetailDto.setProductName(product.getName());
             orderDetailDto.setCount(counts.get(i));
-//            orderDetailDto.setPrice(prices.get(i));
+            orderDetailDto.setPrice(product.getPrice());
             orderDetails.add(orderDetailDto);
         }
         model.addAttribute("orderDetails", orderDetails);

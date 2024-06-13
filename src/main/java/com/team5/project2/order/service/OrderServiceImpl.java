@@ -58,6 +58,7 @@ public class OrderServiceImpl implements OrderService {
             .map(orderDetail -> {
                 OrderDetailDto dto = OrderDetailMapper.INSTANCE.OrderDetailToOrderDetailDto(orderDetail);
                 Product product = orderDetail.getProduct();
+                dto.setProductId(product.getId());
                 dto.setProductName(product.getName());
                 return dto;
             })
