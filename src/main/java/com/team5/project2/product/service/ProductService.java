@@ -124,6 +124,14 @@ public class ProductService {
     }
 
     public Optional<Product> removeProduct(Long id) {
+        Product product = productRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("해당 상품을 찾을 수 없습니다."));
+
+        List<ProductImage> images = product.getImages();
+        for (ProductImage image : images) {
+            removeImageFromStorage(image);
+        }
+
         productRepository.deleteById(id);
 
         return productRepository.findById(id);
