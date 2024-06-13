@@ -6,7 +6,7 @@ import com.team5.project2.product.dto.response.ProductResponseDto;
 import com.team5.project2.product.entity.Product;
 import com.team5.project2.product.mapper.ProductMapper;
 import com.team5.project2.product.service.ProductService;
-import com.team5.project2.user.auth.UserDetail;
+import com.team5.project2.user.domain.UserDetail;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
