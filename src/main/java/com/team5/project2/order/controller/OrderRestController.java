@@ -55,13 +55,12 @@ public class OrderRestController {
         Order order = new Order();
         order.setUser(user);
         order.setStatus(OrderStatus.CONFIRMED);
-        List<OrderDetail> orderDetails = new ArrayList<>();
+
         for (OrderDetailDto orderDetailDto : orderDetailDtos) {
             OrderDetail orderDetail = OrderDetailMapper.INSTANCE.OrderDetailDtoToOrderDetail(orderDetailDto);
-            orderDetail.setOrder(order);
-            orderDetails.add(orderDetail);
+            order.addOrderDetail(orderDetail);
         }
-        order.setOrderDetails(orderDetails);
+
         OrderDto orderDto = OrderMapper.INSTANCE.OrderToOrderDto(order);
         orderDto.setOrderDetails(orderDetailDtos);
         orderDto.setTotalPrice(orderDto.getTotalPrice());
