@@ -24,17 +24,19 @@
                 name="imageInput"
                 id="image-input"
                 accept="image/png, image/jpg, image/jpeg"
-                onchange="previewImages()"
+                onchange="previewImage()"
                 hidden
                 multiple
             />
         </button>
         <div style="position: relative;" th:each="image: ${product.images}">
             <img class="preview-image" th:src="${image.url}" style="display: flex; width: 300px;
-             height: 300px; border: 1px solid black;" th:alt="|상품이미지${imageStat.index + 1}|">
+             height: 300px; border: 1px solid black;" th:alt="|상품이미지${imageStat.index + 1}|"
+             th:attr="imageName=${image.name}">
             <button class="img-delete" style="position: absolute; right: 1px; top: 1px; width: 50px;
                 height: 50px; color: red; font-weight: bold; background-color: white">X
             </button>
+
         </div>
     </div>
 
@@ -102,7 +104,7 @@
             />
         </div>
         <div
-            class="flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
+            class="descInput flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
             th:each="entry: ${product.description}"
         >
             <label class="w-[35%]" th:text="${entry.key}"></label>
@@ -210,7 +212,7 @@
             <button
                 class="bg-[skyblue] w-[100%] py-[10px] mr-[2%] hover:bg-[#33adff] hover:text-white"
                 type="button"
-                onclick="updateReq()">
+                th:onclick="updateReq([[${product.id}]])">
                 수정 완료
             </button>
         </div>

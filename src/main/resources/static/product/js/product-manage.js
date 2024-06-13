@@ -1,4 +1,16 @@
 const selected = document.getElementsByClassName("selected");
+const previewImages = document.getElementsByClassName("preview-image");
+const imgDeleteBtns = document.getElementsByClassName("img-delete");
+const imageCount = document.getElementById("image-count");
+const descInputs = document.getElementsByClassName("descInput");
+const images = []; // 미리보기 이미지 리스트
+
+// 상품 설명 폼 데이터
+const part = document.getElementById("part");
+const brand = document.getElementById("brand");
+const name = document.getElementById("name");
+const stock = document.getElementById("stock");
+const price = document.getElementById("price");
 
 // option 태그 selected 속성을 수정 전 데이터에 맞게 조정
 for (let i = 0; i < selected.length; i++) {
@@ -10,6 +22,31 @@ for (let i = 0; i < selected.length; i++) {
   }
 }
 
+// 미리보기 이미지를 images 리스트에 초기화
+for (let i = 0; i < previewImages.length; i++) {
+  const name = previewImages[i].getAttribute("imageName");
+
+  const file = new File([], name, {type: "image/name"})
+
+  images.push(file);
+}
+
+for (let i = 0; i < imgDeleteBtns.length; i++) {
+  imgDeleteBtns[i].addEventListener('click', function () {
+    // 등록된 이미지 src 속성 값
+    const imgSrc = this.parentNode.getElementsByTagName('img')[0].src;
+
+    // 이미지 목록 리스트에서 제거
+    images.splice(images.indexOf(imgSrc), 1);
+
+    // 이미지 포함 부모 요소 제거
+    this.parentNode.remove();
+
+    // 이미지 카운트 변경
+    imageCount.innerText = `${images.length} / 4`;
+  });
+}
+
 // 상품 등록 취소 버튼
 function cancel(productId) {
   const isCanceled = confirm("상품 수정을 취소하시게습니까?");
@@ -18,42 +55,34 @@ function cancel(productId) {
     return;
   }
 
-  location.href = `/product/${productId}`;
+  location.href = `/user/product/${productId}`;
 }
 
+// 상품 삭제 요청 버튼
 function deleteReq(productId) {
-  const isDeleteRequested =  confirm("상품을 삭제 하시겠습니까?");
+  const isDeleteRequested = confirm("상품을 삭제 하시겠습니까?");
 
   if (!isDeleteRequested) {
     return;
   }
 
-  fetch(`/product?productId=${productId}`, {
+  document.getElementById("modal").classList.remove("hidden");
+
+  fetch(`/admin/product?productId=${productId}`, {
     method: "DELETE"
   })
   .then((res) => {
-    if (res.status === 204) {
-      alert("삭제 되었습니다.");
-      location.href = "/product";
-    }
+    return res.json();
+  })
+  .then((data) => {
+    alert("삭제 되었습니다.");
+    location.href = "/admin/product";
   })
   .catch((err) => {
     alert("서버가 원할하지 않습니다. 잠시후에 이용해주세요.");
+    document.getElementById("modal").classList.add("hidden");
   });
 }
-
-
-/*
-
-const imageCount = document.getElementById('image-count');
-const images = []; // 미리보기 이미지 리스트
-
-// 상품 설명 폼 데이터
-const part = document.getElementById("part");
-const brand = document.getElementById("brand");
-const name = document.getElementById("name");
-const stock = document.getElementById("stock");
-const price = document.getElementById("price");
 
 function handleImageUpload() {
   if (images.length === 4) {
@@ -65,7 +94,7 @@ function handleImageUpload() {
 }
 
 // 첨부된 이미지 미리보기
-function previewImages() {
+function previewImage() {
   const preview = document.getElementById('preview');
   const files = document.getElementById('image-input').files;
 
@@ -136,15 +165,15 @@ function previewImages() {
   }
 }
 
-// 상품 등록
-function upload() {
-  const isAccepted= confirm("등록 하시겠습니까?");
+function updateReq(productId) {
+  const isAccepted = confirm("수정 하시겠습니까?");
 
   if (!isAccepted) {
-    alert("등록이 취소되었습니다.");
+    alert("수정이 취소되었습니다.");
     return;
   }
-  const formData = new FormData();
+
+  const formData= new FormData();
 
   images.forEach((e) => {
     formData.append('images', e);
@@ -158,41 +187,38 @@ function upload() {
 
   const description = {};
 
-  for (let i = 5; i < descInputs.length; i++) {
-    if (descInputs[i].classList.contains(convertToEngName(part.value))) {
-      const keyNode = descInputs[i].childNodes[1];
-      const valueNode = descInputs[i].childNodes[3];
+  for (let i = 0; i < descInputs.length; i++) {
+    // if (descInputs[i].classList.contains(convertToEngName(part.value))) {
+    const keyNode = descInputs[i].childNodes[1];
+    const valueNode = descInputs[i].childNodes[3];
 
-      if (valueNode.value === null || valueNode.value === undefined || valueNode.value
-          === "") {
-        alert("모든 항목을 입력해주세요.");
-        return;
-      }
-
-      description[keyNode.innerText] = valueNode.value;
+    if (valueNode.value === null || valueNode.value === undefined
+        || valueNode.value
+        === "") {
+      alert("모든 항목을 입력해주세요.");
+      return;
     }
+
+    description[keyNode.innerText] = valueNode.value;
+    // }
   }
 
   formData.append("description", JSON.stringify(description));
 
   document.getElementById("modal").classList.remove("hidden");
-
-  fetch('/product', {
-    method: 'POST',
+  fetch(`/admin/product?productId=${productId}`, {
+    method: "PUT",
     body: formData,
   })
   .then((res) => {
-    if (res.status === 200 || res.status === 201) {
-      alert("등록 완료");
       return res.json();
-    }
   })
   .then((data) => {
-    location.href=`/product/${data.id}`
+    alert("수정되었습니다.");
+    location.href = `/user/product/${data.id}`
   })
   .catch(() => {
-    alert("서버가 원할하지 않습니다. 잠시후에 이용해주세요.");
+    alert("서버 상태가 원할하지 않습니다. 잠시 후 이용해주세요.");
     document.getElementById("modal").classList.add("hidden");
   });
 }
-*/

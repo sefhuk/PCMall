@@ -9,10 +9,31 @@
 </head>
 <body>
 <header class="mt-[60px]">
+    <div class="flex justify-between items-center w-[100%] mb-[30px] px-[150px]">
+        <a href="/user/product" class="block text-4xl font-bold">PC Mall</a>
+        <div class="flex flex-col items-end text-xl">
+            <p class="flex justify-end items-center">
+                <img th:src="@{/product/img/user.png}" width="25px" height="25px" alt="유저이미지">
+                <span class="block ml-[10px] font-bold"
+                      th:text="|${role == 'ROLE_ADMIN' ? '(관리자)' : ''} ${user.getUsername()} 님|"/>
+            </p>
+            <div class="flex mt-[10px]">
+                <a href="/myPage" class="hover:underline hover:italic">마이페이지</a>
+                <button type="button"
+                        class="flex justify-center items-center ml-[20px] hover:underline hover:italic"
+                        onclick="logout()">
+                    <span>로그아웃</span>
+                </button>
+                <a th:if="${role == 'ROLE_ADMIN'}" class="ml-[20px] hover:underline hover:italicg"
+                   href="/admin/product">상품 관리</a>
+            </div>
+        </div>
+    </div>
+
     <div class="flex justify-evenly items-center h-[120px] bg-[skyblue] text-xl px-[150px]">
         <a th:each="category: ${categories}"
            class="flex justify-center items-center w-[10%] bg-[skyblue] hover:text-white h-[100%] hover:bg-[#33adff]"
-           th:href="@{/product(category=${category.name})}"><span
+           th:href="@{/user/product(category=${category.name})}"><span
             th:text="${category.name}">CPU</span>
         </a>
     </div>
@@ -47,13 +68,13 @@
                     <div th:if="${!product.images.isEmpty()}"
                          class="flex justify-evenly items-center w-[60%] mx-auto py-[10px]">
                         <button id="prevButton" class="w-[40px] h-[40px]"><img
-                            th:src="@{img/prev.png}"
+                            th:src="@{/product/img/prev.png}"
                             alt="앞으로"></button>
                         <div id="imagePage" class="text-xl" th:text="|1/${product.images.size()}|">
                             1/4
                         </div>
                         <button id="nextButton" class="w-[40px] h-[40px]"><img
-                            th:src="@{img/next.png}"
+                            th:src="@{/product/img/next.png}"
                             alt="뒤로"></button>
                     </div>
                 </div>
@@ -98,5 +119,6 @@
     </div>
 </main>
 <script th:src=" @{/product/js/product-detail.js}"></script>
+<script th:src=" @{/product/js/global.js}"></script>
 </body>
 </html>

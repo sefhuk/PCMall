@@ -131,7 +131,7 @@ function upload() {
 
   document.getElementById("modal").classList.remove("hidden");
 
-  fetch('/product', {
+  fetch('/admin/product', {
     method: 'POST',
     body: formData,
   })
@@ -145,7 +145,7 @@ function upload() {
     }
   })
   .then((data) => {
-    location.href=`/product/${data.id}`
+    location.href=`/user/product/${data.id}`
   })
   .catch(() => {
     alert("문제 발생");
@@ -192,7 +192,7 @@ function cancel() {
     return;
   }
 
-  location.href = "/product";
+  location.href = "/user/product";
 }
 
 // 브랜드 option 목록 초기화

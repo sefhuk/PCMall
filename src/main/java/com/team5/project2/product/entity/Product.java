@@ -64,4 +64,21 @@ public class Product extends BaseTime {
         images.add(productImage);
         productImage.updateProduct(this);
     }
+
+    public void updateImage(ProductImage productImage, int index) {
+        try {
+            images.set(index, productImage);
+        } catch (IndexOutOfBoundsException e) {
+            images.add(productImage);
+        }
+    }
+
+    public void updateProduct(String name, String brand, Map<String, String> description, Long stock,
+        Long price) {
+        this.name = name;
+        this.brand = brand;
+        this.description = description;
+        this.stock = stock;
+        this.price = price;
+    }
 }
