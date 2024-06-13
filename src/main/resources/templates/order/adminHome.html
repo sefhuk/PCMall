@@ -62,8 +62,6 @@
 
 
       const deleteOrder = async (orderId) => {
-
-        console.log(orderId);
         const deleteResult = await fetch(`/api/order/${orderId}`, {
           method: "delete",
           headers: {"Content-Type": "application/json"}
