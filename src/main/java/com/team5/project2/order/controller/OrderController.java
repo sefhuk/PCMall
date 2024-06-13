@@ -3,6 +3,10 @@ package com.team5.project2.order.controller;
 import com.team5.project2.order.dto.OrderDetailDto;
 import com.team5.project2.order.dto.OrderDto;
 import com.team5.project2.order.service.OrderService;
+import com.team5.project2.product.entity.Product;
+import com.team5.project2.product.service.ProductService;
+import com.team5.project2.user.service.UserService;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class OrderController {
 
     private final OrderService orderService;
+    private final UserService userService;
+    private final ProductService productService;
 
     @GetMapping("/admin")
     public String adminHome(Model model) {
@@ -27,14 +33,18 @@ public class OrderController {
         return "order/adminHome";
     }
 
-    @GetMapping("/{userId}/viewOrder")
-    public String viewOrder(@PathVariable Long userId, @RequestParam List<Long> productIds, @RequestParam List<Long> counts, @RequestParam List<Long> prices, Model model) {
+    @GetMapping("/sheet")
+    public String viewOrder(Principal principal, @RequestParam List<Long> productIds, @RequestParam List<Long> counts, Model model) {
+        String userEmail = principal.getName();
+        Long userId = userService.findUserByEmail(userEmail).getId();
+
         List<OrderDetailDto> orderDetails = new ArrayList<>();
         for (int i = 0; i < productIds.size(); i++) {
+//            Product product = productService.getProductById();
             OrderDetailDto orderDetailDto = new OrderDetailDto();
             orderDetailDto.setProductId(productIds.get(i));
             orderDetailDto.setCount(counts.get(i));
-            orderDetailDto.setPrice(prices.get(i));
+//            orderDetailDto.setPrice(prices.get(i));
             orderDetails.add(orderDetailDto);
         }
         model.addAttribute("orderDetails", orderDetails);
@@ -42,8 +52,11 @@ public class OrderController {
         return "/order/orderSheet";
     }
 
-    @GetMapping("/{userId}")
-    public String getUserOrders(@PathVariable Long userId, Model model) {
+    @GetMapping
+    public String getUserOrders(Principal principal, Model model) {
+        String userEmail = principal.getName();
+        Long userId = userService.findUserByEmail(userEmail).getId();
+
         List<OrderDto> orders = orderService.getOrders(userId);
         model.addAttribute("orders", orders);
         return "/order/orderList";
