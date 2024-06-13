@@ -18,18 +18,18 @@
     </style>
 </head>
 <body>
-    <h1>Order Sheet</h1>
+    <h1>주문하기</h1>
     <table>
         <thead>
         <tr>
-            <th>Product ID</th>
-            <th>Count</th>
-            <th>Price</th>
+            <th>상품명</th>
+            <th>수량</th>
+            <th>가격</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="orderDetail : ${orderDetails}">
-            <td th:text="${orderDetail.productId}"></td>
+            <td th:text="${orderDetail.productName}"></td>
             <td th:text="${orderDetail.count}"></td>
             <td th:text="${orderDetail.price}"></td>
         </tr>
