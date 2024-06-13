@@ -18,7 +18,7 @@ function cancel(productId) {
     return;
   }
 
-  location.href = `/product/${productId}`;
+  location.href = `/user/product/${productId}`;
 }
 
 function deleteReq(productId) {
@@ -34,7 +34,7 @@ function deleteReq(productId) {
   .then((res) => {
     if (res.status === 204) {
       alert("삭제 되었습니다.");
-      location.href = "/product";
+      location.href = "/user/product";
     }
   })
   .catch((err) => {
