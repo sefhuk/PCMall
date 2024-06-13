@@ -5,6 +5,7 @@ import com.team5.project2.order.dto.OrderDto;
 import com.team5.project2.order.service.OrderService;
 import com.team5.project2.product.entity.Product;
 import com.team5.project2.product.service.ProductService;
+import com.team5.project2.user.domain.User;
 import com.team5.project2.user.service.UserService;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -36,9 +37,9 @@ public class OrderController {
     @GetMapping("/sheet")
     public String viewOrder(Principal principal, @RequestParam List<Long> productIds, @RequestParam List<Long> counts, Model model) {
         String userEmail = principal.getName();
-        Long userId = userService.findUserByEmail(userEmail).getId();
+        User user = userService.findUserByEmail(userEmail);
 
-        List<OrderDetailDto> orderDetails = new ArrayList<>();
+        List<OrderDetailDto> orderDetailDtos = new ArrayList<>();
         for (int i = 0; i < productIds.size(); i++) {
             Product product = productService.findProduct(productIds.get(i));
             OrderDetailDto orderDetailDto = new OrderDetailDto();
@@ -46,12 +47,18 @@ public class OrderController {
             orderDetailDto.setProductName(product.getName());
             orderDetailDto.setCount(counts.get(i));
             orderDetailDto.setPrice(product.getPrice());
-            orderDetails.add(orderDetailDto);
+            orderDetailDtos.add(orderDetailDto);
         }
-        model.addAttribute("orderDetails", orderDetails);
-        model.addAttribute("userId", userId);
+
+        model.addAttribute("name", user.getName());
+        model.addAttribute("address", user.getAddress());
+        model.addAttribute("phoneNumber", user.getPhone_number());
+        model.addAttribute("orderDetails", orderDetailDtos);
+        model.addAttribute("userId", user.getId());
+
         return "/order/orderSheet";
     }
+
 
     @GetMapping
     public String getUserOrders(Principal principal, Model model) {

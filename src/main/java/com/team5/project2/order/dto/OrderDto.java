@@ -13,6 +13,17 @@ public class OrderDto {
     private Long totalPrice;
     private List<OrderDetailDto> orderDetails;
 
+    private String name;
+    private String address;
+    private String phoneNumber;
+
+    public void addOrderDetailDtos(List<OrderDetailDto> orderDetails) {
+        this.orderDetails = orderDetails;
+        for (OrderDetailDto orderDetail : orderDetails) {
+            orderDetail.setOrderId(this.id);
+        }
+    }
+
     public Long getTotalPrice() {
         Long result = 0L;
         for (OrderDetailDto orderDetail : orderDetails) {

@@ -2,12 +2,13 @@ package com.team5.project2.order.service;
 
 import com.team5.project2.order.dto.OrderDetailDto;
 import com.team5.project2.order.dto.OrderDto;
+import com.team5.project2.order.dto.OrderRequest;
 import com.team5.project2.order.entity.Order;
 import com.team5.project2.order.entity.OrderStatus;
 import java.util.List;
 
 public interface OrderService {
-    OrderDto createOrder(OrderDto orderDto);
+    OrderDto createOrder(OrderRequest orderRequest, Long userId);
     List<OrderDto> getAllOrders();
     OrderDto getOrderById(Long orderId);
     List<OrderDto> getOrders(Long userId);

@@ -2,6 +2,7 @@ package com.team5.project2.order.controller;
 
 import com.team5.project2.order.dto.OrderDetailDto;
 import com.team5.project2.order.dto.OrderDto;
+import com.team5.project2.order.dto.OrderRequest;
 import com.team5.project2.order.entity.Order;
 import com.team5.project2.order.entity.OrderDetail;
 import com.team5.project2.order.entity.OrderStatus;
@@ -47,27 +48,17 @@ public class OrderRestController {
         return new ResponseEntity(orders, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<OrderDto> createOrder(Principal principal, @RequestBody List<OrderDetailDto> orderDetailDtos) {
-        String userEmail = principal.getName();
-        User user = userService.findUserByEmail(userEmail);
-
-        Order order = new Order();
-        order.setUser(user);
-        order.setStatus(OrderStatus.CONFIRMED);
-
-        for (OrderDetailDto orderDetailDto : orderDetailDtos) {
-            OrderDetail orderDetail = OrderDetailMapper.INSTANCE.OrderDetailDtoToOrderDetail(orderDetailDto);
-            order.addOrderDetail(orderDetail);
+    @PostMapping("/{userId}")
+    public ResponseEntity<OrderDto> createOrder(@PathVariable Long userId, @RequestBody OrderRequest orderRequest) {
+        try {
+            OrderDto createdOrderDto = orderService.createOrder(orderRequest, userId);
+            return ResponseEntity.ok(createdOrderDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-
-        OrderDto orderDto = OrderMapper.INSTANCE.OrderToOrderDto(order);
-        orderDto.setOrderDetails(orderDetailDtos);
-        orderDto.setTotalPrice(orderDto.getTotalPrice());
-
-        return ResponseEntity.ok(orderService.createOrder(orderDto));
     }
-
 
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderDto> getOrderById(@PathVariable Long orderId) {
