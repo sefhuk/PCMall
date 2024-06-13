@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/product")
+@RequestMapping("/user/product")
 @RequiredArgsConstructor
 public class ProductViewController {
 

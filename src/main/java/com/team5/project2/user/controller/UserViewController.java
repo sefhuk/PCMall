@@ -10,15 +10,19 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -48,7 +52,7 @@ public class UserViewController {
         String rawPassword = user.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
-        user.setRole("USER");
+        user.setRole("ROLE_USER");
         User newUser = userService.createUser(user);
         return "redirect:/";
     }
@@ -58,12 +62,31 @@ public class UserViewController {
         model.addAttribute("userLoginDto", new UserLoginDto());
         return "/user/login-form";
     }
+
     @GetMapping("/myPage")
-    public String showMyPage(Principal principal, Model model) {
+    public String showMyPage() {
+        return "/user/myPage2";
+    }
+
+    @GetMapping("/editPage")
+    public String showEditPage(Principal principal, Model model) {
         String userEmail = principal.getName();
         User user = userService.findUserByEmail(userEmail);
         model.addAttribute("user", user);
-        return "user/myPage";
+        return "/user/editPage";
+    }
+
+    @GetMapping("/deletePage")
+    public String showDeleteAccountPage() {
+        return "/user/deletePage";
+    }
+
+    @GetMapping("/deleteUser")
+    public String deleteUser(Principal principal) {
+        String userEmail = principal.getName();
+        User user = userService.findUserByEmail(userEmail);
+        userService.deleteUser(user.getId());
+        return "redirect:/";
     }
 
 

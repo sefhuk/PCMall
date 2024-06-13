@@ -4,14 +4,77 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ShoppingMall 회원가입</title>
-  <link rel="stylesheet" th:href="@{/user/css/sign-up.css}">
+<!--  <link rel="stylesheet" th:href="@{/user/css/sign-up.css}">-->
   <script th:src="@{/user/js/sign-up.js}"></script>
   <style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        margin-top: 50px;
+    }
+    .container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 0;
+    }
+    .container h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .container form {
+        display: flex;
+        flex-direction: column;
+    }
+    .container form input {
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        flex: 1;
+    }
+    .container form button {
+        padding: 10px;
+        background-color: #333;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .container form button:hover {
+        background-color: #555;
+    }
+    .verify-email {
+        display: none;
+        align-items: left;
+    }
+    .verify-email input {
+        margin-top: 5px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .verify-email button {
+        margin-top: 5px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
     .field-error {
-      border-color: #dc3545;
-      color: #dc3545;
-      font-size: 12px;
-      margin-bottom: 10px;
+        border-color: #dc3545;
+        color: #dc3545;
+        font-size: 12px;
+        margin-bottom: 10px;
     }
   </style>
 </head>

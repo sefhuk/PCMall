@@ -4,8 +4,74 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PC Mall</title>
-  <link rel="stylesheet" th:href="@{/user/css/login-form.css}">
-
+<!--  <link rel="stylesheet" th:href="@{/user/css/login-form.css}">-->
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100vh;
+    }
+    .container {
+        text-align: center;
+        padding: 2em;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        margin-top: 5%;
+    }
+    .container h1 {
+        font-size: 2.5em;
+    }
+    .input-group {
+        margin-top: 1em;
+        margin-bottom: 1em;
+        display: flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    .input-group input {
+        border: none;
+        padding: 0.8em;
+        flex: 1;
+    }
+    .input-group span {
+        background-color: #eee;
+        padding: 0.8em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .btn-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 2em;
+    }
+    .login-button {
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        padding: 0.8em 7.25em;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 1em 0;
+    }
+    .signup-button {
+        background-color: #f0f0f0;
+        color: #333;
+        border: none;
+        padding: 0.8em 6.75em;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 1em 0;
+    }
+    .row {
+        color: #dc3545;
+    }
+  </style>
 </head>
 <body>
 <div class="container">
