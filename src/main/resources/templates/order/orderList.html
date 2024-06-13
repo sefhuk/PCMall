@@ -11,25 +11,25 @@
 </head>
 <body>
   <div class="container mt-5">
-    <h1>User Orders</h1>
+    <h1>주문 목록</h1>
     <table class="table">
       <thead>
       <tr>
-        <th>Order ID</th>
-        <th>Status</th>
-        <th>Total Price</th>
-        <th>Action</th>
+        <th>주문번호</th>
+        <th>상태</th>
+        <th>가격</th>
+<!--        <th>Action</th>-->
       </tr>
       </thead>
       <tbody>
       <tr th:each="order : ${orders}">
         <td th:text="${order.id}"></td>
-        <td th:text="${order.status}"></td>
+        <td th:text="${order.status.getStatus()}"></td>
         <td th:text="${order.totalPrice}"></td>
         <td>
           <!-- Show Details 버튼에 클릭 이벤트 추가 -->
           <button class="btn btn-primary me-2" th:onclick="'viewDetails(' + ${order.id} + ')'">상세보기</button>
-          <button class="btn btn-danger me-2" th:onclick="'cancelOrder(' + ${order.id} + ')'" th:unless="${order.status.getStatus().equals('취소')}">취소</button>
+          <button class="btn btn-danger me-2" th:onclick="'cancelOrder(' + ${order.id} + ')'" th:unless="${order.status.getStatus().equals('취소') || order.status.getStatus().equals('배송 완료')}">취소</button>
           <button class="btn btn-warning" th:unless="${order.status.getStatus().equals('취소') || order.status.getStatus().equals('배송 완료')}">수정</button>
         </td>
       </tr>
