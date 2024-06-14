@@ -22,6 +22,8 @@ public class ProductResponseDto {
     private String name;
     private Long stock;
     private Long price;
+
+    @Builder.Default
     private List<ProductImageResponseDto> images = new ArrayList<>();
     private Map<String, String> description;
 }
