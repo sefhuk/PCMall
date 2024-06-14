@@ -48,8 +48,8 @@ public class OrderServiceImpl implements OrderService {
             }
 
             // 재고 감소
-//            product.setStock(product.getStock() - orderDetailDto.getCount());
-//            productRepository.save(product);
+            product.updateStock(-orderDetailDto.getCount());
+            productRepository.save(product);
 
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrder(order);
