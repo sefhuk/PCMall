@@ -27,6 +27,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final OrderMapper orderMapper;
+    private final OrderDetailMapper orderDetailMapper;
 
     @Transactional
     public OrderDto createOrder(OrderRequest orderRequest, Long userId) {
@@ -66,13 +68,13 @@ public class OrderServiceImpl implements OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
-        return OrderMapper.INSTANCE.OrderToOrderDto(savedOrder);
+        return orderMapper.OrderToOrderDto(savedOrder);
     }
 
 
     public List<OrderDto> getAllOrders() {
         return orderRepository.findAll().stream()
-            .map(OrderMapper.INSTANCE::OrderToOrderDto)
+            .map(orderMapper::OrderToOrderDto)
             .collect(Collectors.toList());
     }
 
@@ -81,12 +83,12 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new RuntimeException("Order with ID " + orderId + " not found"));
 
-        return OrderMapper.INSTANCE.OrderToOrderDto(order);
+        return orderMapper.OrderToOrderDto(order);
     }
 
     public List<OrderDto> getOrders(Long userId) {
         return orderRepository.findByUserId(userId).stream()
-            .map(OrderMapper.INSTANCE::OrderToOrderDto)
+            .map(orderMapper::OrderToOrderDto)
             .collect(Collectors.toList());
     }
 
@@ -98,7 +100,7 @@ public class OrderServiceImpl implements OrderService {
 
         return orderDetails.stream()
             .map(orderDetail -> {
-                OrderDetailDto dto = OrderDetailMapper.INSTANCE.OrderDetailToOrderDetailDto(orderDetail);
+                OrderDetailDto dto = orderDetailMapper.OrderDetailToOrderDetailDto(orderDetail);
                 Product product = orderDetail.getProduct();
                 dto.setProductId(product.getId());
                 dto.setProductName(product.getName());
@@ -110,13 +112,13 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto findOrderById(Long id) {
         Order order = orderRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("orderId " + id + ": not found"));
-        return OrderMapper.INSTANCE.OrderToOrderDto(order);
+        return orderMapper.OrderToOrderDto(order);
     }
 
     public OrderDto updateOrder(OrderDto orderDto) {
-        Order order = OrderMapper.INSTANCE.OrderDtoToOrder(orderDto);
+        Order order = orderMapper.OrderDtoToOrder(orderDto);
         order = orderRepository.save(order);
-        return OrderMapper.INSTANCE.OrderToOrderDto(order);
+        return orderMapper.OrderToOrderDto(order);
     }
 
     public void deleteOrder(Long id) {
