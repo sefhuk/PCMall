@@ -2,7 +2,7 @@ function loadManufacturers() {
   const select = document.getElementById('categorySelect');
   const parentId = select.value;
 
-  fetch(`/categories/${parentId}/manufacturers`)
+  fetch(`/admin/categories/${parentId}/manufacturers`)
   .then(response => response.json())
   .then(manufacturers => {
     const table = document.getElementById('categoryTable');
@@ -34,7 +34,7 @@ function editManufacturer(button) {
   const name = prompt('새 이름을 입력하세요:', row.cells[0].textContent);
 
   if (name) {
-    fetch('/categories/edit', {
+    fetch('/admin/categories/edit', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -53,7 +53,7 @@ function deleteManufacturer(button) {
   const id = row.dataset.id;
 
   if (confirm('정말 삭제하시겠습니까?')) {
-    fetch('/categories/delete', {
+    fetch('/admin/categories/delete', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -73,7 +73,7 @@ function addManufacturer() {
   const select = document.getElementById('categorySelect');
   const parentId = select.value;
   if (name) {
-    fetch('/categories/add', {
+    fetch('/admin/categories/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
