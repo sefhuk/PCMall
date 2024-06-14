@@ -30,8 +30,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 
 
 @Controller
@@ -67,7 +66,7 @@ public class UserViewController {
         return "redirect:/";
     }
 
-    @GetMapping("/")
+    @GetMapping("/login-form")
     public String showLoginForm(Model model) {
         model.addAttribute("userLoginDto", new UserLoginDto());
         return "/user/login-form";
