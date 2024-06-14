@@ -42,6 +42,15 @@ public class OrderServiceImpl implements OrderService {
             Product product = productRepository.findById(orderDetailDto.getProductId())
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
+            // 재고 확인
+            if (product.getStock() < orderDetailDto.getCount()) {
+                throw new IllegalArgumentException("Not enough stock for product: " + product.getName());
+            }
+
+            // 재고 감소
+//            product.setStock(product.getStock() - orderDetailDto.getCount());
+//            productRepository.save(product);
+
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrder(order);
             orderDetail.setProduct(product);
@@ -57,6 +66,7 @@ public class OrderServiceImpl implements OrderService {
 
         return OrderMapper.INSTANCE.OrderToOrderDto(savedOrder);
     }
+
 
     public List<OrderDto> getAllOrders() {
         return orderRepository.findAll().stream()
