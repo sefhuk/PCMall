@@ -49,3 +49,14 @@ buyCount.addEventListener("input", function (event) {
     buyCount.value = min;
   }
 });
+
+// 상품 주문
+function order(productId) {
+  const confirmed = confirm("주문 페이지로 이동합니다");
+
+  if (!confirmed) {
+    return;
+  }
+
+  location.href = `/order/sheet?productIds=${productId}&counts=${buyCount.value}`
+}

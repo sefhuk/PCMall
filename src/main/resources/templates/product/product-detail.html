@@ -104,8 +104,8 @@
                             class="flex justify-between items-center h-[95%] text-2xl font-semibold mt-[100px]">
                             <button
                                 class="buyButton w-[40%] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white"
-                                th:onclick="order([[${user}]]);">
-                                바로 구매
+                                th:onclick="order([[${product.id}]]);">
+                                주문 요청
                             </button>
                             <button
                                 class="cartButton w-[40%] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white">
