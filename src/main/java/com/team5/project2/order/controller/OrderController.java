@@ -28,10 +28,17 @@ public class OrderController {
     private final ProductService productService;
 
     @GetMapping("/admin")
-    public String adminHome(Model model) {
-        List<OrderDto> orders = orderService.getAllOrders();
-        model.addAttribute("orders", orders);
-        return "order/adminHome";
+    public String adminHome(Principal principal, Model model) {
+        String userEmail = principal.getName();
+        User user = userService.findUserByEmail(userEmail);
+        String role = user.getRole();
+        if (role.equals("ADMIN")) {
+            List<OrderDto> orders = orderService.getAllOrders();
+            model.addAttribute("orders", orders);
+            return "order/adminHome";
+        } else {
+            return "/order/orderList";
+        }
     }
 
     @GetMapping("/sheet")
