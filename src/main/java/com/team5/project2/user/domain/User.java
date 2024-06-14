@@ -45,25 +45,33 @@ public class User extends BaseTime {
 //        this.role = role;
 //    }
 
-    public void update(User user) {
-        if (user.getName() != null) {
-            this.name = user.getName();
+    public void updateEmail(String email) {
+        if(email != null) {
+            this.email = email;
         }
+    }
 
-        if (user.getEmail() != null) {
-            this.email = user.getEmail();
+    public void updateName(String name) {
+        if(name != null) {
+            this.name = name;
         }
+    }
 
-        if (user.getPassword() != null) {
-            this.password = user.getPassword();
+    public void updatePhoneNumber(String phone_number) {
+        if(phone_number != null) {
+            this.phone_number = phone_number;
         }
+    }
 
-        if (user.getPhone_number() != null) {
-            this.phone_number = user.getPhone_number();
+    public void updatePassword(String password) {
+        if(password != null) {
+            this.password = password;
         }
+    }
 
-        if (user.getAddress() != null) {
-            this.address = user.getAddress();
+    public void updateAddress(String address) {
+        if(address != null) {
+            this.address = address;
         }
     }
 }

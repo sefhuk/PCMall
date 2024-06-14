@@ -9,9 +9,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.security.Principal;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -22,6 +28,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
@@ -31,8 +40,9 @@ public class UserViewController {
     private final UserService userService;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final UserDetailsService userDetailsService;
 
-    @GetMapping("/home")
+    @GetMapping("/user/home")
     public String showHome() {
         return "/user/home";
     }
@@ -63,12 +73,17 @@ public class UserViewController {
         return "/user/login-form";
     }
 
-    @GetMapping("/myPage")
+    @GetMapping("/admin/adminPage")
+    public void admin() {
+        System.out.println("hello");
+    }
+
+    @GetMapping("/user/myPage")
     public String showMyPage() {
         return "/user/myPage2";
     }
 
-    @GetMapping("/editPage")
+    @GetMapping("/user/editPage")
     public String showEditPage(Principal principal, Model model) {
         String userEmail = principal.getName();
         User user = userService.findUserByEmail(userEmail);
@@ -76,17 +91,69 @@ public class UserViewController {
         return "/user/editPage";
     }
 
-    @GetMapping("/deletePage")
+    @GetMapping("/user/deletePage")
     public String showDeleteAccountPage() {
         return "/user/deletePage";
     }
 
-    @GetMapping("/deleteUser")
+    @GetMapping("/user/deleteUser")
     public String deleteUser(Principal principal) {
         String userEmail = principal.getName();
         User user = userService.findUserByEmail(userEmail);
         userService.deleteUser(user.getId());
         return "redirect:/";
+    }
+
+    @PutMapping({"/user/editEmail"})
+    public ResponseEntity updateEmail(@RequestBody Map<String, String> request, Principal principal) {
+        String newEmail = request.get("email");
+        String userEmail = principal.getName();
+        User user = userService.findUserByEmail(userEmail);
+        User updateUser = userService.updateUserEmail(user, newEmail);
+        updateSecurityContext(newEmail);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping({"/user/editName"})
+    public ResponseEntity updateName(@RequestBody Map<String, String> request, Principal principal) {
+        String newName = request.get("name");
+        String userEmail = principal.getName();
+        User user = userService.findUserByEmail(userEmail);
+        User updateUser = userService.updateUserName(user, newName);
+        updateSecurityContext(userEmail);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping({"/user/editPhone"})
+    public ResponseEntity updatePhoneNumber(@RequestBody Map<String, String> request, Principal principal) {
+        String newPhone  = request.get("phone");
+        String userEmail = principal.getName();
+        User user = userService.findUserByEmail(userEmail);
+        User updateUser = userService.updateUserPhoneNumber(user, newPhone);
+        updateSecurityContext(userEmail);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping({"/user/editPassword"})
+    public ResponseEntity updatePassword(@RequestBody Map<String, String> request, Principal principal) {
+        String currentPassword = request.get("currentPassword");
+        String newPassword = request.get("newPassword");
+        String userEmail = principal.getName();
+        User user = userService.findUserByEmail(userEmail);
+
+        if (!userService.checkIfValidOldPassword(user, currentPassword)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        userService.updatePassword(user, newPassword);
+        updateSecurityContext(userEmail);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private void updateSecurityContext(String username) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
 

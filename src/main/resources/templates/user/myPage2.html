@@ -86,9 +86,9 @@
     </a>
   </div>
   <div class="header-right">
-    <a th:href="@{/myPage}">마이페이지</a>/
+    <a th:href="@{/user/myPage}">마이페이지</a>/
     <a th:href="@{/logout}">로그아웃</a>/
-    <a th:href="@{/cart}">카트</a>
+    <a th:href="@{/user/cart}">카트</a>
   </div>
 </header>
 <main>
@@ -102,14 +102,14 @@
         <p>지난 주문 내역을 확인, 취소할 수 있습니다.</p>
       </div>
     </a>
-    <a th:href="@{/editPage}" class="action">
+    <a th:href="@{/user/editPage}" class="action">
       <div class="icon">👤</div>
       <div class="content">
         <h2>회원정보 관리</h2>
         <p>회원 정보를 확인, 수정할 수 있습니다.</p>
       </div>
     </a>
-    <a th:href="@{/deletePage}" class="action">
+    <a th:href="@{/user/deletePage}" class="action">
       <div class="icon">🚫</div>
       <div class="content">
         <h2>회원 탈퇴</h2>

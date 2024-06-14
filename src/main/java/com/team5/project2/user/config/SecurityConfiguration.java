@@ -2,6 +2,7 @@ package com.team5.project2.user.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,7 +19,6 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -31,7 +31,7 @@ public class SecurityConfiguration {
                     .anyRequest().permitAll()
             )
             .formLogin(formLogin -> formLogin
-                .loginPage("/login-form")
+                .loginPage("/")
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/user/product", false)
                 .failureUrl("/login-form?error")
