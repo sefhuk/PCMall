@@ -82,9 +82,9 @@
     </a>
   </div>
   <div class="header-right">
-    <a th:href="@{/myPage}">마이페이지</a>/
+    <a th:href="@{/user/myPage}">마이페이지</a>/
     <a th:href="@{/logout}">로그아웃</a>/
-    <a th:href="@{/cart}">카트</a>
+    <a th:href="@{/user/cart}">카트</a>
   </div>
 </header>
 <main>
@@ -93,10 +93,10 @@
     회원정보를 삭제하면 복구할 수 없습니다. 정말로 삭제하시겠습니까?
   </div>
   <div class="actions">
-    <a th:href="@{/deleteUser}">
+    <a th:href="@{/user/deleteUser}">
       <button type="button">삭제</button>
     </a>
-    <a th:href="@{/myPage}">
+    <a th:href="@{/user/myPage}">
       <button type="button" class="cancel-button">취소</button>
     </a>
   </div>
