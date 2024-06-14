@@ -73,6 +73,14 @@ public class Product extends BaseTime {
         }
     }
 
+    public void updateStock(Long quantity) {
+        stock += quantity;
+
+        if (stock < 0) {
+            stock = 0L;
+        }
+    }
+
     public void updateProduct(String name, String brand, Map<String, String> description, Long stock,
         Long price) {
         this.name = name;
