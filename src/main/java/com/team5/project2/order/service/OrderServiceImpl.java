@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -27,6 +28,7 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public OrderDto createOrder(OrderRequest orderRequest, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
 
@@ -48,8 +50,8 @@ public class OrderServiceImpl implements OrderService {
             }
 
             // 재고 감소
-//            product.setStock(product.getStock() - orderDetailDto.getCount());
-//            productRepository.save(product);
+            product.updateStock(-orderDetailDto.getCount());
+            productRepository.save(product);
 
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrder(order);
