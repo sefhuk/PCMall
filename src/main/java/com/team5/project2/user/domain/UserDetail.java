@@ -1,4 +1,4 @@
-package com.team5.project2.user.auth;
+package com.team5.project2.user.domain;
 
 import com.team5.project2.user.domain.User;
 import org.springframework.security.core.GrantedAuthority;

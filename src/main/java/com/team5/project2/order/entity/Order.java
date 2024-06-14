@@ -37,14 +37,14 @@ public class Order extends BaseTime {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String userName;
+    private String name;
     private String address;
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<OrderDetail> orderDetails = new ArrayList<>();
 
     public void addOrderDetail(OrderDetail orderDetail) {

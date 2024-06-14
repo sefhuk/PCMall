@@ -3,6 +3,11 @@ package com.team5.project2.order.controller;
 import com.team5.project2.order.dto.OrderDetailDto;
 import com.team5.project2.order.dto.OrderDto;
 import com.team5.project2.order.service.OrderService;
+import com.team5.project2.product.entity.Product;
+import com.team5.project2.product.service.ProductService;
+import com.team5.project2.user.domain.User;
+import com.team5.project2.user.service.UserService;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,31 +24,54 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class OrderController {
 
     private final OrderService orderService;
+    private final UserService userService;
+    private final ProductService productService;
 
     @GetMapping("/admin")
-    public String adminHome(Model model) {
-        List<OrderDto> orders = orderService.getAllOrders();
-        model.addAttribute("orders", orders);
-        return "order/adminHome";
+    public String adminHome(Principal principal, Model model) {
+        String userEmail = principal.getName();
+        User user = userService.findUserByEmail(userEmail);
+        String role = user.getRole();
+        if (role.equals("ADMIN")) {
+            List<OrderDto> orders = orderService.getAllOrders();
+            model.addAttribute("orders", orders);
+            return "order/adminHome";
+        } else {
+            return "/order/orderList";
+        }
     }
 
-    @GetMapping("/{userId}/viewOrder")
-    public String viewOrder(@PathVariable Long userId, @RequestParam List<Long> productIds, @RequestParam List<Long> counts, @RequestParam List<Long> prices, Model model) {
-        List<OrderDetailDto> orderDetails = new ArrayList<>();
+    @GetMapping("/sheet")
+    public String viewOrder(Principal principal, @RequestParam List<Long> productIds, @RequestParam List<Long> counts, Model model) {
+        String userEmail = principal.getName();
+        User user = userService.findUserByEmail(userEmail);
+
+        List<OrderDetailDto> orderDetailDtos = new ArrayList<>();
         for (int i = 0; i < productIds.size(); i++) {
+            Product product = productService.findProduct(productIds.get(i));
             OrderDetailDto orderDetailDto = new OrderDetailDto();
             orderDetailDto.setProductId(productIds.get(i));
+            orderDetailDto.setProductName(product.getName());
             orderDetailDto.setCount(counts.get(i));
-            orderDetailDto.setPrice(prices.get(i));
-            orderDetails.add(orderDetailDto);
+            orderDetailDto.setPrice(product.getPrice());
+            orderDetailDtos.add(orderDetailDto);
         }
-        model.addAttribute("orderDetails", orderDetails);
-        model.addAttribute("userId", userId);
+
+        model.addAttribute("name", user.getName());
+        model.addAttribute("address", user.getAddress());
+        model.addAttribute("phoneNumber", user.getPhone_number());
+        model.addAttribute("orderDetails", orderDetailDtos);
+        model.addAttribute("userId", user.getId());
+
         return "/order/orderSheet";
     }
 
-    @GetMapping("/{userId}")
-    public String getUserOrders(@PathVariable Long userId, Model model) {
+
+    @GetMapping
+    public String getUserOrders(Principal principal, Model model) {
+        String userEmail = principal.getName();
+        Long userId = userService.findUserByEmail(userEmail).getId();
+
         List<OrderDto> orders = orderService.getOrders(userId);
         model.addAttribute("orders", orders);
         return "/order/orderList";

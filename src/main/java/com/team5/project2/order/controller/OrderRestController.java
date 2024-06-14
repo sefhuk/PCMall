@@ -2,6 +2,7 @@ package com.team5.project2.order.controller;
 
 import com.team5.project2.order.dto.OrderDetailDto;
 import com.team5.project2.order.dto.OrderDto;
+import com.team5.project2.order.dto.OrderRequest;
 import com.team5.project2.order.entity.Order;
 import com.team5.project2.order.entity.OrderDetail;
 import com.team5.project2.order.entity.OrderStatus;
@@ -10,6 +11,7 @@ import com.team5.project2.order.mapper.OrderMapper;
 import com.team5.project2.order.service.OrderService;
 import com.team5.project2.user.domain.User;
 import com.team5.project2.user.service.UserService;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,33 +49,23 @@ public class OrderRestController {
     }
 
     @PostMapping("/{userId}")
-    public ResponseEntity<OrderDto> createOrder(@PathVariable Long userId, @RequestBody List<OrderDetailDto> orderDetailDtos) {
-        Order order = new Order();
-        User user = userService.findUserById(userId);
-        order.setUser(user);
-        order.setStatus(OrderStatus.CONFIRMED);
-        List<OrderDetail> orderDetails = new ArrayList<>();
-        for (OrderDetailDto orderDetailDto : orderDetailDtos) {
-            OrderDetail orderDetail = OrderDetailMapper.INSTANCE.OrderDetailDtoToOrderDetail(orderDetailDto);
-            orderDetail.setOrder(order);
-            orderDetails.add(orderDetail);
+    public ResponseEntity<OrderDto> createOrder(@PathVariable Long userId, @RequestBody OrderRequest orderRequest) {
+        try {
+            OrderDto createdOrderDto = orderService.createOrder(orderRequest, userId);
+            return ResponseEntity.ok(createdOrderDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        order.setOrderDetails(orderDetails);
-        OrderDto orderDto = OrderMapper.INSTANCE.OrderToOrderDto(order);
-        orderDto.setOrderDetails(orderDetailDtos);
-        orderDto.setTotalPrice(orderDto.getTotalPrice());
-
-        return ResponseEntity.ok(orderService.createOrder(orderDto));
     }
 
-
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long id) {
-        OrderDto orderDto = orderService.findOrderById(id);
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long orderId) {
+        OrderDto orderDto = orderService.findOrderById(orderId);
         return new ResponseEntity<>(orderDto, HttpStatus.OK);
 
     }
-
 
     @Data
     @AllArgsConstructor

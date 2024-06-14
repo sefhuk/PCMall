@@ -4,49 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Website</title>
-  <link rel="stylesheet" th:href="@{/user/css/login-form.css}">
-  <link rel="stylesheet" href="styles.css">
   <style>
     body {
-        margin: 0;
         font-family: Arial, sans-serif;
+        margin: 0;
     }
-
     header {
-        background-color: #f8f8f8;
-        padding: 10px 20px;
         display: flex;
-        justify-content: flex-end;
-        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+    .header-left span {
+        font-weight: bold;
+        font-size: 24px;
     }
 
-    .header-right {
-        display: flex;
-        align-items: center;
-    }
-
-    .user-icon {
-        width: 32px;
-        height: 32px;
-        cursor: pointer;
+    .header-right a {
+        text-decoration: none;
+        color: #007bff;
     }
   </style>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const myPageLink = document.getElementById('myPageLink');
-
-        myPageLink.addEventListener('click', (event) => {
-        });
-    });
-  </script>
 </head>
 <body>
-<header>
-  <div class="header-right">
-    <a th:href="@{/myPage}" id="myPageLink">
-      <img th:src="@{/user/css/user.png}" alt="User Icon" class="user-icon">
-    </a>
-  </div>
-</header>
+  <header>
+    <div class="header-left">
+      <span>PC Mall</span>
+    </div>
+    <div class="header-right">
+      <a th:href="@{/myPage}">마이페이지</a> /
+      <a th:href="@{/logout}">로그아웃</a> /
+      <a th:href="@{/cart}">카트</a>
+    </div>
+  </header>
 </body>
 </html>

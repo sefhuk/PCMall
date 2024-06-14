@@ -1,7 +1,6 @@
-package com.team5.project2.user.auth;
+package com.team5.project2.user.service;
 
-import com.team5.project2.user.repository.UserRepository;
-import com.team5.project2.user.service.UserService;
+import com.team5.project2.user.domain.UserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

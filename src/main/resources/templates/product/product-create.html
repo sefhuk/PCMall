@@ -114,19 +114,19 @@
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="스레드"
+                name="스레드 수"
                 id="threadCount"
                 placeholder="숫자만 입력해주세요"
             />
         </div>
         <div
-            class="gpu flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
+            class="cpu gpu flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
         >
-            <label class="w-[35%]" for="baseClockSpeed">기본 클럭속도</label>
+            <label class="w-[35%]" for="baseClockSpeed">기본 클럭속도(GHz)</label>
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="기본 클럭속도"
+                name="기본 클럭속도(Ghz)"
                 id="baseClockSpeed"
                 placeholder="숫자만 입력해주세요 (단위 GHz)"
             />
@@ -134,23 +134,24 @@
         <div
             class="cpu gpu flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
         >
-            <label class="w-[35%]" for="boostClockSpeed">최대 클럭속도</label>
+            <label class="w-[35%]" for="boostClockSpeed">최대 클럭속도(GHz)</label>
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="최대 클럭속도"
+                name="최대 클럭속도(GHz)"
                 id="boostClockSpeed"
                 placeholder="숫자만 입력해주세요 (단위 GHz)"
+                unit=" GHz"
             />
         </div>
         <div
             class="ram ssd hdd flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
         >
-            <label class="w-[35%]" for="capacity">용량</label>
+            <label class="w-[35%]" for="capacity">용량(GB)</label>
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="용량"
+                name="용량(GB)"
                 id="capacity"
                 placeholder="숫자만 입력해주세요 (단위 GB)"
             />
@@ -158,11 +159,11 @@
         <div
             class="ram flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
         >
-            <label class="w-[35%]" for="speed">속도</label>
+            <label class="w-[35%]" for="speed">속도(MHz)</label>
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="속도"
+                name="속도(MHz)"
                 id="speed"
                 placeholder="숫자만 입력해주세요 (단위 MHz)"
             />
@@ -228,11 +229,11 @@
         <div
             class="gpu flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
         >
-            <label class="w-[35%]" for="vramCapacity">VRAM 용량</label>
+            <label class="w-[35%]" for="vramCapacity">VRAM 용량(GB)</label>
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="VRAM 용량"
+                name="VRAM 용량(GB)"
                 id="vramCapacity"
                 placeholder="숫자만 입력해주세요 (단위 GB)"
             />
@@ -255,11 +256,11 @@
         <div
             class="cpu gpu mainboard flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black"
         >
-            <label class="w-[35%]" for="powerConsumption">소비 전력</label>
+            <label class="w-[35%]" for="powerConsumption">소비 전력(W)</label>
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="소비 전력"
+                name="소비 전력(W)"
                 id="powerConsumption"
                 placeholder="숫자만 입력해주세요 (단위 W)"
             />
@@ -267,11 +268,11 @@
         <div
             class="ssd flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
         >
-            <label class="w-[35%]" for="readSpeed">읽기 속도</label>
+            <label class="w-[35%]" for="readSpeed">읽기 속도(MB/s)</label>
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="읽기 속도"
+                name="읽기 속도(MB/s)"
                 id="readSpeed"
                 placeholder="숫자만 입력해주세요 (단위 MB/s)"
             />
@@ -279,11 +280,11 @@
         <div
             class="ssd flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
         >
-            <label class="w-[35%]" for="writeSpeed">쓰기 속도</label>
+            <label class="w-[35%]" for="writeSpeed">쓰기 속도(MB/s)</label>
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="쓰기 속도"
+                name="쓰기 속도(MB/s)"
                 id="writeSpeed"
                 placeholder="숫자만 입력해주세요 (단위 MB/s)"
             />
@@ -291,11 +292,11 @@
         <div
             class="hdd flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
         >
-            <label class="w-[35%]" for="rotationSpeed">회전 속도</label>
+            <label class="w-[35%]" for="rotationSpeed">회전 속도(RPM)</label>
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="회전 속도"
+                name="회전 속도(RPM)"
                 id="rotationSpeed"
                 placeholder="숫자만 입력해주세요 (단위 RPM)"
             />
@@ -303,11 +304,11 @@
         <div
             class="powersupply flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
         >
-            <label class="w-[35%]" for="wattage">정격 출력</label>
+            <label class="w-[35%]" for="wattage">정격 출력(W)</label>
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="정격 출력"
+                name="정격 출력(W)"
                 id="wattage"
                 placeholder="숫자만 입력해주세요 (단위 W)"
             />
@@ -327,11 +328,11 @@
         <div
             class="mainboard flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
         >
-            <label class="w-[35%]" for="maxRamCapacity">최대 램 용량</label>
+            <label class="w-[35%]" for="maxRamCapacity">최대 램 용량(GB)</label>
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center placeholder:text-[15px]"
                 type="number"
-                name="최대 램 용량"
+                name="최대 램 용량(GB)"
                 id="maxRamCapacity"
                 placeholder="숫자만 입력해주세요 (단위 GB)"
             />
@@ -378,27 +379,34 @@
         <div
             class="cooler flex items-center w-[50%] h-[50px] text-2xl text-left font-bold border-b-2 border-black hidden"
         >
-            <label class="w-[35%]" for="height">높이</label>
+            <label class="w-[35%]" for="height">높이(mm)</label>
             <input
                 class="w-[35%] outline focus:outline-black focus:outline-2 font-light text-center"
                 type="number"
-                name="높이"
+                name="높이(mm)"
                 id="height"
                 placeholder="숫자만 입력해주세요 (단위 mm)"
             />
         </div>
     </form>
     <div class="flex justify-center mt-[50px] text-4xl">
-        <button class="bg-gray-300 w-[24%] py-[10px] mr-[2%]">취소</button>
+        <button class="bg-[skyblue] w-[24%] py-[10px] mr-[2%] hover:bg-[#33adff] hover:text-white"
+        onclick="cancel()">
+            취소
+        </button>
         <button
-            class="bg-gray-300 w-[24%] py-[10px]"
+            class="bg-[skyblue] w-[24%] py-[10px] hover:bg-[#33adff] hover:text-white"
             type="submit"
-            onclick="uploadImage()"
+            onclick="upload()"
         >
             상품 등록
         </button>
     </div>
 </main>
+<div id="modal"
+     class="fixed top-0 left-0 flex justify-center items-center w-[100%] h-[100%] bg-zinc-500 z-10 opacity-90 hidden">
+    <h1 class="text-center text-7xl">잠시만 기다려주세요..</h1>
+</div>
 <script th:src="@{/product/js/product-create.js}"></script>
 <script th:src="@{/product/js/config.js}"></script>
 </body>

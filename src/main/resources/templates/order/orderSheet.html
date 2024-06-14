@@ -18,23 +18,36 @@
     </style>
 </head>
 <body>
-    <h1>Order Sheet</h1>
+    <h1>주문하기</h1>
     <table>
         <thead>
         <tr>
-            <th>Product ID</th>
-            <th>Count</th>
-            <th>Price</th>
+            <th>상품명</th>
+            <th>가격</th>
+            <th>수량</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="orderDetail : ${orderDetails}">
-            <td th:text="${orderDetail.productId}"></td>
-            <td th:text="${orderDetail.count}"></td>
+            <td th:text="${orderDetail.productName}"></td>
             <td th:text="${orderDetail.price}"></td>
+            <td th:text="${orderDetail.count}"></td>
         </tr>
         </tbody>
     </table>
+    
+    <div>
+        <label for="name">이름:</label>
+        <input type="text" id="name" name="name" th:value="${name}" />
+    </div>
+    <div>
+        <label for="address">주소:</label>
+        <input type="text" id="address" name="address" th:value="${address}" />
+    </div>
+    <div>
+        <label for="phoneNumber">전화번호:</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" th:value="${phoneNumber}" />
+    </div>
     
     <button onclick="placeOrder()">주문하기</button>
     
@@ -42,22 +55,35 @@
       const userId = [[${userId}]];
       const orderDetails = [[${orderDetails}]];
 
-      function placeOrder() {
-        fetch('/api/order/' + userId, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(orderDetails)
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          window.location.href = '/order/' + userId;
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
+      async function placeOrder() {
+        const name = document.getElementById('name').value;
+        const address = document.getElementById('address').value;
+        const phoneNumber = document.getElementById('phoneNumber').value;
+
+        const orderRequest = {
+          name: name,
+          address: address,
+          phoneNumber: phoneNumber,
+          orderDetailDtos: orderDetails
+        };
+
+        try {
+          const response = await fetch(`/api/order/${userId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderRequest)
+          });
+
+          if (response.ok) {
+            window.location.href = '/order';
+          } else {
+            console.error('주문 실패.');
+          }
+        } catch (error) {
+          console.error('오류:', error);
+        }
       }
     </script>
 </body>

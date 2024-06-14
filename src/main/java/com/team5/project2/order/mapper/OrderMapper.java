@@ -8,14 +8,16 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {OrderDetailMapper.class})
 public interface OrderMapper {
     OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 
     @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "orderDetails", target = "orderDetails")
     OrderDto OrderToOrderDto(Order order);
 
     @Mapping(source = "userId", target = "user.id")
+    @Mapping(source = "orderDetails", target = "orderDetails")
     Order OrderDtoToOrder(OrderDto orderDto);
 
     @AfterMapping
@@ -23,3 +25,4 @@ public interface OrderMapper {
         orderDto.setTotalPrice(order.getTotalPrice());
     }
 }
+
