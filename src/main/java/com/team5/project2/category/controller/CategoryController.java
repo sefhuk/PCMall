@@ -12,7 +12,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/categories")
+@RequestMapping("/gicategories")
 public class CategoryController {
 
     private final CategoryService categoryService;
