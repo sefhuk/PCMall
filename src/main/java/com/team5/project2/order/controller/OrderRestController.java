@@ -1,27 +1,15 @@
 package com.team5.project2.order.controller;
 
-import com.team5.project2.order.dto.OrderDetailDto;
 import com.team5.project2.order.dto.OrderDto;
 import com.team5.project2.order.dto.OrderRequest;
-import com.team5.project2.order.entity.Order;
-import com.team5.project2.order.entity.OrderDetail;
 import com.team5.project2.order.entity.OrderStatus;
-import com.team5.project2.order.mapper.OrderDetailMapper;
-import com.team5.project2.order.mapper.OrderMapper;
 import com.team5.project2.order.service.OrderService;
-import com.team5.project2.user.domain.User;
-import com.team5.project2.user.service.UserService;
-import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderRestController {
 
     private final OrderService orderService;
-    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<List<OrderDto>> getAllOrders() {
