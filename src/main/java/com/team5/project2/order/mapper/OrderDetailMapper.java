@@ -8,7 +8,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface OrderDetailMapper {
-    OrderDetailMapper INSTANCE = Mappers.getMapper(OrderDetailMapper.class);
 
     @Mapping(source = "order.id", target = "orderId")
     @Mapping(source = "product.id", target = "productId")

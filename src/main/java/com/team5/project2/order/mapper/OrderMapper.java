@@ -10,7 +10,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring", uses = {OrderDetailMapper.class})
 public interface OrderMapper {
-    OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "orderDetails", target = "orderDetails")

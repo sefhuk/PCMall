@@ -40,12 +40,12 @@ public class OrderRestController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity getAllOrders() {
+    public ResponseEntity<List<OrderDto>> getAllOrders() {
         List<OrderDto> orders = orderService.getAllOrders();
         if (orders.isEmpty()) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity(orders, HttpStatus.OK);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     @PostMapping("/{userId}")
