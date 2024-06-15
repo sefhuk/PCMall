@@ -20,26 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/order")
+@RequestMapping("/user/order")
 public class OrderController {
 
     private final OrderService orderService;
     private final UserService userService;
     private final ProductService productService;
 
-    @GetMapping("/admin")
-    public String adminHome(Principal principal, Model model) {
-        String userEmail = principal.getName();
-        User user = userService.findUserByEmail(userEmail);
-        String role = user.getRole();
-        if (role.equals("ADMIN")) {
-            List<OrderDto> orders = orderService.getAllOrders();
-            model.addAttribute("orders", orders);
-            return "order/adminHome";
-        } else {
-            return "/order/orderList";
-        }
-    }
+
 
     @GetMapping("/sheet")
     public String viewOrder(Principal principal, @RequestParam List<Long> productIds, @RequestParam List<Long> counts, Model model) {
