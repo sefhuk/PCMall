@@ -18,11 +18,12 @@
       <div class="item-details">
         <p class="item-name" th:text="${item.product.name}">제품 이름</p>
         <p class="item-price" th:text="${item.product.price}">[가격]</p>
-        <p class="item-quantity">수량: <input type="number" th:value="${item.quantity}" class="quantity-input" min="1"></p>
+        <p class="item-quantity">수량: <input type="number" th:value="${item.quantity}" class="quantity-input" min="1" onchange="updateCartItem(${item.id}, this.value)"></p>
       </div>
       <button class="item-remove" th:onclick="'removeItem(' + ${item.id} + ')'">−</button>
     </div>
   </div>
+  <button class="clear-cart-button" onclick="clearCart()">전체 삭제</button>
   <div class="cart-total">
     <p>총 결제금액</p>
     <p id="totalPrice" th:text="${cart.totalPrice}">100,000원</p>

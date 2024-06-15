@@ -1,6 +1,7 @@
 package com.team5.project2.cart.entity;
 
 import com.team5.project2.cart.dto.CartItemDTO;
+import com.team5.project2.common.entity.BaseTime;
 import com.team5.project2.product.entity.Product;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +15,7 @@ import lombok.Getter;
 @Entity
 @Getter
 @Table(name = "cart_item")
-public class CartItem {
+public class CartItem extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,7 +39,5 @@ public class CartItem {
         this.product = product;
         this.quantity = quantity;
     }
-
-
 
 }
