@@ -11,6 +11,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,12 +55,16 @@ public class OrderController {
 
 
     @GetMapping
-    public String getUserOrders(Principal principal, Model model) {
+    public String getUserOrders(Principal principal, Model model,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "8") int size) {
         String userEmail = principal.getName();
         Long userId = userService.findUserByEmail(userEmail).getId();
 
-        List<OrderDto> orders = orderService.getOrders(userId);
-        model.addAttribute("orders", orders);
+        Page<OrderDto> orderPage = orderService.getOrders(userId, page, size);
+        model.addAttribute("orders", orderPage.getContent());
+        model.addAttribute("currentPage", orderPage.getNumber());
+        model.addAttribute("totalPages", orderPage.getTotalPages());
         return "/order/orderList";
     }
 
@@ -67,8 +72,29 @@ public class OrderController {
     public String showDetail(@PathVariable Long orderId, Model model) {
         OrderDto order = orderService.getOrderById(orderId);
         List<OrderDetailDto> orderDetails = orderService.getOrderDetails(orderId);
+
+        StringBuilder productIdsBuilder = new StringBuilder();
+        StringBuilder countsBuilder = new StringBuilder();
+
+        for (int i = 0; i < orderDetails.size(); i++) {
+            OrderDetailDto detail = orderDetails.get(i);
+            if (i > 0) {
+                productIdsBuilder.append(',');
+                countsBuilder.append(',');
+            }
+            productIdsBuilder.append(detail.getProductId());
+            countsBuilder.append(detail.getCount());
+        }
+
+        String productIds = productIdsBuilder.toString();
+        String counts = countsBuilder.toString();
+
         model.addAttribute("order", order);
         model.addAttribute("orderDetails", orderDetails);
+        model.addAttribute("productIds", productIds);
+        model.addAttribute("counts", counts);
+
         return "/order/orderDetail";
     }
+
 }

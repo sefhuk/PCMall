@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,7 +74,6 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.OrderToOrderDto(savedOrder);
     }
 
-
     public List<OrderDto> getAllOrders() {
         return orderRepository.findAll().stream()
             .map(orderMapper::OrderToOrderDto)
@@ -86,10 +88,11 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.OrderToOrderDto(order);
     }
 
-    public List<OrderDto> getOrders(Long userId) {
-        return orderRepository.findByUserId(userId).stream()
-            .map(orderMapper::OrderToOrderDto)
-            .collect(Collectors.toList());
+    @Transactional
+    public Page<OrderDto> getOrders(Long userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Order> orderPage = orderRepository.findByUserIdOrderByCreatedAtDesc(userId, pageable);
+        return orderPage.map(orderMapper::OrderToOrderDto);
     }
 
     public List<OrderDetailDto> getOrderDetails(Long orderId) {
@@ -112,12 +115,14 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto findOrderById(Long id) {
         Order order = orderRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("orderId " + id + ": not found"));
+
         return orderMapper.OrderToOrderDto(order);
     }
 
     public OrderDto updateOrder(OrderDto orderDto) {
         Order order = orderMapper.OrderDtoToOrder(orderDto);
         order = orderRepository.save(order);
+
         return orderMapper.OrderToOrderDto(order);
     }
 

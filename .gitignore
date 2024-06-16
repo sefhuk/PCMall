@@ -38,3 +38,9 @@ out/
 
 src/main/resources/application.properties
 firebaseKey.json
+
+### DS_Store ###
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store

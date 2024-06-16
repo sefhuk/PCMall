@@ -13,6 +13,7 @@ public interface OrderMapper {
 
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "orderDetails", target = "orderDetails")
+    @Mapping(source = "createdAt", target = "createdAt", dateFormat = "yyyy-MM-dd")
     OrderDto OrderToOrderDto(Order order);
 
     @Mapping(source = "userId", target = "user.id")
