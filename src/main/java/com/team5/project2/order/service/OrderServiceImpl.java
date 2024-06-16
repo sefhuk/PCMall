@@ -71,7 +71,9 @@ public class OrderServiceImpl implements OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
-        return orderMapper.OrderToOrderDto(savedOrder);
+        OrderDto orderDto = orderMapper.OrderToOrderDto(savedOrder);
+        orderDto.setCreatedAt(savedOrder.getCreatedAt());
+        return orderDto;
     }
 
     public List<OrderDto> getAllOrders() {
@@ -123,7 +125,9 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderMapper.OrderDtoToOrder(orderDto);
         order = orderRepository.save(order);
 
-        return orderMapper.OrderToOrderDto(order);
+        OrderDto savedOrderDto = orderMapper.OrderToOrderDto(order);
+        orderDto.setCreatedAt(order.getCreatedAt());
+        return savedOrderDto;
     }
 
     public void deleteOrder(Long id) {

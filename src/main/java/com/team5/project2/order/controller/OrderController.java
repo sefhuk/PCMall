@@ -97,4 +97,8 @@ public class OrderController {
         return "/order/orderDetail";
     }
 
+    @GetMapping("/addressForm")
+    public String kakaoAddress() {
+        return "/order/getAddress";
+    }
 }
