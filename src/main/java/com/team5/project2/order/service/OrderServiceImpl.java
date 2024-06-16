@@ -122,11 +122,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public OrderDto updateOrder(OrderDto orderDto) {
-        Order order = orderMapper.OrderDtoToOrder(orderDto);
+//        Order order = orderMapper.OrderDtoToOrder(orderDto);
+        // order을 입력받은 orderDto에서 Mapper를 통해 변환하면 새로 생성된 Order인데 해당 id의 createdAt이 있으니까 null을 반환?
+        Order order = orderRepository.findById(orderDto.getId())
+            .orElseThrow(() -> new RuntimeException("order not found"));
+        order.setStatus(orderDto.getStatus());
         order = orderRepository.save(order);
 
         OrderDto savedOrderDto = orderMapper.OrderToOrderDto(order);
-        orderDto.setCreatedAt(order.getCreatedAt());
         return savedOrderDto;
     }
 
