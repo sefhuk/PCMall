@@ -27,9 +27,7 @@ public class OrderController {
     private final UserService userService;
     private final ProductService productService;
 
-
-
-    @GetMapping("/user/order/sheet")
+    @GetMapping("/sheet")
     public String viewOrder(Principal principal, @RequestParam List<Long> productIds, @RequestParam List<Long> counts, Model model) {
         String userEmail = principal.getName();
         User user = userService.findUserByEmail(userEmail);
@@ -55,7 +53,7 @@ public class OrderController {
     }
 
 
-    @GetMapping("/user/order")
+    @GetMapping
     public String getUserOrders(Principal principal, Model model) {
         String userEmail = principal.getName();
         Long userId = userService.findUserByEmail(userEmail).getId();
@@ -65,7 +63,7 @@ public class OrderController {
         return "/order/orderList";
     }
 
-    @GetMapping("/user/order/detail/{orderId}")
+    @GetMapping("/detail/{orderId}")
     public String showDetail(@PathVariable Long orderId, Model model) {
         OrderDto order = orderService.getOrderById(orderId);
         List<OrderDetailDto> orderDetails = orderService.getOrderDetails(orderId);
