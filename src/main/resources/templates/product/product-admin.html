@@ -24,9 +24,9 @@
                         onclick="logout()">
                     <span>로그아웃</span>
                 </button>
-                <a th:if="${role == 'ROLE_ADMIN'}" class="ml-[20px] hover:underline hover:italicg"
+                <a th:if="${role == 'ROLE_ADMIN'}" class="ml-[20px] hover:underline hover:italic"
                    href="/admin/product/new">상품 추가</a>
-                <a th:if="${role == 'ROLE_ADMIN'}" class="ml-[20px] hover:underline hover:italicg"
+                <a th:if="${role == 'ROLE_ADMIN'}" class="ml-[20px] hover:underline hover:italic"
                    href="/admin/product">상품 관리</a>
             </div>
         </div>
