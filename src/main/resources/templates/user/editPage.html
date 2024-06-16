@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원정보 수정</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+    }
+    header {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        background-color: #f8f9fa;
+        max-width: 960px;
+        margin: 0 auto;
+    }
+    .header-left span {
+        font-weight: bold;
+        font-size: 24px;
+    }
+
+    .header-right a {
+        text-decoration: none;
+        color: #007bff;
+    }
+
+    h1 {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    main {
+        padding: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .info-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .info-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .info-table th {
+        background-color: #f1f1f1;
+        width: 150px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+    }
+
+    button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 3px;
+        margin-left: 1em;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    input[type="text"], input[type="tel"], input[type="email"] {
+        margin: 10px 0 10px 0;
+        padding: 8px;
+        width: 30%;
+        box-sizing: border-box;
+    }
+
+    .edit-field {
+        display: none;
+    }
+
+    .password-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 30%;
+        box-sizing: border-box;
+    }
+  </style>
+  <script>
+    function toggleEdit(field) {
+        const editField = document.getElementById(field + '-edit');
+        if(editField.style.display === 'none') {
+            editField.style.display = 'block'
+        }
+        else {
+            editField.style.display = 'none'
+        }
+    }
+  </script>
+</head>
+<body>
+<header>
+  <div class="header-left">
+    <a th:href="@{/}">
+      <span>PC Mall</span>
+    </a>
+  </div>
+  <div class="header-right">
+    <a th:href="@{/user/myPage}">마이페이지</a>/
+    <a th:href="@{/logout}">로그아웃</a>/
+    <a th:href="@{/user/cart}">카트</a>
+  </div>
+</header>
+<main>
+  <h1>회원정보 수정</h1>
+  <hr>
+  <form class="info-form">
+    <table class="info-table">
+      <tr>
+        <th>아이디(이메일)</th>
+        <td>
+          <span id="email-display" th:text="${user.email}">이메일</span>
+          <button type="button" onclick="toggleEdit('email')">이메일 변경</button>
+          <div id="email-edit" class="edit-field">
+            <input type="email" id="new-email" placeholder="새 이메일 입력">
+            <button type="button" onclick="updateEmail()">저장</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>이름</th>
+        <td>
+          <span id="name-display" th:text="${user.name}">이름</span>
+          <button type="button" onclick="toggleEdit('name')">이름 변경</button>
+          <div id="name-edit" class="edit-field">
+            <input type="text" id="new-name" placeholder="새 이름 입력">
+            <button type="button" onclick="updateName()">저장</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>휴대폰 번호</th>
+        <td>
+          <span id="phone-display" th:text="${user.phone_number}">전화번호</span>
+          <button type="button" onclick="toggleEdit('phone')">전화번호 변경</button>
+          <div id="phone-edit" class="edit-field">
+            <input type="tel" id="new-phone" placeholder="새 전화번호 입력">
+            <button type="button" onclick="updatePhone()">저장</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>비밀번호 변경</th>
+        <td class="password" colspan="2">
+          <div class="password-container">
+            <input type="password" id="current-password" placeholder="현재 비밀번호">
+            <input type="password" id="new-password" placeholder="새 비밀번호">
+            <input type="password" id="confirm-password" placeholder="비밀번호 다시 입력">
+            <button type="button" onclick="updatePassword()">비밀번호 변경</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>배송지</th>
+        <td>
+          <span id="address-display">주소</span>
+          <button type="button" onclick="toggleEdit('address')">주소 변경</button>
+          <div id="address-edit" class="edit-field">
+            <input type="text" id="postcode" placeholder="우편번호" readonly>
+            <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
+            <input type="text" id="address" placeholder="주소" readonly>
+            <input type="text" id="detailAddress" placeholder="상세주소">
+            <button type="button" onclick="updateAddress()">저장</button>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </form>
+</main>
+<!--<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>-->
+<script>
+  function toggleBtn(field) {
+	  const btn1 = document.getElementById(field + '-edit');
+
+	  if(btn1.style.display !== 'none') {
+	    btn1.style.display = 'none';
+	  }
+	  else {
+	    btn1.style.display = 'block';
+	  }
+	}
+
+<!--	function execDaumPostcode() {-->
+<!--      new daum.Postcode({-->
+<!--          oncomplete: function(data) {-->
+<!--              document.getElementById('postcode').value = data.zonecode;-->
+<!--              document.getElementById('address').value = data.address;-->
+<!--              document.getElementById('detailAddress').focus();-->
+<!--          }-->
+<!--      }).open();-->
+<!--  }-->
+
+  const updateEmail = async () => {
+      const newEmail = document.getElementById('new-email').value;
+
+      try {
+          const updateResult = await fetch(`/user/editEmail`, {
+              method: "PUT",
+              body: JSON.stringify({ email: newEmail }),
+              headers: { "Content-Type": "application/json" }
+          });
+
+          if (updateResult.ok) {
+              window.location.reload();
+          } else {
+              console.error("이메일 변경에 실패했습니다.");
+          }
+      } catch (error) {
+          console.error("오류:", error);
+      }
+  };
+
+  const updateName = async () => {
+      const newName = document.getElementById('new-name').value;
+
+      try {
+          const updateResult = await fetch(`/user/editName`, {
+              method: "PUT",
+              body: JSON.stringify({ name: newName }),
+              headers: { "Content-Type": "application/json" }
+          });
+
+          if (updateResult.ok) {
+              window.location.reload();
+          } else {
+              console.error("이름 변경에 실패했습니다.");
+          }
+      } catch (error) {
+          console.error("오류:", error);
+      }
+  };
+
+  const updatePhone = async () => {
+      const newPhone = document.getElementById('new-phone').value;
+
+      try {
+          const updateResult = await fetch(`/user/editPhone`, {
+              method: "PUT",
+              body: JSON.stringify({ phone: newPhone }),
+              headers: { "Content-Type": "application/json" }
+          });
+
+          if (updateResult.ok) {
+              window.location.reload();
+          } else {
+              console.error("전화번호 변경에 실패했습니다.");
+          }
+      } catch (error) {
+          console.error("오류:", error);
+      }
+  };
+
+  const updatePassword = async () => {
+      const currentPassword = document.getElementById('current-password').value;
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      if (newPassword !== confirmPassword) {
+          alert('새 비밀번호가 일치하지 않습니다.');
+          return;
+      }
+
+      try {
+          const updateResult = await fetch(`/user/editPassword`, {
+              method: "PUT",
+              body: JSON.stringify({ currentPassword, newPassword }),
+              headers: { "Content-Type": "application/json" }
+          });
+
+          if (updateResult.ok) {
+              alert('비밀번호가 성공적으로 변경되었습니다.');
+              window.location.reload();
+          } else {
+              console.error("비밀번호 변경에 실패했습니다.");
+          }
+      } catch (error) {
+          console.error("오류:", error);
+      }
+  };
+</script>
+</body>
+</html>

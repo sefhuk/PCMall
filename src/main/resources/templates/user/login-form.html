@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PC Mall</title>
+<!--  <link rel="stylesheet" th:href="@{/user/css/login-form.css}">-->
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100vh;
+    }
+    .container {
+        text-align: center;
+        padding: 2em;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        margin-top: 5%;
+    }
+    .container h1 {
+        font-size: 2.5em;
+    }
+    .input-group {
+        margin-top: 1em;
+        margin-bottom: 1em;
+        display: flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    .input-group input {
+        border: none;
+        padding: 0.8em;
+        flex: 1;
+    }
+    .input-group span {
+        background-color: #eee;
+        padding: 0.8em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .btn-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 2em;
+    }
+    .login-button {
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        padding: 0.8em 7.25em;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 1em 0;
+    }
+    .signup-button {
+        background-color: #f0f0f0;
+        color: #333;
+        border: none;
+        padding: 0.8em 6.75em;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 1em 0;
+    }
+    .row {
+        color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>PC Mall</h1>
+  <hr>
+  <form class="form-signin" th:action="@{/login}" th:object="${userLoginDto}" method="post">
+    <div class="row alert alert-danger center" role="alert" th:if="${param.error != null}">
+      <div>로그인 인증에 실패했습니다.</div>
+    </div>
+    <div class="input-group">
+      <span>&#128100;</span>
+      <input type="email" th:field="*{email}" placeholder="email" required>
+<!--      <div class="error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>-->
+    </div>
+    <div class="input-group">
+      <span>&#128273;</span>
+      <input type="password" th:field="*{password}" placeholder="Password" required>
+<!--      <div class="error-message" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>-->
+    </div>
+    <div class="btn-group">
+      <button class="login-button" type="submit">로그인</button>
+      <button class="signup-button" type="button" th:onclick="|location.href='@{/sign-up}'|">회원가입</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>
