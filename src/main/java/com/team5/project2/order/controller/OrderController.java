@@ -72,8 +72,29 @@ public class OrderController {
     public String showDetail(@PathVariable Long orderId, Model model) {
         OrderDto order = orderService.getOrderById(orderId);
         List<OrderDetailDto> orderDetails = orderService.getOrderDetails(orderId);
+
+        StringBuilder productIdsBuilder = new StringBuilder();
+        StringBuilder countsBuilder = new StringBuilder();
+
+        for (int i = 0; i < orderDetails.size(); i++) {
+            OrderDetailDto detail = orderDetails.get(i);
+            if (i > 0) {
+                productIdsBuilder.append(',');
+                countsBuilder.append(',');
+            }
+            productIdsBuilder.append(detail.getProductId());
+            countsBuilder.append(detail.getCount());
+        }
+
+        String productIds = productIdsBuilder.toString();
+        String counts = countsBuilder.toString();
+
         model.addAttribute("order", order);
         model.addAttribute("orderDetails", orderDetails);
+        model.addAttribute("productIds", productIds);
+        model.addAttribute("counts", counts);
+
         return "/order/orderDetail";
     }
+
 }
