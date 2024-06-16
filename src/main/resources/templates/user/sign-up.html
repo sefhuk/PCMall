@@ -121,5 +121,50 @@
     <button type="submit">가입하기</button>
   </form>
 </div>
+<script>
+  async function sendVerificationCode() {
+      const email = document.getElementById('email').value;
+
+      const response = await fetch('/api/send-verification-code', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+          alert('인증 코드가 전송되었습니다.');
+          document.querySelector('.verify-email').style.display = 'flex';
+      } else {
+          alert('인증 코드 전송에 실패했습니다.');
+      }
+  }
+
+  async function verifyCode() {
+      const email = document.getElementById('email').value;
+      const code = document.getElementById('verification-code').value;
+
+      if (!code) {
+          alert('인증 코드를 입력해 주세요.');
+          return;
+      }
+
+      const response = await fetch('/api/verify', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, code }),
+      });
+
+      if (response.ok) {
+          alert('이메일 인증이 완료되었습니다.');
+          document.querySelector('.verify-email').style.display = 'none';
+      } else {
+          alert('인증 코드가 유효하지 않습니다.');
+      }
+  }
+</script>
 </body>
 </html>

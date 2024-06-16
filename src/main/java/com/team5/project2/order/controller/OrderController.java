@@ -20,19 +20,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/order")
 public class OrderController {
 
     private final OrderService orderService;
     private final UserService userService;
     private final ProductService productService;
 
-    @GetMapping("/admin")
+    @GetMapping("/admin/order")
     public String adminHome(Principal principal, Model model) {
         String userEmail = principal.getName();
         User user = userService.findUserByEmail(userEmail);
         String role = user.getRole();
-        if (role.equals("ADMIN")) {
+        if (role.equals("ROLE_ADMIN")) {
             List<OrderDto> orders = orderService.getAllOrders();
             model.addAttribute("orders", orders);
             return "order/adminHome";
@@ -41,7 +40,7 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/sheet")
+    @GetMapping("/user/order/sheet")
     public String viewOrder(Principal principal, @RequestParam List<Long> productIds, @RequestParam List<Long> counts, Model model) {
         String userEmail = principal.getName();
         User user = userService.findUserByEmail(userEmail);
@@ -67,7 +66,7 @@ public class OrderController {
     }
 
 
-    @GetMapping
+    @GetMapping("/user/order")
     public String getUserOrders(Principal principal, Model model) {
         String userEmail = principal.getName();
         Long userId = userService.findUserByEmail(userEmail).getId();
@@ -77,7 +76,7 @@ public class OrderController {
         return "/order/orderList";
     }
 
-    @GetMapping("/detail/{orderId}")
+    @GetMapping("/user/order/detail/{orderId}")
     public String showDetail(@PathVariable Long orderId, Model model) {
         OrderDto order = orderService.getOrderById(orderId);
         List<OrderDetailDto> orderDetails = orderService.getOrderDetails(orderId);

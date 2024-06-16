@@ -34,19 +34,19 @@ public class UserService {
         return jpaUserRepository.save(user);
     }
 
-    public User updateUserEmail(User user, String email) {
+    public void updateUserEmail(User user, String email) {
         user.updateEmail(email);
-        return jpaUserRepository.save(user);
+        jpaUserRepository.save(user);
     }
 
-    public User updateUserName(User user, String name) {
+    public void updateUserName(User user, String name) {
         user.updateName(name);
-        return jpaUserRepository.save(user);
+        jpaUserRepository.save(user);
     }
 
-    public User updateUserPhoneNumber(User user, String phone_number) {
+    public void updateUserPhoneNumber(User user, String phone_number) {
         user.updatePhoneNumber(phone_number);
-        return jpaUserRepository.save(user);
+        jpaUserRepository.save(user);
     }
 
     public boolean checkIfValidOldPassword(User user, String oldPassword) {
@@ -59,9 +59,9 @@ public class UserService {
         jpaUserRepository.save(user);
     }
 
-    public User updateUserAddress(User user, String address) {
+    public void updateUserAddress(User user, String address) {
         user.updateAddress(address);
-        return jpaUserRepository.save(user);
+        jpaUserRepository.save(user);
     }
 
     public void deleteUser(Long userId) {

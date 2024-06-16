@@ -20,6 +20,7 @@
     .header-left span {
         font-weight: bold;
         font-size: 24px;
+        text-decoration: none;
     }
 
     .header-right a {
@@ -105,7 +106,7 @@
 <body>
 <header>
   <div class="header-left">
-    <a th:href="@{/}">
+    <a th:href="@{/user/product}">
       <span>PC Mall</span>
     </a>
   </div>
@@ -167,7 +168,7 @@
       <tr>
         <th>배송지</th>
         <td>
-          <span id="address-display">주소</span>
+          <span id="address-display" th:text="${user.address}">주소</span>
           <button type="button" onclick="toggleEdit('address')">주소 변경</button>
           <div id="address-edit" class="edit-field">
             <input type="text" id="postcode" placeholder="우편번호" readonly>
@@ -181,8 +182,11 @@
     </table>
   </form>
 </main>
-<!--<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>-->
+<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script>
+  Kakao.init('314f5596e4578638580dd4ac62227f7a');
+
   function toggleBtn(field) {
 	  const btn1 = document.getElementById(field + '-edit');
 
@@ -194,23 +198,23 @@
 	  }
 	}
 
-<!--	function execDaumPostcode() {-->
-<!--      new daum.Postcode({-->
-<!--          oncomplete: function(data) {-->
-<!--              document.getElementById('postcode').value = data.zonecode;-->
-<!--              document.getElementById('address').value = data.address;-->
-<!--              document.getElementById('detailAddress').focus();-->
-<!--          }-->
-<!--      }).open();-->
-<!--  }-->
+	function execDaumPostcode() {
+      new daum.Postcode({
+          oncomplete: function(data) {
+              document.getElementById('postcode').value = data.zonecode;
+              document.getElementById('address').value = data.address;
+              document.getElementById('detailAddress').focus();
+          }
+      }).open();
+  }
 
   const updateEmail = async () => {
-      const newEmail = document.getElementById('new-email').value;
+      const email = document.getElementById('new-email').value;
 
       try {
           const updateResult = await fetch(`/user/editEmail`, {
               method: "PUT",
-              body: JSON.stringify({ email: newEmail }),
+              body: JSON.stringify({ email }),
               headers: { "Content-Type": "application/json" }
           });
 
@@ -225,12 +229,12 @@
   };
 
   const updateName = async () => {
-      const newName = document.getElementById('new-name').value;
+      const name = document.getElementById('new-name').value;
 
       try {
           const updateResult = await fetch(`/user/editName`, {
               method: "PUT",
-              body: JSON.stringify({ name: newName }),
+              body: JSON.stringify({ name }),
               headers: { "Content-Type": "application/json" }
           });
 
@@ -245,12 +249,12 @@
   };
 
   const updatePhone = async () => {
-      const newPhone = document.getElementById('new-phone').value;
+      const phone = document.getElementById('new-phone').value;
 
       try {
           const updateResult = await fetch(`/user/editPhone`, {
               method: "PUT",
-              body: JSON.stringify({ phone: newPhone }),
+              body: JSON.stringify({ phone }),
               headers: { "Content-Type": "application/json" }
           });
 
@@ -286,6 +290,28 @@
               window.location.reload();
           } else {
               console.error("비밀번호 변경에 실패했습니다.");
+          }
+      } catch (error) {
+          console.error("오류:", error);
+      }
+  };
+
+  const updateAddress = async () => {
+      const postcode = document.getElementById('postcode').value;
+      const address = document.getElementById('address').value;
+      const detailAddress = document.getElementById('detailAddress').value;
+
+      try {
+          const updateResult = await fetch(`/user/editAddress`, {
+              method: "PUT",
+              body: JSON.stringify({ postcode, address, detailAddress }),
+              headers: { "Content-Type": "application/json" }
+          });
+
+          if (updateResult.ok) {
+              window.location.reload();
+          } else {
+              console.error("주소 변경에 실패했습니다.");
           }
       } catch (error) {
           console.error("오류:", error);
