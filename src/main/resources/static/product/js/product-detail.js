@@ -58,5 +58,5 @@ function order(productId) {
     return;
   }
 
-  location.href = `/order/sheet?productIds=${productId}&counts=${buyCount.value}`
+  location.href = `/user/order/sheet?productIds=${productId}&counts=${buyCount.value}`
 }
