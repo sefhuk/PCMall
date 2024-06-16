@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/categories")
+@RequestMapping("/admin/categories")
 public class CategoryRestController {
 
     private final CategoryService categoryService;
@@ -31,7 +31,6 @@ public class CategoryRestController {
     }
 
     @DeleteMapping("/delete")
-    public void deleteManufacturer(@RequestParam Long id) {
-        categoryService.deleteCategory(id);
+    public void deleteManufacturer(@RequestParam Long id) {categoryService.deleteCategory(id);
     }
 }

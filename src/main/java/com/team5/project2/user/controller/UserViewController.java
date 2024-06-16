@@ -5,25 +5,16 @@ import com.team5.project2.user.dto.UserLoginDto;
 import com.team5.project2.user.dto.UserPostDto;
 import com.team5.project2.user.mapper.UserMapper;
 import com.team5.project2.user.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 
 @Controller
 @RequiredArgsConstructor
@@ -32,21 +23,16 @@ public class UserViewController {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    @GetMapping("/home")
-    public String showHome() {
-        return "/user/home";
-    }
-
     @GetMapping("/sign-up")
     public String showSignupForm(Model model) {
         model.addAttribute("userPostDto", new UserPostDto());
-        return "/user/sign-up";
+        return "user/sign-up";
     }
 
     @PostMapping("/sign-up")
     public String processSignup(@Validated UserPostDto userPostDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors() || !userPostDto.getPassword().equals(userPostDto.getConfirmPassword())) {
-            return "/user/sign-up";
+            return "user/sign-up";
         }
         User user = userMapper.userPostDtoToUser(userPostDto);
         String rawPassword = user.getPassword();
@@ -60,28 +46,33 @@ public class UserViewController {
     @GetMapping("/")
     public String showLoginForm(Model model) {
         model.addAttribute("userLoginDto", new UserLoginDto());
-        return "/user/login-form";
+        return "user/login-form";
     }
 
-    @GetMapping("/myPage")
-    public String showMyPage() {
-        return "/user/myPage2";
+    @GetMapping("/user/myPage")
+    public String showMyPage(Principal principal) {
+        String userEmail = principal.getName();
+        User user = userService.findUserByEmail(userEmail);
+        if(user.getRole().equals("ROLE_USER")) {
+            return "user/myPage";
+        }
+        return "user/adminPage";
     }
 
-    @GetMapping("/editPage")
+    @GetMapping("/user/editPage")
     public String showEditPage(Principal principal, Model model) {
         String userEmail = principal.getName();
         User user = userService.findUserByEmail(userEmail);
         model.addAttribute("user", user);
-        return "/user/editPage";
+        return "user/editPage";
     }
 
-    @GetMapping("/deletePage")
+    @GetMapping("/user/deletePage")
     public String showDeleteAccountPage() {
-        return "/user/deletePage";
+        return "user/deletePage";
     }
 
-    @GetMapping("/deleteUser")
+    @GetMapping("/user/deleteUser")
     public String deleteUser(Principal principal) {
         String userEmail = principal.getName();
         User user = userService.findUserByEmail(userEmail);
@@ -89,22 +80,10 @@ public class UserViewController {
         return "redirect:/";
     }
 
-
-//    @PostMapping("/login")
-//    public String processLogin(@Validated @ModelAttribute UserLoginDto userLoginDto, BindingResult bindingResult, HttpServletRequest request) {
-//        if (bindingResult.hasErrors()) {
-//            return "login-form";
-//        }
-//        User findUser = userService.login(userLoginDto.getEmail(), userLoginDto.getPassword());
-//
-//        if (findUser == null) {
-//            bindingResult.reject("loginError", "아이디 또는 패스워드가 틀립니다.");
-//            return "login-form";
-//        }
-//
-//        HttpSession session = request.getSession();
-//        session.setAttribute("loginUser", findUser);
-//
-//        return "redirect:/home";
-//    }
+    @GetMapping("/admin/user")
+    public String showAllUser(Model model) {
+        List<User> users = userService.findUserAll();
+        model.addAttribute("users", users);
+        return "user/AllUsersDetail";
+    }
 }

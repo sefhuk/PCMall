@@ -60,7 +60,6 @@
         console.log(updateResult);
       };
 
-
       const deleteOrder = async (orderId) => {
         const deleteResult = await fetch(`/api/order/${orderId}`, {
           method: "delete",

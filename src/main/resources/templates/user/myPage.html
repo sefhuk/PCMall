@@ -1,100 +1,123 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>회원 정보 조회</title>
-<!--  <link rel="stylesheet" th:href="@{/user/css/myPage.css}">-->
+  <title>계정관리</title>
+<!--  <link th:href="@{/user/css/myPage.css}" rel="stylesheet" />-->
   <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 75vh;
+        margin: 0;
     }
 
-    .container {
-        text-align: center;
-        background: white;
+    header {
+        display: flex;
+        justify-content: space-between;
         padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #f8f9fa;
+        max-width: 960px;
+        margin: 0 auto;
     }
+
+    .header-left span {
+        font-weight: bold;
+        font-size: 24px;
+        text-decoration: none;
+    }
+
+    .header-right a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    main {
+        padding: 20px;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
     h1 {
-        font-size: 2em;
+        font-size: 28px;
         margin-bottom: 20px;
     }
 
-    .profile-card {
+    .actions {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: #e6f0fa;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
+        justify-content: space-around;
+        flex-wrap: wrap;
     }
 
-    .profile-image img {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        margin-bottom: 20px;
-    }
-
-    .profile-info p {
-        margin: 5px 0;
-        font-size: 1.1em;
-        color: #555;
-    }
-
-    .actions button {
-        background-color: #007BFF;
-        color: white;
-        padding: 10px 20px;
-        margin: 5px;
-        border: none;
+    .action {
+        background-color: #f8f9fa;
+        border: 1px solid #e2e6ea;
         border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
+        padding: 20px;
+        text-decoration: none;
+        flex-grow: 1;
+        width: 22%;
+        text-align: center;
     }
 
-    .actions button:hover {
-        background-color: #0056b3;
+    .action .icon {
+        font-size: 40px;
+        margin-bottom: 10px;
     }
 
-    .actions button.logout {
-        background-color: #dc3545;
+    .action h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
     }
 
-    .actions button.logout:hover {
-        background-color: #c82333;
+    .action p {
+        font-size: 14px;
+        color: #6c757d;
+    }
+
+    .action:hover {
+        background-color: #e2e6ea;
     }
   </style>
-  <script th:src="@{/user/js/myPage.js}"></script>
 </head>
 <body>
-<div class="container">
-  <h1>회원 정보 조회</h1>
-  <div class="profile-card">
-    <div class="profile-image">
-      <img src="/front/images/user.png" alt="User Icon">
-    </div>
-    <div class="profile-info">
-      <p>이름: <span th:text="${user.name}">xxx</span></p>
-      <p>이메일: <span th:text="${user.email}">example@elice.io</span></p>
-      <p>주소: <span th:text="${user.address}">대구시 달서구 ...</span></p>
-      <p>전화번호: <span th:text="${user.phone_number}">010-1234-1234</span></p>
-    </div>
+<header>
+  <div class="header-left">
+    <a th:href="@{/user/product}" style="text-decoration: none; color: inherit;">
+      <span>PC Mall</span>
+    </a>
   </div>
+  <div class="header-right">
+    <a th:href="@{/user/myPage}">마이페이지</a>/
+    <a th:href="@{/logout}">로그아웃</a>/
+    <a th:href="@{/user/cart}">카트</a>
+  </div>
+</header>
+<main>
+  <h1>계정관리</h1>
+  <hr>
   <div class="actions">
-    <button onclick="location.href='/order'">주문 조회</button>
-    <button onclick="location.href='/edit'">정보 수정</button>
-    <button onclick="logout()">로그아웃</button>
-    <button onclick="deleteAccount()">회원 탈퇴</button>
+    <a th:href="@{/user/order}" class="action">
+      <div class="icon">🧾</div>
+      <div class="content">
+        <h2>주문조회</h2>
+        <p>지난 주문 내역을 확인, 취소할 수 있습니다.</p>
+      </div>
+    </a>
+    <a th:href="@{/user/editPage}" class="action">
+      <div class="icon">👤</div>
+      <div class="content">
+        <h2>회원정보 관리</h2>
+        <p>회원 정보를 확인, 수정할 수 있습니다.</p>
+      </div>
+    </a>
+    <a th:href="@{/user/deletePage}" class="action">
+      <div class="icon">🚫</div>
+      <div class="content">
+        <h2>회원 탈퇴</h2>
+        <p>모든 정보를 안전하게 삭제한 후 탈퇴할 수 있습니다.</p>
+      </div>
+    </a>
   </div>
-</div>
+</main>
 </body>
 </html>
