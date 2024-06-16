@@ -11,6 +11,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,12 +55,16 @@ public class OrderController {
 
 
     @GetMapping
-    public String getUserOrders(Principal principal, Model model) {
+    public String getUserOrders(Principal principal, Model model,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "8") int size) {
         String userEmail = principal.getName();
         Long userId = userService.findUserByEmail(userEmail).getId();
 
-        List<OrderDto> orders = orderService.getOrders(userId);
-        model.addAttribute("orders", orders);
+        Page<OrderDto> orderPage = orderService.getOrders(userId, page, size);
+        model.addAttribute("orders", orderPage.getContent());
+        model.addAttribute("currentPage", orderPage.getNumber());
+        model.addAttribute("totalPages", orderPage.getTotalPages());
         return "/order/orderList";
     }
 

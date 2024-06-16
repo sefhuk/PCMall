@@ -1,7 +1,8 @@
 package com.team5.project2.order.dto;
 
-import com.team5.project2.order.entity.OrderDetail;
 import com.team5.project2.order.entity.OrderStatus;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import lombok.Data;
 
@@ -16,6 +17,13 @@ public class OrderDto {
     private String name;
     private String address;
     private String phoneNumber;
+
+    private String createdAt;
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.createdAt = createdAt.format(formatter);
+    }
 
     public void addOrderDetailDtos(List<OrderDetailDto> orderDetails) {
         this.orderDetails = orderDetails;
