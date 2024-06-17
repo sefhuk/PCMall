@@ -1,5 +1,7 @@
 package com.team5.project2.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.team5.project2.cart.entity.CartItem;
 import com.team5.project2.category.entity.Category;
 import com.team5.project2.common.entity.BaseTime;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
@@ -52,7 +54,7 @@ public class Product extends BaseTime {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 

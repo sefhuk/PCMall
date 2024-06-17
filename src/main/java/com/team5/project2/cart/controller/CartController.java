@@ -1,6 +1,7 @@
 package com.team5.project2.cart.controller;
 
 import com.team5.project2.cart.dto.CartDTO;
+import com.team5.project2.cart.mapper.CartMapper;
 import com.team5.project2.cart.service.CartService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     private final CartService cartService;
+    private final CartMapper cartMapper;
 
     @GetMapping
     public ResponseEntity<CartDTO> getCart(@RequestParam(required = false) Long userId, HttpSession session) {

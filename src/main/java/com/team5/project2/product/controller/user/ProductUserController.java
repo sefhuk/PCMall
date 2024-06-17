@@ -7,6 +7,8 @@ import com.team5.project2.product.entity.Product;
 import com.team5.project2.product.mapper.ProductMapper;
 import com.team5.project2.product.service.ProductService;
 import com.team5.project2.user.domain.UserDetail;
+import com.team5.project2.user.mapper.UserMapper;
+import com.team5.project2.user.service.UserService;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class ProductUserController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final UserService userService;
 
     @GetMapping
     public String getProductListPage(
@@ -77,11 +80,14 @@ public class ProductUserController {
             productService.findProduct(id));
 
         String role = user.getAuthorities().iterator().next().getAuthority();
-        
+
+        Long userId = userService.findUserByEmail(user.getUsername()).getId();
+
         model.addAttribute("categories", categories);
         model.addAttribute("product", product);
         model.addAttribute("user", user);
         model.addAttribute("role", role);
+        model.addAttribute("userId", userId);
 
         return "product/product-detail";
     }

@@ -78,9 +78,6 @@ function addToCart(userId, productId) {
       throw new Error("error");
     }
 
-    return res.json();
-  })
-  .then((data) => {
     const isConfirmed = confirm("장바구니에 추가되었습니다. 장바구니로 이동하시겠습니까?");
 
     if (!isConfirmed) {
@@ -90,6 +87,7 @@ function addToCart(userId, productId) {
     location.href = `/cart?userId=${userId}`;
   })
   .catch((err) => {
+    // 임시
     console.log(err);
     alert("error..!");
   });
