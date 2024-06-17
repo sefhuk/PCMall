@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,8 +31,9 @@ public class UserViewController {
     }
 
     @PostMapping("/sign-up")
-    public String processSignup(@Validated UserPostDto userPostDto, BindingResult bindingResult) {
+    public String processSignup(@Validated UserPostDto userPostDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors() || !userPostDto.getPassword().equals(userPostDto.getConfirmPassword())) {
+            model.addAttribute("error", "비밀번호가 일치하지 않습니다.");
             return "user/sign-up";
         }
         User user = userMapper.userPostDtoToUser(userPostDto);
@@ -39,13 +41,20 @@ public class UserViewController {
         String encPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
         user.setRole("ROLE_USER");
-        User newUser = userService.createUser(user);
-        return "redirect:/";
+        if (userService.createUser(user)) {
+            return "redirect:/";
+        } else {
+            model.addAttribute("error", "이메일이나 전화번호가 이미 존재합니다.");
+            return "user/sign-up";
+        }
     }
 
     @GetMapping("/")
-    public String showLoginForm(Model model) {
+    public String showLoginForm(@RequestParam(value = "error", required = false) String error, Model model) {
         model.addAttribute("userLoginDto", new UserLoginDto());
+        if (error != null) {
+            model.addAttribute("error", "로그인 인증에 실패했습니다.");
+        }
         return "user/login-form";
     }
 

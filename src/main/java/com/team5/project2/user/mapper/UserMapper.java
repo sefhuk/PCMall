@@ -18,7 +18,7 @@ public interface UserMapper {
     User userPostDtoToUser(UserPostDto userPostDto);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "phone_number", ignore = true)
+    @Mapping(target = "phoneNumber", ignore = true)
     @Mapping(target = "role", ignore = true)
     User userPutDtoToUser(UserPutDto userPutDto);
 }

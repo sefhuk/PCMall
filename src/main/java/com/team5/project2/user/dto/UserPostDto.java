@@ -31,5 +31,5 @@ public class UserPostDto {
 
     @NotEmpty(message = "전화번호를 입력해 주세요.")
     @Pattern(regexp = "\\d{10,11}", message = "유효한 전화번호를 입력해 주세요.")
-    private String phone_number;
+    private String phoneNumber;
 }

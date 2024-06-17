@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ShoppingMall 회원가입</title>
 <!--  <link rel="stylesheet" th:href="@{/user/css/sign-up.css}">-->
-  <script th:src="@{/user/js/sign-up.js}"></script>
   <style>
     body {
         font-family: Arial, sans-serif;
@@ -76,13 +75,17 @@
         font-size: 12px;
         margin-bottom: 10px;
     }
+    .input-error {
+        border-color: #dc3545 !important;
+    }
   </style>
 </head>
 <body>
 <div class="container">
   <h1>PC Mall</h1>
   <p>회원정보를 입력해 주세요</p>
-  <form th:action="@{/sign-up}" th:object="${userPostDto}" method="post">
+  <div th:if="${error != null}" th:text="${error}" style="color: red; margin-bottom: 10px;"></div>
+  <form onsubmit="return isValidCode()" th:action="@{/sign-up}" th:object="${userPostDto}" method="post">
     <div>
       <input type="text" class="form-control" size=39 th:field="*{name}" th:errorclass="field-error" placeholder="이름">
       <div class="field-error" th:errors="*{name}">
@@ -113,56 +116,58 @@
       </div>
     </div>
     <div>
-      <input type="text" size=39 th:field="*{phone_number}" placeholder="전화번호(-없이 입력해 주세요)">
-      <div class="field-error" th:errors="*{phone_number}">
+      <input type="text" size=39 th:field="*{phoneNumber}" placeholder="전화번호(-없이 입력해 주세요)">
+      <div class="field-error" th:errors="*{phoneNumber}">
         휴대폰 번호 오류
       </div>
     </div>
     <button type="submit">가입하기</button>
   </form>
+  <input type="text" id="Confirm" name="Confirm" style="display: none" value="">
+  <input type="text" id="verifySuccess" name="verifySuccess" style="display: none" value="false">
 </div>
 <script>
   async function sendVerificationCode() {
       const email = document.getElementById('email').value;
 
-      const response = await fetch('/api/send-verification-code', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email }),
+      const response = await fetch(`/mail`, {
+          method: "POST",
+          body: JSON.stringify({ email: email }),
+          headers: { "Content-Type": "application/json" }
       });
+
+      const data = await response.text();
 
       if (response.ok) {
           alert('인증 코드가 전송되었습니다.');
           document.querySelector('.verify-email').style.display = 'flex';
+          document.getElementById('Confirm').value = data;
       } else {
           alert('인증 코드 전송에 실패했습니다.');
       }
   }
 
-  async function verifyCode() {
-      const email = document.getElementById('email').value;
+  function verifyCode() {
       const code = document.getElementById('verification-code').value;
+      const ConfirmCode = document.getElementById('Confirm').value;
 
-      if (!code) {
-          alert('인증 코드를 입력해 주세요.');
-          return;
-      }
+      if(code == ConfirmCode){
+            alert("인증되었습니다.");
+            document.getElementById('verifySuccess').value = "true";
+            document.querySelector('.verify-email').style.display = 'none';
+        }else{
+            alert("인증 코드가 틀립니다.");
+        }
+  }
 
-      const response = await fetch('/api/verify', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, code }),
-      });
+  function isValidCode() {
+      const verifySuccess = document.getElementById('verifySuccess').value;
 
-      if (response.ok) {
-          alert('이메일 인증이 완료되었습니다.');
-          document.querySelector('.verify-email').style.display = 'none';
+      if (verifySuccess == "true") {
+          return true;  // 폼 제출 허용
       } else {
-          alert('인증 코드가 유효하지 않습니다.');
+          alert("이메일 인증을 완료해 주세요.");
+          return false;  // 폼 제출 막기
       }
   }
 </script>

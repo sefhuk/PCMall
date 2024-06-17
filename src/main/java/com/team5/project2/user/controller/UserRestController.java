@@ -1,6 +1,7 @@
 package com.team5.project2.user.controller;
 
 import com.team5.project2.user.domain.User;
+import com.team5.project2.user.service.MailService;
 import com.team5.project2.user.service.UserService;
 import java.security.Principal;
 import java.util.Map;
@@ -14,8 +15,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserRestController {
     private final UserService userService;
     private final UserDetailsService userDetailsService;
+    private final MailService mailService;
 
     @PutMapping({"/user/editEmail"})
     public ResponseEntity<?> updateEmail(@RequestBody Map<String, String> request, Principal principal) {
@@ -81,7 +85,7 @@ public class UserRestController {
     }
 
     @DeleteMapping({"/admin/deleteUser/{userId}"})
-    public ResponseEntity<?> deleteUser(@PathVariable Long userId, Principal principal) {
+    public ResponseEntity<?> deleteUser(@PathVariable("userId") Long userId, Principal principal) {
         String userEmail = principal.getName();
         User user = userService.findUserByEmail(userEmail);
         userService.deleteUser(userId);
@@ -93,5 +97,15 @@ public class UserRestController {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    @PostMapping("/mail")
+    public ResponseEntity<String> MailSend(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        System.out.println(email);
+        int number = mailService.sendMail(email);
+        String num = "" + number;
+
+        return ResponseEntity.ok(num);
     }
 }
