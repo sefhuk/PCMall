@@ -108,7 +108,8 @@
                                 주문 요청
                             </button>
                             <button
-                                class="cartButton w-[40%] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white">
+                                class="cartButton w-[40%] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white"
+                            th:onclick="addToCart([[${userId}]], [[${product.id}]])">
                                 장바구니 담기
                             </button>
                         </div>
