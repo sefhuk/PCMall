@@ -50,7 +50,7 @@ public class OrderController {
         model.addAttribute("orderDetails", orderDetailDtos);
         model.addAttribute("userId", user.getId());
 
-        return "/order/orderSheet";
+        return "order/orderSheet";
     }
 
 
@@ -65,7 +65,7 @@ public class OrderController {
         model.addAttribute("orders", orderPage.getContent());
         model.addAttribute("currentPage", orderPage.getNumber());
         model.addAttribute("totalPages", orderPage.getTotalPages());
-        return "/order/orderList";
+        return "order/orderList";
     }
 
     @GetMapping("/detail/{orderId}")
@@ -94,11 +94,11 @@ public class OrderController {
         model.addAttribute("productIds", productIds);
         model.addAttribute("counts", counts);
 
-        return "/order/orderDetail";
+        return "order/orderDetail";
     }
 
     @GetMapping("/addressForm")
     public String kakaoAddress() {
-        return "/order/getAddress";
+        return "order/getAddress";
     }
 }
