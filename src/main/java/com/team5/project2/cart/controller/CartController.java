@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/api/cart")
 @RequiredArgsConstructor
@@ -20,7 +19,10 @@ public class CartController {
         if (userId == null) {
             userId = (Long) session.getAttribute("userId");
         }
-        CartDTO cart = (userId != null) ? cartService.getCart(userId) : new CartDTO();
+        CartDTO cart = (userId != null) ? cartService.getCart(userId) : (CartDTO) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new CartDTO();
+        }
         return ResponseEntity.ok(cart);
     }
 
@@ -37,7 +39,7 @@ public class CartController {
             if (cart == null) {
                 cart = new CartDTO();
             }
-            cart = cartService.addToCart(userId, productId, quantity);
+            cart = cartService.addToCart(null, productId, quantity);
             session.setAttribute("cart", cart);
         }
         return ResponseEntity.ok(cart);
@@ -56,7 +58,7 @@ public class CartController {
             if (cart == null) {
                 cart = new CartDTO();
             }
-            cart = cartService.updateCartItem(userId, itemId, quantity);
+            cart = cartService.updateCartItem(null, itemId, quantity);
             session.setAttribute("cart", cart);
         }
         return ResponseEntity.ok(cart);
@@ -75,7 +77,7 @@ public class CartController {
             if (cart == null) {
                 cart = new CartDTO();
             }
-            cart = cartService.removeCartItem(userId, itemId);
+            cart = cartService.removeCartItem(null, itemId);
             session.setAttribute("cart", cart);
         }
         return ResponseEntity.ok(cart);
