@@ -1,62 +1,95 @@
 package com.team5.project2.cart.controller;
 
-import com.team5.project2.cart.dto.request.CartRequest;
-import com.team5.project2.cart.dto.response.CartResponse;
-import com.team5.project2.cart.service.CartServiceImpl;
-
-import java.time.LocalDateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.team5.project2.cart.dto.CartDTO;
+import com.team5.project2.cart.service.CartService;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
+@RequestMapping("/api/cart")
+@RequiredArgsConstructor
 public class CartController {
 
-    private static Logger logger = LoggerFactory.getLogger(CartController.class);
-    private final CartServiceImpl cartService;
+    private final CartService cartService;
 
-    public CartController(CartServiceImpl cartService) {
-        this.cartService = cartService;
-    }
-
-    /* 장바구니 목록 (장바구니 아이템 목록) */
-    @GetMapping("/carts/{cartNo}")
-    public ResponseEntity<CartResponse.CartItemsDto> getCart(@PathVariable Integer cartNo) {
-        logger.info("CartController.getCart(cartNo): {}", LocalDateTime.now());
-
-        /* 로그인 하지 않은 사용자의 경우 */
-        if (cartNo == -1) {
-            logger.info("CartController.getCart(cartNo): not assigned user.");
-            return null;
+    @GetMapping
+    public ResponseEntity<CartDTO> getCart(@RequestParam(required = false) Long userId, HttpSession session) {
+        if (userId == null) {
+            userId = (Long) session.getAttribute("userId");
         }
-
-        return ResponseEntity.ok(cartService.getCart(cartNo));
+        CartDTO cart = (userId != null) ? cartService.getCart(userId) : new CartDTO();
+        return ResponseEntity.ok(cart);
     }
 
-    /* 장바구니 아이템 추가 */
-    @PostMapping("/cart/items")
-    public ResponseEntity<CartResponse.CreateCartItemDto> createCartItem(CartRequest.CreateCartItemDto requestDto) {
-        logger.info("CartController.createCartItem(CartRequest.CreateCartItemDto): {}", LocalDateTime.now());
-
-        /* 로그인 하지 않은 사용자의 경우 */
-        if (requestDto.getCartNo() == -1) {
-            logger.info("CartController.createCartItem(CartRequest.CreateCartItemDto): not assigned user.");
-            return null;
+    @PostMapping("/add")
+    public ResponseEntity<CartDTO> addToCart(@RequestParam(required = false) Long userId, @RequestParam Long productId, @RequestParam int quantity, HttpSession session) {
+        if (userId == null) {
+            userId = (Long) session.getAttribute("userId");
         }
-
-        return ResponseEntity.ok(cartService.createCartItem(requestDto));
+        CartDTO cart;
+        if (userId != null) {
+            cart = cartService.addToCart(userId, productId, quantity);
+        } else {
+            cart = (CartDTO) session.getAttribute("cart");
+            if (cart == null) {
+                cart = new CartDTO();
+            }
+            cart = cartService.addToCart(userId, productId, quantity);
+            session.setAttribute("cart", cart);
+        }
+        return ResponseEntity.ok(cart);
     }
 
-    /* 장바구니 아이템 수량 수정 */
-    @PutMapping("/cart/items")
-    public ResponseEntity<CartResponse.UpdateCartItemCountDto> updateCartItemCount(
-            @RequestBody CartRequest.UpdateCartItemCountDto requestDto) {
-        return ResponseEntity.ok(cartService.updateCartItemCount(requestDto));
+    @PutMapping("/update")
+    public ResponseEntity<CartDTO> updateCartItem(@RequestParam(required = false) Long userId, @RequestParam Long itemId, @RequestParam int quantity, HttpSession session) {
+        if (userId == null) {
+            userId = (Long) session.getAttribute("userId");
+        }
+        CartDTO cart;
+        if (userId != null) {
+            cart = cartService.updateCartItem(userId, itemId, quantity);
+        } else {
+            cart = (CartDTO) session.getAttribute("cart");
+            if (cart == null) {
+                cart = new CartDTO();
+            }
+            cart = cartService.updateCartItem(userId, itemId, quantity);
+            session.setAttribute("cart", cart);
+        }
+        return ResponseEntity.ok(cart);
+    }
+
+    @DeleteMapping("/remove")
+    public ResponseEntity<CartDTO> removeCartItem(@RequestParam(required = false) Long userId, @RequestParam Long itemId, HttpSession session) {
+        if (userId == null) {
+            userId = (Long) session.getAttribute("userId");
+        }
+        CartDTO cart;
+        if (userId != null) {
+            cart = cartService.removeCartItem(userId, itemId);
+        } else {
+            cart = (CartDTO) session.getAttribute("cart");
+            if (cart == null) {
+                cart = new CartDTO();
+            }
+            cart = cartService.removeCartItem(userId, itemId);
+            session.setAttribute("cart", cart);
+        }
+        return ResponseEntity.ok(cart);
+    }
+
+    @DeleteMapping("/clear")
+    public ResponseEntity<Void> clearCart(@RequestParam(required = false) Long userId, HttpSession session) {
+        if (userId == null) {
+            userId = (Long) session.getAttribute("userId");
+        }
+        if (userId != null) {
+            cartService.clearCart(userId);
+        }
+        session.removeAttribute("cart");
+        return ResponseEntity.noContent().build();
     }
 }
