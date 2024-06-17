@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShoppingMall 회원가입</title>
+<!--  <link rel="stylesheet" th:href="@{/user/css/sign-up.css}">-->
+  <script th:src="@{/user/js/sign-up.js}"></script>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        margin-top: 50px;
+    }
+    .container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 0;
+    }
+    .container h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .container form {
+        display: flex;
+        flex-direction: column;
+    }
+    .container form input {
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        flex: 1;
+    }
+    .container form button {
+        padding: 10px;
+        background-color: #333;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .container form button:hover {
+        background-color: #555;
+    }
+    .verify-email {
+        display: none;
+        align-items: left;
+    }
+    .verify-email input {
+        margin-top: 5px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .verify-email button {
+        margin-top: 5px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .field-error {
+        border-color: #dc3545;
+        color: #dc3545;
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>PC Mall</h1>
+  <p>회원정보를 입력해 주세요</p>
+  <form th:action="@{/sign-up}" th:object="${userPostDto}" method="post">
+    <div>
+      <input type="text" class="form-control" size=39 th:field="*{name}" th:errorclass="field-error" placeholder="이름">
+      <div class="field-error" th:errors="*{name}">
+        이름 오류
+      </div>
+    </div>
+    <div class="input-group">
+      <input type="email" id="email" class="form-control" th:field="*{email}" th:errorclass="field-error" placeholder="이메일">
+      <button type="button" onclick="sendVerificationCode()" style="margin-left: 10px;">인증코드 보내기</button>
+      <div class="field-error" th:errors="*{email}">
+        이메일 오류
+      </div>
+    </div>
+    <div class="verify-email">
+      <input type="text" id="verification-code" placeholder="인증 코드 입력">
+      <button type="button" onclick="verifyCode()">코드 확인</button>
+    </div>
+    <div>
+      <input type="password" size=39 th:field="*{password}" class="form-control" placeholder="비밀번호">
+      <div class="field-error" th:errors="*{password}">
+        비밀번호 오류
+      </div>
+    </div>
+    <div>
+      <input type="password" size=39 th:field="*{confirmPassword}" placeholder="비밀번호 확인">
+      <div class="field-error" th:errors="*{confirmPassword}">
+        비밀번호 확인 오류
+      </div>
+    </div>
+    <div>
+      <input type="text" size=39 th:field="*{phone_number}" placeholder="전화번호(-없이 입력해 주세요)">
+      <div class="field-error" th:errors="*{phone_number}">
+        휴대폰 번호 오류
+      </div>
+    </div>
+    <button type="submit">가입하기</button>
+  </form>
+</div>
+<script>
+  async function sendVerificationCode() {
+      const email = document.getElementById('email').value;
+
+      const response = await fetch('/api/send-verification-code', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+          alert('인증 코드가 전송되었습니다.');
+          document.querySelector('.verify-email').style.display = 'flex';
+      } else {
+          alert('인증 코드 전송에 실패했습니다.');
+      }
+  }
+
+  async function verifyCode() {
+      const email = document.getElementById('email').value;
+      const code = document.getElementById('verification-code').value;
+
+      if (!code) {
+          alert('인증 코드를 입력해 주세요.');
+          return;
+      }
+
+      const response = await fetch('/api/verify', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, code }),
+      });
+
+      if (response.ok) {
+          alert('이메일 인증이 완료되었습니다.');
+          document.querySelector('.verify-email').style.display = 'none';
+      } else {
+          alert('인증 코드가 유효하지 않습니다.');
+      }
+  }
+</script>
+</body>
+</html>

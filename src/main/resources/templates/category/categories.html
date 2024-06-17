@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Category Management</title>
+  <link rel="stylesheet" th:href="@{/category/css/category.css}">
+</head>
+<body onload="loadDefaultManufacturers()">
+<div class="container">
+  <header>
+    <h1>Category Management</h1>
+    <a href="/user/product" class="home-btn">홈으로</a>
+  </header>
+  <div class="content">
+    <div class="form-group">
+      <label for="categorySelect">카테고리 선택:</label>
+      <select id="categorySelect" th:value="${selectedCategory}" onchange="loadManufacturers()">
+        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+      </select>
+    </div>
+    <h2>카테고리 수정 및 추가</h2>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>제조사 이름</th>
+        <th>수정</th>
+        <th>삭제</th>
+      </tr>
+      </thead>
+      <tbody id="categoryTable">
+      <!-- Manufacturers will be loaded here dynamically -->
+      </tbody>
+    </table>
+    <div class="form-group">
+      <label for="newManufacturer">제조사 이름:</label>
+      <input type="text" id="newManufacturer" placeholder="내용을 입력해주세요">
+      <button onclick="addManufacturer()" class="add-btn">추가</button>
+    </div>
+  </div>
+</div>
+<script th:src="@{/category/js/app.js}"></script>
+</body>
+</html>
