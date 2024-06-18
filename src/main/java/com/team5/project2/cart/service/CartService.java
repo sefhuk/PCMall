@@ -64,9 +64,9 @@ public class CartService {
         return cartMapper.toDTO(updatedCart);
     }
 
-    public void removeCartItem(Long cartId, Long itemId) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new RuntimeException("Cart not found"));
-        CartItem item = cartItemRepository.findById(itemId).orElseThrow(() -> new RuntimeException("Item not found"));
+    public void removeCartItem(Long userId, Long itemId) {
+        Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Cart not found"));
+        CartItem item = cart.getItems().stream().filter(ci -> ci.getId().equals(itemId)).findFirst().orElseThrow(() -> new RuntimeException("Item not found"));
         cart.removeItem(item);
         cartItemRepository.delete(item);
         cartRepository.save(cart);

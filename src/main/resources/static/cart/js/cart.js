@@ -15,10 +15,10 @@ function loadCartItems() {
         cartItemsContainer.innerHTML = data.items.map(item => `
             <div class="cart-item" data-id="${item.id}">
                 <input type="checkbox" class="item-checkbox" onchange="updateTotalPrice()">
-                <img src="${item.product.image1}" alt="제품 이미지" class="item-image">
+                <img src="${item.product.image1 || ''}" alt="제품 이미지" class="item-image" style="${item.product.image1 ? '' : 'display:none;'}">
                 <div class="item-details">
                     <p class="item-name">${item.product.name}</p>
-                    <p class="item-price">가격: ${item.product.price.toFixed(1)}원</p>
+                    <p class="item-price">가격: ${item.product.price}원</p>
                     <p class="item-quantity">수량: <input type="number" value="${item.quantity}" class="quantity-input" min="1" onchange="updateCartItem(${item.id}, this.value)"></p>
                 </div>
                 <button class="item-remove" onclick="removeItem(${item.id})">−</button>
@@ -36,21 +36,19 @@ function goBack() {
 }
 
 function removeItem(itemId) {
-    // Remove the item from the DOM immediately
     const itemElement = document.querySelector(`.cart-item[data-id='${itemId}']`);
     if (itemElement) {
         itemElement.remove();
     }
-    updateTotalPrice();
 
     fetch(`/api/cart/remove?itemId=${itemId}`, { method: 'DELETE' })
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
+        updateTotalPrice();
     })
     .catch(error => {
-        // If an error occurs, show an alert and reload the cart items to correct the state
         alert('Error removing cart item: ' + error.message);
         loadCartItems();
     });
