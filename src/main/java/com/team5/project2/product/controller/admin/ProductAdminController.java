@@ -8,6 +8,7 @@ import com.team5.project2.product.entity.Product;
 import com.team5.project2.product.mapper.ProductMapper;
 import com.team5.project2.product.service.ProductService;
 import com.team5.project2.user.domain.UserDetail;
+import com.team5.project2.user.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +31,7 @@ public class ProductAdminController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final UserService userService;
 
     @GetMapping("/new")
     public String getProductSavePage(Model model) {
@@ -92,13 +94,15 @@ public class ProductAdminController {
 
         String role = user.getAuthorities().iterator().next().getAuthority();
 
+        String username = userService.findUserByEmail(user.getUsername()).getName();
+
         model.addAttribute("categories", categories);
         model.addAttribute("category", category);
         model.addAttribute("products", products);
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         model.addAttribute("totalPages", pagedProducts.getTotalPages());
-        model.addAttribute("user", user);
+        model.addAttribute("username", username);
         model.addAttribute("role", role);
 
         return "product/product-admin";

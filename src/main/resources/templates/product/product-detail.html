@@ -24,8 +24,6 @@
                         onclick="logout()">
                     <span>로그아웃</span>
                 </button>
-                <a th:if="${role == 'ROLE_ADMIN'}" class="ml-[20px] hover:underline hover:italic"
-                   href="/admin/product">상품 관리</a>
             </div>
         </div>
     </div>
@@ -108,7 +106,8 @@
                                 주문 요청
                             </button>
                             <button
-                                class="cartButton w-[40%] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white">
+                                class="cartButton w-[40%] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white"
+                            th:onclick="addToCart([[${userId}]], [[${product.id}]])">
                                 장바구니 담기
                             </button>
                         </div>
