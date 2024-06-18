@@ -56,9 +56,7 @@ public class CartController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
-            // username을 사용하여 userId를 가져오는 로직을 구현해야 합니다.
-            // 예: userRepository.findByUsername(username).getId();
-            return 1L; // 예시로 1L을 반환, 실제로는 userId를 반환해야 함
+            return 1L;
         }
         throw new RuntimeException("사용자 인증 정보가 없습니다.");
     }
