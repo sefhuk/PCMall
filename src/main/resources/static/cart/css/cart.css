@@ -64,12 +64,12 @@
 }
 
 .item-name {
-  font-size: 14px;
+  font-size: 16px;
   margin: 0;
 }
 
 .item-price, .item-quantity {
-  font-size: 12px;
+  font-size: 14px;
   margin: 5px 0;
 }
 
