@@ -30,5 +30,7 @@ public class Cart extends BaseTime {
     public void setUser(User user) {
         this.user = user;
     }
-
+    public void removeItem(CartItem item) {
+        items.remove(item);
+    }
 }

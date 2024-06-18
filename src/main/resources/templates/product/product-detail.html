@@ -102,14 +102,17 @@
                             class="flex justify-between items-center h-[95%] text-2xl font-semibold mt-[100px]">
                             <button
                                 class="buyButton w-[40%] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white"
-                                th:onclick="order([[${product.id}]]);">
+                                th:onclick="order([[${product.id}]]);"
+                                th:if="${product.stock > 0}">
                                 주문 요청
                             </button>
                             <button
                                 class="cartButton w-[40%] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white"
-                            th:onclick="addToCart([[${userId}]], [[${product.id}]])">
+                                th:onclick="addToCart([[${userId}]], [[${product.id}]])"
+                                th:if="${product.stock > 0}">
                                 장바구니 담기
                             </button>
+                            <p class="text-[red] font-bold text-xl" th:if="${product.stock == 0}">이 상품은 현재 품절입니다</p>
                         </div>
                     </div>
                 </div>

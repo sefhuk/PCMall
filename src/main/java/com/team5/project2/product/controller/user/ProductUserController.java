@@ -84,7 +84,7 @@ public class ProductUserController {
         String role = user.getAuthorities().iterator().next().getAuthority();
 
         User foundUser = userService.findUserByEmail(user.getUsername());
-        
+
         model.addAttribute("categories", categories);
         model.addAttribute("product", product);
         model.addAttribute("user", user);

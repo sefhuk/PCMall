@@ -52,9 +52,9 @@ buyCount.addEventListener("input", function (event) {
 
 // 상품 주문
 function order(productId) {
-  const confirmed = confirm("주문 페이지로 이동합니다");
+  const isConfirmed = confirm("주문 페이지로 이동합니다");
 
-  if (!confirmed) {
+  if (!isConfirmed) {
     return;
   }
 
@@ -85,5 +85,5 @@ function addToCart(userId, productId) {
     }
 
     location.href = `/cart?userId=${userId}`;
-  })
+  });
 }

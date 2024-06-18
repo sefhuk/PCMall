@@ -10,5 +10,4 @@ public class CartDTO {
     private List<CartItemDTO> items;
     private int totalQuantity;
     private double totalPrice;
-
 }
