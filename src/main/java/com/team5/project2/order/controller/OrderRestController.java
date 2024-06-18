@@ -1,5 +1,7 @@
 package com.team5.project2.order.controller;
 
+import com.team5.project2.cart.service.CartService;
+import com.team5.project2.order.dto.OrderDetailDto;
 import com.team5.project2.order.dto.OrderDto;
 import com.team5.project2.order.dto.OrderRequest;
 import com.team5.project2.order.entity.OrderStatus;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderRestController {
 
     private final OrderService orderService;
+    private final CartService cartService;
 
     @GetMapping
     public ResponseEntity<List<OrderDto>> getAllOrders() {
@@ -39,6 +42,9 @@ public class OrderRestController {
     public ResponseEntity<OrderDto> createOrder(@PathVariable Long userId, @RequestBody OrderRequest orderRequest) {
         try {
             OrderDto createdOrderDto = orderService.createOrder(orderRequest, userId);
+//            for (OrderDetailDto orderDetailDto : orderRequest.getOrderDetailDtos()) {
+//                cartService.removeCartItem(userId,orderDetailDto.getProductId());
+//            }
             return ResponseEntity.ok(createdOrderDto);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
