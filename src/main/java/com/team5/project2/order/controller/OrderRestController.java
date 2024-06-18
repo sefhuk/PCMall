@@ -43,9 +43,9 @@ public class OrderRestController {
     public ResponseEntity<?> createOrder(@PathVariable Long userId, @RequestBody OrderRequest orderRequest) {
         try {
             OrderDto createdOrderDto = orderService.createOrder(orderRequest, userId);
-//            for (OrderDetailDto orderDetailDto : orderRequest.getOrderDetailDtos()) {
-//                cartService.removeCartItem(userId,orderDetailDto.getProductId());
-//            }
+            for (OrderDetailDto orderDetailDto : orderRequest.getOrderDetailDtos()) {
+                cartService.removeCartItem(userId,orderDetailDto.getProductId());
+            }
             return ResponseEntity.ok(createdOrderDto);
         } catch (InsufficientStockException e) {
             return ResponseEntity.badRequest().body("재고가 부족한 상품: " + e.getProductName());
