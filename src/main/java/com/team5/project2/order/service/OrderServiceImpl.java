@@ -6,6 +6,7 @@ import com.team5.project2.order.dto.OrderRequest;
 import com.team5.project2.order.entity.Order;
 import com.team5.project2.order.entity.OrderDetail;
 import com.team5.project2.order.entity.OrderStatus;
+import com.team5.project2.order.exception.InsufficientStockException;
 import com.team5.project2.order.mapper.OrderDetailMapper;
 import com.team5.project2.order.mapper.OrderMapper;
 import com.team5.project2.order.repository.OrderRepository;
@@ -51,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
 
             // 재고 확인
             if (product.getStock() < orderDetailDto.getCount()) {
-                throw new IllegalArgumentException("Not enough stock for product: " + product.getName());
+                throw new InsufficientStockException(product.getName());
             }
 
             // 재고 감소
