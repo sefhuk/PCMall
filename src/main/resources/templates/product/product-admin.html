@@ -10,24 +10,24 @@
 <body>
 <header class="mt-[60px]">
     <div class="flex justify-between items-center w-[100%] mb-[30px] px-[150px]">
-        <a href="/user/product" class="block text-4xl font-bold">PC Mall</a>
+        <a href="/admin/product" class="block text-4xl font-bold">PC Mall<span class="text-xl">  - 관리자</span></a>
         <div class="flex flex-col items-end text-xl">
             <p class="flex justify-end items-center">
                 <img th:src="@{/product/img/user.png}" width="25px" height="25px" alt="유저이미지">
                 <span class="block ml-[10px] font-bold"
-                      th:text="|${role == 'ROLE_ADMIN' ? '(관리자)' : ''} ${user.getUsername()} 님|"/>
+                      th:text="|${role == 'ROLE_ADMIN' ? '(관리자)' : ''} ${username} 님|"/>
             </p>
             <div class="flex mt-[10px]">
-                <a href="/user/myPage" class="hover:underline hover:italic">마이페이지</a>
+                <a th:if="${role == 'ROLE_ADMIN'}" class="hover:underline hover:italic"
+                   href="/admin/product/new">상품 추가</a>
+                <a th:if="${role == 'ROLE_ADMIN'}" class="ml-[20px] hover:underline hover:italic"
+                   href="/user/product">메인페이지</a>
+                <a href="/user/myPage" class="ml-[20px] hover:underline hover:italic">마이페이지</a>
                 <button type="button"
                         class="flex justify-center items-center ml-[20px] hover:underline hover:italic"
                         onclick="logout()">
                     <span>로그아웃</span>
                 </button>
-                <a th:if="${role == 'ROLE_ADMIN'}" class="ml-[20px] hover:underline hover:italic"
-                   href="/admin/product/new">상품 추가</a>
-                <a th:if="${role == 'ROLE_ADMIN'}" class="ml-[20px] hover:underline hover:italic"
-                   href="/admin/product">상품 관리</a>
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@
         <div
             class="flex justify-between items-center text-center p-1 w-[90%] h-[120px] border-2 border-solid border-[skyblue]
                 mb-[30px]"
-            th:each="product: ${products}">
+                th:each="product: ${products}">
             <a
                 class="flex flex-col justify-around w-[20%] h-[95%] text-left hover:underline hover:italic"
                 th:href="@{/user/product/{id}(id=${product.id})}">
@@ -57,7 +57,7 @@
             <div
                 class="flex flex-col justify-around w-[20%] h-[95%]">
                 <a th:href="@{/admin/product/{id}/edit(id=${product.id})}" class="font-bold text-2xl
-                 w-[80%] h-[60px] leading-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white">수정/관리</a>
+                 w-[80%] h-[60px] leading-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white">수정/삭제</a>
             </div>
         </div>
     </div>
