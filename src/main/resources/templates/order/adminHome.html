@@ -49,15 +49,13 @@
 
       const updateOrder = async (orderId) => {
         const orderStatus = document.getElementById("status" + orderId).value;
-
-        console.log(orderId, orderStatus);
+        
         const updateResult = await fetch(`/api/order/${orderId}`, {
           method: "put",
           body: JSON.stringify({orderId, orderStatus}),
           headers: {"Content-Type": "application/json"}
         }).then(res => res.json());
         alert("updated");
-        console.log(updateResult);
       };
 
       const deleteOrder = async (orderId) => {
@@ -65,9 +63,7 @@
           method: "delete",
           headers: {"Content-Type": "application/json"}
         });
-
-        console.log(deleteResult);
-
+        
         window.location.reload();
       };
     
