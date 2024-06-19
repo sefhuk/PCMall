@@ -76,6 +76,7 @@
                 id="name"
                 placeholder="입력해주세요"
                 th:value="${product.name}"
+                onchange="trimZeros(event, 'i')"
             />
         </div>
         <div
@@ -88,6 +89,7 @@
                 id="stock"
                 placeholder="숫자만 입력해주세요"
                 th:value="${product.stock}"
+                onchange="trimZeros(event, 'i')"
             />
         </div>
         <div
@@ -192,8 +194,6 @@
                 <option value="미니타워">미니타워</option>
             </select>
         </div>
-
-
         <div class="flex justify-between w-[50%] mt-[50px] text-4xl">
             <button
                 class="bg-[skyblue] w-[45%] py-[10px] mr-[2%] hover:bg-[#33adff] hover:text-white"
@@ -223,5 +223,6 @@
     <h1 class="text-center text-7xl">잠시만 기다려주세요..</h1>
 </div>
 <script th:src="@{/product/js/product-manage.js}"></script>
+<script th:src="@{/product/js/global.js}"></script>
 </body>
 </html>
