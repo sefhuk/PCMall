@@ -94,3 +94,28 @@ function updateTotalPrice() {
     });
     document.getElementById('totalPrice').innerText = total.toLocaleString() + '원';
 }
+
+function placeOrder() {
+    const selectedItems = Array.from(document.querySelectorAll('.item-checkbox:checked'));
+    if (selectedItems.length === 0) {
+        alert('주문할 상품을 선택해주세요.');
+        return;
+    }
+
+    const productIds = [];
+    const counts = [];
+
+    selectedItems.forEach(checkbox => {
+        const productId = checkbox.getAttribute('data-product-id');
+        const quantity = checkbox.closest('.cart-item').querySelector('.quantity-input').value;
+        productIds.push(productId);
+        counts.push(quantity);
+    });
+
+    const productIdsStr = productIds.join(',');
+    const quantitiesStr = counts.join(',');
+
+    const url = '/sheet?productIds=' + productIdsStr + '&counts=' + quantitiesStr;
+
+    window.location.href = url;
+}
