@@ -95,7 +95,7 @@ function updateTotalPrice() {
     document.getElementById('totalPrice').innerText = total.toLocaleString() + '원';
 }
 
-function placeOrder() {
+function toOrder() {
     const selectedItems = Array.from(document.querySelectorAll('.item-checkbox:checked'));
     if (selectedItems.length === 0) {
         alert('주문할 상품을 선택해주세요.');
@@ -115,7 +115,7 @@ function placeOrder() {
     const productIdsStr = productIds.join(',');
     const quantitiesStr = counts.join(',');
 
-    const url = '/sheet?productIds=' + productIdsStr + '&counts=' + quantitiesStr;
+    const url = '/user/order/sheet?productIds=' + productIdsStr + '&counts=' + quantitiesStr;
 
     window.location.href = url;
 }
