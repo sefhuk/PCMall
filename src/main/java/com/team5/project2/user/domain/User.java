@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,14 +26,14 @@ public class User extends BaseTime {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private String phone_number;
+    @Column(unique = true, nullable = false)
+    private String phoneNumber;
 
     private String address;
 
@@ -57,9 +59,9 @@ public class User extends BaseTime {
         }
     }
 
-    public void updatePhoneNumber(String phone_number) {
-        if(phone_number != null) {
-            this.phone_number = phone_number;
+    public void updatePhoneNumber(String phoneNumber) {
+        if(phoneNumber != null) {
+            this.phoneNumber = phoneNumber;
         }
     }
 

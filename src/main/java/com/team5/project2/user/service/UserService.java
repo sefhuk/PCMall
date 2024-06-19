@@ -30,8 +30,16 @@ public class UserService {
         return jpaUserRepository.findByEmail(email);
     }
 
-    public User createUser(User user) {
-        return jpaUserRepository.save(user);
+    public boolean createUser(User user) {
+        User existingUserByUsername = jpaUserRepository.findByPhoneNumber(user.getPhoneNumber());
+        User existingUserByEmail = jpaUserRepository.findByEmail(user.getEmail());
+
+        if (existingUserByUsername != null || existingUserByEmail != null) {
+            return false;
+        }
+
+        jpaUserRepository.save(user);
+        return true;
     }
 
     public void updateUserEmail(User user, String email) {

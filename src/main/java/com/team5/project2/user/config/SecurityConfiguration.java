@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -34,7 +36,7 @@ public class SecurityConfiguration {
                 .loginPage("/")
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/user/product", false)
-                .failureUrl("/login-form?error")
+                .failureHandler(authenticationFailureHandler())
                 .usernameParameter("email")
                 .passwordParameter("password")
             )
@@ -42,6 +44,10 @@ public class SecurityConfiguration {
                 .logoutSuccessUrl("/")
             );
         return http.build();
+    }
+
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new SimpleUrlAuthenticationFailureHandler("/?error=true");
     }
 }
 // .formLogin(login -> login

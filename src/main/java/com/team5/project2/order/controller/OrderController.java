@@ -46,7 +46,7 @@ public class OrderController {
 
         model.addAttribute("name", user.getName());
         model.addAttribute("address", user.getAddress());
-        model.addAttribute("phoneNumber", user.getPhone_number());
+        model.addAttribute("phoneNumber", user.getPhoneNumber());
         model.addAttribute("orderDetails", orderDetailDtos);
         model.addAttribute("userId", user.getId());
 

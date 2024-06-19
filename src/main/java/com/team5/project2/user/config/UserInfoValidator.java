@@ -34,8 +34,8 @@ public class UserInfoValidator implements Validator {
             errors.rejectValue("confirmPassword", "required");
         }
 
-        if (!StringUtils.hasText(userDto.getPhone_number())) {
-            errors.rejectValue("phone_number", "required");
+        if (!StringUtils.hasText(userDto.getPhoneNumber())) {
+            errors.rejectValue("phoneNumber", "required");
         }
     }
 }
