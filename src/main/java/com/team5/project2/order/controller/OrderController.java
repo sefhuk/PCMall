@@ -1,5 +1,6 @@
 package com.team5.project2.order.controller;
 
+import com.team5.project2.cart.dto.CartItemDTO;
 import com.team5.project2.order.dto.OrderDetailDto;
 import com.team5.project2.order.dto.OrderDto;
 import com.team5.project2.order.service.OrderService;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -30,8 +33,7 @@ public class OrderController {
 
     @GetMapping("/sheet")
     public String viewOrder(Principal principal, @RequestParam List<Long> productIds, @RequestParam List<Long> counts, Model model) {
-        String userEmail = principal.getName();
-        User user = userService.findUserByEmail(userEmail);
+        User user = findCurrUser(principal);
 
         List<OrderDetailDto> orderDetailDtos = new ArrayList<>();
         for (int i = 0; i < productIds.size(); i++) {
@@ -100,5 +102,10 @@ public class OrderController {
     @GetMapping("/addressForm")
     public String kakaoAddress() {
         return "order/getAddress";
+    }
+
+    public User findCurrUser(Principal principal) {
+        String userEmail = principal.getName();
+        return userService.findUserByEmail(userEmail);
     }
 }

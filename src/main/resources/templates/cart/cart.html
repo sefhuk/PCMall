@@ -13,7 +13,7 @@
   <div class="cart-items" id="cartItems">
     <!-- 장바구니 아이템이 여기에 추가됩니다 -->
     <div th:each="item : ${cart.items}" class="cart-item">
-      <input type="checkbox" class="item-checkbox" data-product-id="${item.productId}" data-quantity="${item.quantity}" onchange="updateTotalPrice()">
+      <input type="checkbox" class="item-checkbox" th:attr="data-product-id=${item.productId}" onchange="updateTotalPrice()">
       <img th:if="${item.product.images.size() != 0}" th:each="image: ${item.product.images}" th:src="${image.url}" alt="제품 이미지" class="item-image">
       <div class="item-details">
         <p class="item-name" th:text="${item.productName}">제품 이름</p>
