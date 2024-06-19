@@ -123,7 +123,8 @@ function upload() {
         return;
       }
 
-      description[keyNode.innerText] = valueNode.value;
+      description[keyNode.children[0] ? keyNode.children[0].value
+          : keyNode.innerText] = valueNode.value;
     }
   }
 
