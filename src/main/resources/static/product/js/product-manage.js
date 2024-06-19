@@ -199,8 +199,8 @@ function updateReq(productId) {
       return;
     }
 
-    description[keyNode.innerText] = valueNode.value;
-    // }
+    description[keyNode.children[0] ? keyNode.children[0].value
+        : keyNode.innerText] = valueNode.value;
   }
 
   formData.append("description", JSON.stringify(description));
