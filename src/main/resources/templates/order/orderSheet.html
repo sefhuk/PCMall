@@ -72,6 +72,8 @@
             },
             body: JSON.stringify(orderRequest)
           });
+          
+          console.log((orderRequest))
 
           if (response.ok) {
             window.location.href = '/user/order';
@@ -79,7 +81,8 @@
             const errorMessage = await response.text();
             alert(errorMessage);
           } else {
-            console.error('주문 실패.');
+            const errorMessage = await response.text();
+            console.error('주문 실패:', errorMessage);
           }
         } catch (error) {
           console.error('오류:', error);

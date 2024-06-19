@@ -2,7 +2,7 @@ package com.team5.project2.user.service;
 
 import com.team5.project2.user.domain.User;
 import com.team5.project2.user.dto.TokenInfoDto;
-import com.team5.project2.user.jwt.JwtTokenProvider;
+//import com.team5.project2.user.jwt.JwtTokenProvider;
 import com.team5.project2.user.repository.UserRepository;
 import java.security.Principal;
 import java.util.List;
@@ -21,7 +21,7 @@ public class UserService {
     private final UserRepository jpaUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final JwtTokenProvider jwtTokenProvider;
+//    private final JwtTokenProvider jwtTokenProvider;
 
     public List<User> findUserAll() {
         return jpaUserRepository.findAll();

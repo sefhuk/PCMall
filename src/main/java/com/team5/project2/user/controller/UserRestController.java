@@ -100,12 +100,20 @@ public class UserRestController {
     }
 
     @PostMapping("/mail")
-    public ResponseEntity<String> MailSend(@RequestBody Map<String, String> request) {
+    public ResponseEntity<?> mailSend(@RequestBody Map<String, String> request) {
         String email = request.get("email");
-        System.out.println(email);
-        int number = mailService.sendMail(email);
-        String num = "" + number;
+        mailService.sendMail(email);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-        return ResponseEntity.ok(num);
+    @PostMapping("/mailCheck")
+    public ResponseEntity<?> verify(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        String code = request.get("code");
+        boolean response = mailService.verifyEmailCode(email, code);
+        if(!response) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,7 +1,7 @@
 package com.team5.project2.user.config;
 
-import com.team5.project2.user.jwt.JwtAuthenticationFilter;
-import com.team5.project2.user.jwt.JwtTokenProvider;
+//import com.team5.project2.user.jwt.JwtAuthenticationFilter;
+//import com.team5.project2.user.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-    private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
     public PasswordEncoder passwordEncoder() {

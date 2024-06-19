@@ -85,7 +85,7 @@
   <h1>PC Mall</h1>
   <p>회원정보를 입력해 주세요</p>
   <div th:if="${error != null}" th:text="${error}" style="color: red; margin-bottom: 10px;"></div>
-  <form onsubmit="return isValidCode()" th:action="@{/sign-up}" th:object="${userPostDto}" method="post">
+  <form th:action="@{/sign-up}" th:object="${userPostDto}" method="post">
     <div>
       <input type="text" class="form-control" size=39 th:field="*{name}" th:errorclass="field-error" placeholder="이름">
       <div class="field-error" th:errors="*{name}">
@@ -147,29 +147,35 @@
       }
   }
 
-  function verifyCode() {
+  async function verifyCode() {
+      const email = document.getElementById('email').value;
       const code = document.getElementById('verification-code').value;
-      const ConfirmCode = document.getElementById('Confirm').value;
 
-      if(code == ConfirmCode){
-            alert("인증되었습니다.");
-            document.getElementById('verifySuccess').value = "true";
-            document.querySelector('.verify-email').style.display = 'none';
-        }else{
-            alert("인증 코드가 틀립니다.");
-        }
-  }
+      const response = await fetch(`/mailCheck`, {
+          method: "POST",
+          body: JSON.stringify({ email, code }),
+          headers: { "Content-Type": "application/json" }
+      });
 
-  function isValidCode() {
-      const verifySuccess = document.getElementById('verifySuccess').value;
-
-      if (verifySuccess == "true") {
-          return true;  // 폼 제출 허용
+      if (response.ok) {
+          alert("인증되었습니다.");
+          document.getElementById('verifySuccess').value = "true";
+          document.querySelector('.verify-email').style.display = 'none';
       } else {
-          alert("이메일 인증을 완료해 주세요.");
-          return false;  // 폼 제출 막기
+          alert("인증 코드가 틀립니다.");
       }
   }
+
+<!--  function isValidCode() {-->
+<!--      const verifySuccess = document.getElementById('verifySuccess').value;-->
+
+<!--      if (verifySuccess == "true") {-->
+<!--          return true;  // 폼 제출 허용-->
+<!--      } else {-->
+<!--          alert("이메일 인증을 완료해 주세요.");-->
+<!--          return false;  // 폼 제출 막기-->
+<!--      }-->
+<!--  }-->
 </script>
 </body>
 </html>

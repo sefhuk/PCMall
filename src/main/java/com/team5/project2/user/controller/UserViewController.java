@@ -1,9 +1,11 @@
 package com.team5.project2.user.controller;
 
+import com.team5.project2.user.domain.Email;
 import com.team5.project2.user.domain.User;
 import com.team5.project2.user.dto.UserLoginDto;
 import com.team5.project2.user.dto.UserPostDto;
 import com.team5.project2.user.mapper.UserMapper;
+import com.team5.project2.user.service.MailService;
 import com.team5.project2.user.service.UserService;
 import java.security.Principal;
 import java.util.List;
@@ -16,11 +18,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequiredArgsConstructor
 public class UserViewController {
     private final UserService userService;
+    private final MailService mailService;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -32,11 +36,22 @@ public class UserViewController {
 
     @PostMapping("/sign-up")
     public String processSignup(@Validated UserPostDto userPostDto, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors() || !userPostDto.getPassword().equals(userPostDto.getConfirmPassword())) {
+        if(bindingResult.hasErrors()) {
+            return "user/sign-up";
+        }
+
+        if (!userPostDto.getPassword().equals(userPostDto.getConfirmPassword())) {
             model.addAttribute("error", "비밀번호가 일치하지 않습니다.");
             return "user/sign-up";
         }
+
         User user = userMapper.userPostDtoToUser(userPostDto);
+        Email email = mailService.findByEmail(user.getEmail());
+        if(!email.getEmailStatus()) {
+            model.addAttribute("error", "이메일 인증을 진행해주세요.");
+            return "user/sign-up";
+        }
+
         String rawPassword = user.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
