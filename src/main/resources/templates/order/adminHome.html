@@ -74,7 +74,7 @@
           body: JSON.stringify({orderId, orderStatus}),
           headers: {"Content-Type": "application/json"}
         }).then(res => res.json());
-        alert("updated");
+        alert("수정 완료");
       };
 
       const deleteOrder = async (orderId) => {
