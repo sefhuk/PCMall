@@ -1,5 +1,6 @@
 package com.team5.project2.user.domain;
 
+import com.team5.project2.cart.entity.Cart;
 import com.team5.project2.common.entity.BaseTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,6 +39,9 @@ public class User extends BaseTime {
     private String address;
 
     private String role;
+
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
 
 //    public void setId(Long id) {
 //        this.id = id;
