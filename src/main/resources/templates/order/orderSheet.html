@@ -57,8 +57,13 @@
         const address = document.getElementById('addressText').innerText;
         const phoneNumber = document.getElementById('phoneNumber').value;
 
-        if (!address || address.trim() === '') {
-          alert('주소는 필수 입력 사항입니다.');
+        if (!name || !address || !phoneNumber || name.trim() === '' || address.trim() === '' || phoneNumber.trim() === '') {
+          alert('주문자 정보는 필수 입력사항입니다.');
+          return;
+        }
+
+        if (orderDetails.length === 0) {
+          alert('주문할 상품이 존재하지 않습니다.');
           return;
         }
 
@@ -104,4 +109,3 @@
     </script>
 </body>
 </html>
-
