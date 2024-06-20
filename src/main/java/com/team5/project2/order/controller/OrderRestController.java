@@ -30,15 +30,6 @@ public class OrderRestController {
     private final OrderService orderService;
     private final CartService cartService;
 
-    @GetMapping
-    public ResponseEntity<List<OrderDto>> getAllOrders() {
-        List<OrderDto> orders = orderService.getAllOrders();
-        if (orders.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(orders, HttpStatus.OK);
-    }
-
     @PostMapping("/{userId}")
     public ResponseEntity<?> createOrder(@PathVariable Long userId, @RequestBody OrderRequest orderRequest) {
         try {
