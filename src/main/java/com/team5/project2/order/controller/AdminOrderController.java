@@ -23,7 +23,7 @@ public class AdminOrderController {
     private final OrderService orderService;
 
     @GetMapping
-    public String adminHome(Model model, @PageableDefault(size = 10) Pageable pageable) {
+    public String adminHome(Model model, @PageableDefault(size = 8) Pageable pageable) {
         Page<OrderDto> orders = orderService.getAllOrders(pageable);
         model.addAttribute("orders", orders);
         model.addAttribute("page", pageable.getPageNumber());
