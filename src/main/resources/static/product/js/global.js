@@ -16,3 +16,27 @@ function logout() {
     alert("로그아웃 실패");
   });
 }
+
+const inputs = document.getElementsByTagName("input");
+
+for (let i = 0; i < inputs.length; i++) {
+  const inputType = inputs[i].type;
+
+  if (inputType === "number") {
+    inputs[i].addEventListener("change", (e) => {
+      let value = e.target.value.replace(/^0+(?=\d)/, '');
+
+      // 소수점이 있는 경우 처리
+      if (value.includes('.')) {
+        // 소수점 뒤의 0 제거
+        value = value.replace(/\.?0+$/, '');
+      }
+
+      if (value === '0') {
+        value = null;
+      }
+
+      inputs[i].value = value;
+    });
+  }
+}
