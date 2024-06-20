@@ -123,11 +123,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public OrderDto updateOrder(OrderDto orderDto) {
-//        Order order = orderMapper.OrderDtoToOrder(orderDto);
-        // order을 입력받은 orderDto에서 Mapper를 통해 변환하면 새로 생성된 Order인데 해당 id의 createdAt이 있으니까 null을 반환?
         Order order = orderRepository.findById(orderDto.getId())
             .orElseThrow(() -> new RuntimeException("order not found"));
         order.setStatus(orderDto.getStatus());
+        if (orderDto.getStatus().equals(OrderStatus.CANCELED)) {
+            returnProducts(order.getOrderDetails());
+        }
         order = orderRepository.save(order);
 
         OrderDto savedOrderDto = orderMapper.OrderToOrderDto(order);
@@ -135,6 +136,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public void deleteOrder(Long id) {
+        Order order = orderRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Order with ID " + id + " not found"));
+
+        List<OrderDetail> orderDetails = order.getOrderDetails();
+        returnProducts(orderDetails);
+
         orderRepository.deleteById(id);
+    }
+
+    public void returnProducts(List<OrderDetail> orderDetails) {
+        if (orderDetails == null || orderDetails.size() == 0) return;
+        for (OrderDetail orderDetail : orderDetails) {
+            Product product = productRepository.findById(orderDetail.getProduct().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+            product.updateStock(orderDetail.getCount());
+        }
     }
 }
