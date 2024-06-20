@@ -1,8 +1,9 @@
 package com.team5.project2.cart.controller;
 
 import com.team5.project2.cart.dto.CartDTO;
-import com.team5.project2.cart.mapper.CartMapper;
 import com.team5.project2.cart.service.CartService;
+import com.team5.project2.user.domain.User;
+import com.team5.project2.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     private final CartService cartService;
-    private final CartMapper cartMapper;
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<CartDTO> getCart() {
@@ -55,8 +56,9 @@ public class CartController {
     private Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();
-            return 1L;
+            String email = authentication.getName();
+            User user = userService.findUserByEmail(email);
+            return user.getId();
         }
         throw new RuntimeException("사용자 인증 정보가 없습니다.");
     }

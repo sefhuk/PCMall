@@ -18,7 +18,7 @@
         </div>
         <div class="mb-3">
             <label for="address" class="form-label">주소:</label>
-            <input type="text" class="form-control" id="address" name="address" th:value="${address}" />
+            <p id="addressText" th:text="${address}">주소</p>
             <button class="btn btn-secondary mt-2" id="kakaoAddress">수정</button>
         </div>
         <div class="mb-3">
@@ -54,8 +54,18 @@
 
       async function placeOrder() {
         const name = document.getElementById('name').value;
-        const address = document.getElementById('address').value;
+        const address = document.getElementById('addressText').innerText;
         const phoneNumber = document.getElementById('phoneNumber').value;
+
+        if (!name || !address || !phoneNumber || name.trim() === '' || address.trim() === '' || phoneNumber.trim() === '') {
+          alert('주문자 정보는 필수 입력사항입니다.');
+          return;
+        }
+
+        if (orderDetails.length === 0) {
+          alert('주문할 상품이 존재하지 않습니다.');
+          return;
+        }
 
         const orderRequest = {
           name: name,
@@ -72,8 +82,6 @@
             },
             body: JSON.stringify(orderRequest)
           });
-          
-          console.log((orderRequest))
 
           if (response.ok) {
             window.location.href = '/user/order';
@@ -94,9 +102,9 @@
           window.open("/user/order/addressForm","","width=700px,height=500px,top=200px,left=200px;");
         }
       };
-      
+
       function setAddress(address) {
-        document.getElementById("address").value = address;
+        document.getElementById("addressText").innerText = address;
       }
     </script>
 </body>

@@ -9,3 +9,12 @@ function deleteAccount() {
         location.href = '/delete-account';
     }
 }
+
+// 장바구니 페이지로 이동
+function goToCart() {
+    if (userId !== 'null') {
+        location.href = `/user/cart?userId=${userId}`;
+    } else {
+        alert("로그인이 필요합니다.");
+    }
+}

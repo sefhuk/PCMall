@@ -74,9 +74,12 @@ public class UserViewController {
     }
 
     @GetMapping("/user/myPage")
-    public String showMyPage(Principal principal) {
+    public String showMyPage(Principal principal, Model model) {
         String userEmail = principal.getName();
         User user = userService.findUserByEmail(userEmail);
+
+        model.addAttribute("userId", user.getId());
+
         if(user.getRole().equals("ROLE_USER")) {
             return "user/myPage";
         }
