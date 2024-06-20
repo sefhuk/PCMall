@@ -4,78 +4,78 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>계정관리</title>
-<!--  <link th:href="@{/user/css/myPage.css}" rel="stylesheet" />-->
   <style>
     body {
-        font-family: Arial, sans-serif;
-        margin: 0;
+      font-family: Arial, sans-serif;
+      margin: 0;
     }
 
     header {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px;
-        background-color: #f8f9fa;
-        max-width: 960px;
-        margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+      background-color: #f8f9fa;
+      max-width: 960px;
+      margin: 0 auto;
     }
 
     .header-left span {
-        font-weight: bold;
-        font-size: 24px;
-        text-decoration: none;
+      font-weight: bold;
+      font-size: 24px;
+      text-decoration: none;
     }
 
     .header-right a {
-        color: #007bff;
-        text-decoration: none;
+      color: #007bff;
+      text-decoration: none;
+      cursor: pointer;
     }
 
     main {
-        padding: 20px;
-        max-width: 1000px;
-        margin: 0 auto;
+      padding: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
     }
 
     h1 {
-        font-size: 28px;
-        margin-bottom: 20px;
+      font-size: 28px;
+      margin-bottom: 20px;
     }
 
     .actions {
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
     }
 
     .action {
-        background-color: #f8f9fa;
-        border: 1px solid #e2e6ea;
-        border-radius: 5px;
-        padding: 20px;
-        text-decoration: none;
-        flex-grow: 1;
-        width: 22%;
-        text-align: center;
+      background-color: #f8f9fa;
+      border: 1px solid #e2e6ea;
+      border-radius: 5px;
+      padding: 20px;
+      text-decoration: none;
+      flex-grow: 1;
+      width: 22%;
+      text-align: center;
     }
 
     .action .icon {
-        font-size: 40px;
-        margin-bottom: 10px;
+      font-size: 40px;
+      margin-bottom: 10px;
     }
 
     .action h2 {
-        font-size: 20px;
-        margin-bottom: 10px;
+      font-size: 20px;
+      margin-bottom: 10px;
     }
 
     .action p {
-        font-size: 14px;
-        color: #6c757d;
+      font-size: 14px;
+      color: #6c757d;
     }
 
     .action:hover {
-        background-color: #e2e6ea;
+      background-color: #e2e6ea;
     }
   </style>
 </head>
@@ -89,7 +89,7 @@
   <div class="header-right">
     <a th:href="@{/user/myPage}">마이페이지</a>/
     <a th:href="@{/logout}">로그아웃</a>/
-    <a th:href="@{/user/cart}">카트</a>
+    <a href="javascript:void(0);" onclick="goToCart()">카트</a>
   </div>
 </header>
 <main>
@@ -119,5 +119,11 @@
     </a>
   </div>
 </main>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const userId = /*[[${userId}]]*/ 'null';
+  /*]]>*/
+</script>
+<script src="/user/js/myPage.js"></script>
 </body>
 </html>

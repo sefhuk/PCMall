@@ -84,6 +84,6 @@ function addToCart(userId, productId) {
       return;
     }
 
-    location.href = `/cart?userId=${userId}`;
+    location.href = `/user/cart?userId=${userId}`;
   });
 }
