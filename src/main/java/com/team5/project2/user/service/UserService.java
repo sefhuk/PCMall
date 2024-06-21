@@ -1,9 +1,12 @@
 package com.team5.project2.user.service;
 
+import com.team5.project2.order.dto.OrderDto;
 import com.team5.project2.user.domain.User;
 import com.team5.project2.user.repository.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,10 @@ public class UserService {
 
     public List<User> findUserAll() {
         return jpaUserRepository.findAll();
+    }
+
+    public Page<User> findUserAll(Pageable pageable) {
+        return jpaUserRepository.findAll(pageable);
     }
 
     public User findUserById(Long id) {

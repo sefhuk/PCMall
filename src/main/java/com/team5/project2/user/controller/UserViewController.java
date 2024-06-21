@@ -1,5 +1,6 @@
 package com.team5.project2.user.controller;
 
+import com.team5.project2.order.dto.OrderDto;
 import com.team5.project2.user.domain.Email;
 import com.team5.project2.user.domain.User;
 import com.team5.project2.user.dto.UserLoginDto;
@@ -10,6 +11,9 @@ import com.team5.project2.user.service.UserService;
 import java.security.Principal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -108,9 +112,11 @@ public class UserViewController {
     }
 
     @GetMapping("/admin/user")
-    public String showAllUser(Model model) {
-        List<User> users = userService.findUserAll();
+    public String showAllUser(Model model, @PageableDefault(size = 8) Pageable pageable) {
+        Page<User> users = userService.findUserAll(pageable);
         model.addAttribute("users", users);
+        model.addAttribute("page", pageable.getPageNumber());
+        model.addAttribute("totalPages", users.getTotalPages());
         return "user/AllUsersDetail";
     }
 }
