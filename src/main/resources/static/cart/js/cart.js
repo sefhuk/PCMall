@@ -32,30 +32,23 @@ function loadCartItems() {
 }
 
 function goBack() {
-    window.location.href = '/user/product'; // 경로 수정
+    window.location.href = '/user/product';
 }
 
 function removeItem(itemId) {
-    // Remove the item from the DOM immediately
-    const itemElement = document.querySelector(`.cart-item[data-id='${itemId}']`);
-    if (itemElement) {
-        itemElement.remove();
-    }
-    updateTotalPrice();
-
     fetch(`/api/cart/remove?itemId=${itemId}`, { method: 'DELETE' })
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        else {
-        window.location.reload();
+        const itemElement = document.querySelector(`.cart-item[data-id='${itemId}']`);
+        if (itemElement) {
+            itemElement.remove();
         }
+        updateTotalPrice();
     })
     .catch(error => {
-        // If an error occurs, show an alert and reload the cart items to correct the state
         alert('Error removing cart item: ' + error.message);
-        loadCartItems();
     });
 }
 
@@ -121,4 +114,13 @@ function toOrder() {
     const url = '/user/order/sheet?productIds=' + productIdsStr + '&counts=' + quantitiesStr;
 
     window.location.href = url;
+}
+
+function toggleSelectAll() {
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+    itemCheckboxes.forEach(checkbox => {
+        checkbox.checked = selectAllCheckbox.checked;
+    });
+    updateTotalPrice();
 }

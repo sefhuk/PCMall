@@ -10,6 +10,9 @@
     <a href="/user/product" class="back-button">←</a>
     <h1>장바구니</h1>
   </div>
+  <div class="cart-actions">
+    <input type="checkbox" id="selectAll" onclick="toggleSelectAll()"> 전체 선택
+  </div>
   <div class="cart-items" id="cartItems">
     <!-- 장바구니 아이템이 여기에 추가됩니다 -->
     <div th:each="item : ${cart.items}" class="cart-item">
@@ -23,12 +26,14 @@
       <button class="item-remove" th:onclick="'removeItem(' + ${item.id} + ')'">−</button>
     </div>
   </div>
-  <button class="clear-cart-button" onclick="clearCart()">전체 삭제</button>
-  <div class="cart-total">
-    <p>총 결제금액</p>
-    <p id="totalPrice">0원</p>
+  <div class="cart-footer">
+    <button class="clear-cart-button" onclick="clearCart()">전체 삭제</button>
+    <div class="cart-total">
+      <p>총 결제금액</p>
+      <p id="totalPrice">0원</p>
+    </div>
+    <button class="order-button" onclick="toOrder()">주문하기</button>
   </div>
-  <button class="order-button" onclick="toOrder()">주문하기</button>
 </div>
 
 <script src="/cart/js/cart.js"></script>
