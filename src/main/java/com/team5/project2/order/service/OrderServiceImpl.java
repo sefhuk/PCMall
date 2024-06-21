@@ -138,8 +138,10 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Order with ID " + id + " not found"));
 
-        List<OrderDetail> orderDetails = order.getOrderDetails();
-        returnProducts(orderDetails);
+        if (order.getStatus().equals(OrderStatus.CONFIRMED) || order.getStatus().equals(OrderStatus.SHIPPING)) {
+            List<OrderDetail> orderDetails = order.getOrderDetails();
+            returnProducts(orderDetails);
+        }
 
         orderRepository.deleteById(id);
     }
