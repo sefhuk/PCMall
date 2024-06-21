@@ -48,6 +48,9 @@ function removeItem(itemId) {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
+        else {
+        window.location.reload();
+        }
     })
     .catch(error => {
         // If an error occurs, show an alert and reload the cart items to correct the state
