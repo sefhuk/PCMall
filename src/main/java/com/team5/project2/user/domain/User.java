@@ -48,16 +48,8 @@ public class User extends BaseTime {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Cart cart;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     private List<Order> orders = new ArrayList<>();
-
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-//
-//    public void setRole(String role) {
-//        this.role = role;
-//    }
 
     public void updateEmail(String email) {
         if(email != null) {
@@ -89,3 +81,4 @@ public class User extends BaseTime {
         }
     }
 }
+
