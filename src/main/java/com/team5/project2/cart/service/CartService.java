@@ -9,6 +9,7 @@ import com.team5.project2.cart.repository.CartRepository;
 import com.team5.project2.product.entity.Product;
 import com.team5.project2.product.repository.ProductRepository;
 import com.team5.project2.user.repository.UserRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -87,16 +88,17 @@ public class CartService {
     public void removeCartItemByProductId(Long userId, Long productId) {
         System.out.println("Removing item with product ID " + productId + " from cart for user ID " + userId);
         Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Cart not found"));
-        Optional<CartItem> itemOptional = cartItemRepository.findByProductId(productId);
-        if (itemOptional.isPresent()) {
-            CartItem item = itemOptional.get();
-            cart.removeItem(item);
-            cartItemRepository.delete(item);
+        List<CartItem> items = cartItemRepository.findByProductId(productId);
+
+        if (!items.isEmpty()) {
+            for (CartItem item : items) {
+                cart.removeItem(item);
+                cartItemRepository.delete(item);
+            }
             cartRepository.save(cart);
-            System.out.println("Item with product ID " + productId + " successfully removed from cart for user ID " + userId);
+            System.out.println("Items with product ID " + productId + " successfully removed from cart for user ID " + userId);
         } else {
             System.out.println("Item with product ID " + productId + " not found in cart for user ID " + userId);
-//            throw new RuntimeException("Item not found");
         }
     }
 }
