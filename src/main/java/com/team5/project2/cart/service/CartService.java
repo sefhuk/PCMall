@@ -96,7 +96,7 @@ public class CartService {
             System.out.println("Item with product ID " + productId + " successfully removed from cart for user ID " + userId);
         } else {
             System.out.println("Item with product ID " + productId + " not found in cart for user ID " + userId);
-            throw new RuntimeException("Item not found");
+//            throw new RuntimeException("Item not found");
         }
     }
 }

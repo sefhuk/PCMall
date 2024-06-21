@@ -32,6 +32,7 @@ public class OrderRestController {
 
     @PostMapping("/{userId}")
     public ResponseEntity<?> createOrder(@PathVariable Long userId, @RequestBody OrderRequest orderRequest) {
+        System.out.println("orderRequest: " + orderRequest);
         try {
             OrderDto createdOrderDto = orderService.createOrder(orderRequest, userId);
             for (OrderDetailDto orderDetailDto : orderRequest.getOrderDetailDtos()) {
@@ -41,7 +42,7 @@ public class OrderRestController {
         } catch (InsufficientStockException e) {
             return ResponseEntity.badRequest().body("재고가 부족한 상품: " + e.getProductName());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
