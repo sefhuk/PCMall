@@ -13,11 +13,13 @@ import com.team5.project2.product.repository.ProductRepository;
 import com.team5.project2.product.util.JsonMapper;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,16 +42,34 @@ public class ProductService {
             .orElseThrow(() -> new RuntimeException("해당 상품이 존재하지 않습니다."));
     }
 
-    public List<Product> findProductAll(Long id) {
-        return productRepository.findAll();
-    }
+    public Page<Product> findProductByCategoryIdPaging(Long categoryId, String searchType,
+        String search, Pageable pageable) {
 
-    public List<Product> findProductByCategoryId(Long categoryId) {
-        return productRepository.findByCategoryId(categoryId);
-    }
+        if (Objects.equals(search, "") && Objects.equals(searchType, "")) {
+            return productRepository.findByCategoryIdAndNameContaining(categoryId, "",
+                pageable);
+        }
 
-    public Page<Product> findProductByCategoryIdPaging(Long categoryId, Pageable pageable) {
-        return productRepository.findByCategoryId(categoryId, pageable);
+        if (Objects.equals(searchType, "제품명")) {
+            return productRepository.findByCategoryIdAndNameContaining(categoryId, search, pageable);
+        }
+
+        if (Objects.equals(searchType, "내용")) {
+            List<Product> products = productRepository.findByCategoryId(categoryId, pageable)
+                .getContent().stream()
+                .filter(p -> {
+                    Map<String, String> description = p.getDescription();
+                    return containsSearchKeyword(description, search);
+                }).toList();
+
+            int start = (int) pageable.getOffset();
+            int end = Math.min((start + pageable.getPageSize()), products.size());
+
+            return new PageImpl<>(products.subList(start, end), pageable, products.size());
+        }
+
+        return productRepository.findByCategoryIdAndId(categoryId, Long.parseLong(search),
+            pageable);
     }
 
     public Product addProduct(Product product, String part, List<MultipartFile> images)
@@ -156,5 +176,21 @@ public class ProductService {
             removeImageFromStorage(oldProductImage);
         } catch (IndexOutOfBoundsException ignored) {
         }
+    }
+
+    private boolean containsSearchKeyword(Map<String, String> desc, String keyword) {
+        for (String key : desc.keySet()) {
+            if (key.contains(keyword)) {
+                return true;
+            }
+        }
+
+        for (String value : desc.values()) {
+            if (value.contains(keyword)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
