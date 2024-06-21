@@ -20,6 +20,7 @@ if (prevButton && prevButton && nextButton) {
     imagePage.innerHTML = `${currentPage + 1}/${imageCount}`;
 
     if (currentPage === 0) {
+      nextButton.classList.remove('opacity-30');
       prevButton.classList.add('opacity-30');
       return;
     }
@@ -41,6 +42,7 @@ if (prevButton && prevButton && nextButton) {
 
     if (currentPage + 1 === imageCount) {
       nextButton.classList.add('opacity-30');
+      prevButton.classList.remove('opacity-30');
       return;
     }
 
