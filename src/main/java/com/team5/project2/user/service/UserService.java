@@ -27,10 +27,10 @@ public class UserService {
     }
 
     public boolean createUser(User user) {
-        User existingUserByUsername = jpaUserRepository.findByPhoneNumber(user.getPhoneNumber());
+        User existingUserByPhoneNumber = jpaUserRepository.findByPhoneNumber(user.getPhoneNumber());
         User existingUserByEmail = jpaUserRepository.findByEmail(user.getEmail());
 
-        if (existingUserByUsername != null || existingUserByEmail != null) {
+        if (existingUserByPhoneNumber != null || existingUserByEmail != null) {
             return false;
         }
 
@@ -38,9 +38,14 @@ public class UserService {
         return true;
     }
 
-    public void updateUserEmail(User user, String email) {
+    public boolean updateUserEmail(User user, String email) {
+        User existingUserByEmail = jpaUserRepository.findByEmail(email);
+        if (existingUserByEmail != null) {
+            return false;
+        }
         user.updateEmail(email);
         jpaUserRepository.save(user);
+        return true;
     }
 
     public void updateUserName(User user, String name) {
@@ -48,9 +53,15 @@ public class UserService {
         jpaUserRepository.save(user);
     }
 
-    public void updateUserPhoneNumber(User user, String phone_number) {
-        user.updatePhoneNumber(phone_number);
+    public boolean updateUserPhoneNumber(User user, String phoneNumber) {
+        User existingUserByPhoneNumber = jpaUserRepository.findByPhoneNumber(phoneNumber);
+
+        if (existingUserByPhoneNumber != null) {
+            return false;
+        }
+        user.updatePhoneNumber(phoneNumber);
         jpaUserRepository.save(user);
+        return true;
     }
 
     public boolean checkIfValidOldPassword(User user, String oldPassword) {

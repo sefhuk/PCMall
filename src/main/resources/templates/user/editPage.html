@@ -85,7 +85,6 @@
 
     .verify-email {
         display: none;
-        align-items: left;
     }
 
     .password-container {
@@ -125,7 +124,7 @@
             <button type="button" onclick="sendVerificationCode()">인증코드 발송</button>
           </div>
           <div id="verify-email" class="verify-email">
-            <input type="email" id="verification-code" placeholder="인증코드 입력">
+            <input type="text" id="verification-code" placeholder="인증코드 입력">
             <button type="button" onclick="updateEmail()">저장</button>
           </div>
         </td>
@@ -142,7 +141,7 @@
         </td>
       </tr>
       <tr>
-        <th>휴대폰 번호</th>
+        <th>전화 번호</th>
         <td>
           <span id="phone-display" th:text="${user.phoneNumber}">전화번호</span>
           <button type="button" onclick="toggleEdit('phone')">전화번호 변경</button>
@@ -196,11 +195,11 @@
   function toggleBtn(field) {
 	  const btn1 = document.getElementById(field + '-edit');
 
-	  if(btn1.style.display !== 'none') {
-	    btn1.style.display = 'none';
+	  if(btn1.style.display === 'none') {
+	    btn1.style.display = 'block';
 	  }
 	  else {
-	    btn1.style.display = 'block';
+	    btn1.style.display = 'none';
 	  }
 	}
 
@@ -227,7 +226,7 @@
 
       if (response.ok) {
           alert('인증 코드가 전송되었습니다.');
-          document.querySelector('.verify-email').style.display = 'flex';
+          document.querySelector('.verify-email').style.display = 'block';
       } else {
           alert('인증 코드 전송에 실패했습니다.');
       }
@@ -235,18 +234,19 @@
 
   const updateEmail = async () => {
       const email = document.getElementById('new-email').value;
+       const code = document.getElementById('verification-code').value;
 
       try {
           const updateResult = await fetch(`/user/editEmail`, {
               method: "PUT",
-              body: JSON.stringify({ email }),
+              body: JSON.stringify({ email, code }),
               headers: { "Content-Type": "application/json" }
           });
-
+          const errorMessage = await updateResult.text();
           if (updateResult.ok) {
               window.location.reload();
           } else {
-              console.error("이메일 변경에 실패했습니다.");
+              alert(`${errorMessage}`);
           }
       } catch (error) {
           console.error("오류:", error);

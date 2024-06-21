@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,11 +29,22 @@ public class UserRestController {
     private final MailService mailService;
 
     @PutMapping({"/user/editEmail"})
-    public ResponseEntity<?> updateEmail(@RequestBody Map<String, String> request, Principal principal) {
+    public ResponseEntity<String> updateEmail(@RequestBody Map<String, String> request, Principal principal,
+        Model model) {
         String newEmail = request.get("email");
+        String code = request.get("code");
+        boolean response = mailService.verifyEmailCode(newEmail, code);
+        if(!response) {
+            String verificationCodeError = "유효하지 않은 인증코드입니다.";
+            return new ResponseEntity<>(verificationCodeError, HttpStatus.BAD_REQUEST);
+        }
         String userEmail = principal.getName();
         User user = userService.findUserByEmail(userEmail);
-        userService.updateUserEmail(user, newEmail);
+        boolean emailUpdateStatus = userService.updateUserEmail(user, newEmail);
+        if(!emailUpdateStatus) {
+            String emailAlreadyExists = "이미 존재하는 이메일입니다.";
+            return new ResponseEntity<>(emailAlreadyExists, HttpStatus.BAD_REQUEST);
+        }
         updateSecurityContext(newEmail);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -52,7 +64,11 @@ public class UserRestController {
         String newPhone  = request.get("phone");
         String userEmail = principal.getName();
         User user = userService.findUserByEmail(userEmail);
-        userService.updateUserPhoneNumber(user, newPhone);
+        boolean phoneNumberUpdateStatus = userService.updateUserPhoneNumber(user, newPhone);
+        if(!phoneNumberUpdateStatus) {
+            String emailAlreadyExists = "이미 존재하는 전화번호입니다.";
+            return new ResponseEntity<>(emailAlreadyExists, HttpStatus.BAD_REQUEST);
+        }
         updateSecurityContext(userEmail);
         return new ResponseEntity<>(HttpStatus.OK);
     }
