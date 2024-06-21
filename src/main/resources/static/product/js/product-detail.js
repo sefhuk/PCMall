@@ -18,6 +18,15 @@ if (prevButton && prevButton && nextButton) {
 
     imageContainer.style.transform = `translateX(-${--currentPage * 400}px)`;
     imagePage.innerHTML = `${currentPage + 1}/${imageCount}`;
+
+    if (currentPage === 0) {
+      prevButton.classList.add('opacity-30');
+      return;
+    }
+
+    if (currentPage === imageCount - 2) {
+      nextButton.classList.remove('opacity-30');
+    }
   });
 
   nextButton.addEventListener("click", function (event) {
@@ -29,6 +38,15 @@ if (prevButton && prevButton && nextButton) {
 
     imageContainer.style.transform = `translateX(-${++currentPage * 400}px)`;
     imagePage.innerHTML = `${currentPage + 1}/${imageCount}`;
+
+    if (currentPage + 1 === imageCount) {
+      nextButton.classList.add('opacity-30');
+      return;
+    }
+
+    if (currentPage === 1) {
+      prevButton.classList.remove('opacity-30');
+    }
   });
 }
 
