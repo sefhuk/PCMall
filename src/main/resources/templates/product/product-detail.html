@@ -72,7 +72,7 @@
                         <div id="imagePage" class="text-xl" th:text="|1/${product.images.size()}|">
                             1/4
                         </div>
-                        <button id="nextButton" class="w-[40px] h-[40px]"><img
+                        <button id="nextButton" th:class="|w-[40px] h-[40px] ${product.images.size() == 1 ? 'opacity-30' : ''}|"><img
                             th:src="@{/product/img/next.png}"
                             alt="뒤로"></button>
                     </div>
