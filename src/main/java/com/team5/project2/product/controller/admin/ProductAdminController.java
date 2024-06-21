@@ -8,6 +8,7 @@ import com.team5.project2.product.entity.Product;
 import com.team5.project2.product.mapper.ProductMapper;
 import com.team5.project2.product.service.ProductService;
 import com.team5.project2.user.domain.UserDetail;
+import com.team5.project2.user.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +31,7 @@ public class ProductAdminController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final UserService userService;
 
     @GetMapping("/new")
     public String getProductSavePage(Model model) {
@@ -71,6 +73,8 @@ public class ProductAdminController {
         @RequestParam(value = "category", defaultValue = "CPU") String category,
         @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
         @RequestParam(value = "size", defaultValue = "20", required = false) Integer size,
+        @RequestParam(value = "search", defaultValue = "", required = false) String search,
+        @RequestParam(value = "searchType", defaultValue = "", required = false) String searchType,
         @AuthenticationPrincipal UserDetail user, Model model) {
 
         List<CategoryDTO> categories = categoryService.getAllCategories();
@@ -83,7 +87,9 @@ public class ProductAdminController {
         }
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Product> pagedProducts = productService.findProductByCategoryIdPaging(findCategory.getId(), pageable);
+        Page<Product> pagedProducts =
+            productService.findProductByCategoryIdPaging(
+                findCategory.getId(), searchType, search, pageable);
 
         List<ProductResponseDto> products = pagedProducts.getContent().stream()
             .filter(p -> Objects.equals(p.getCategory().getName(), category))
@@ -92,14 +98,18 @@ public class ProductAdminController {
 
         String role = user.getAuthorities().iterator().next().getAuthority();
 
+        String username = userService.findUserByEmail(user.getUsername()).getName();
+
         model.addAttribute("categories", categories);
         model.addAttribute("category", category);
         model.addAttribute("products", products);
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         model.addAttribute("totalPages", pagedProducts.getTotalPages());
-        model.addAttribute("user", user);
+        model.addAttribute("username", username);
         model.addAttribute("role", role);
+        model.addAttribute("search", search);
+        model.addAttribute("searchType", searchType);
 
         return "product/product-admin";
     }

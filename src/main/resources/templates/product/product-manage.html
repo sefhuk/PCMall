@@ -10,7 +10,7 @@
 <body>
 <main class="mb-[50px]">
     <h1 class="h-[200px] text-center text-4xl font-bold leading-[200px]">
-        상품 수정/관리 - 관리자
+        상품 수정/삭제 - 관리자
     </h1>
     <div class="flex justify-evenly items-center my-[70px]" id="preview">
         <button
@@ -76,6 +76,7 @@
                 id="name"
                 placeholder="입력해주세요"
                 th:value="${product.name}"
+                onchange="trimZeros(event, 'i')"
             />
         </div>
         <div
@@ -88,6 +89,7 @@
                 id="stock"
                 placeholder="숫자만 입력해주세요"
                 th:value="${product.stock}"
+                onchange="trimZeros(event, 'i')"
             />
         </div>
         <div
@@ -153,8 +155,8 @@
                 th:id="|pr${product.id}|"
                 th:defaultValue="${entry.value}"
             >
-                <option value="desktop">데스크탑</option>
-                <option value="laptop">노트북</option>
+                <option value="데스크탑">데스크탑</option>
+                <option value="노트북">노트북</option>
             </select>
             <select
                 th:if="${entry.key == '인터페이스'}"
@@ -192,8 +194,6 @@
                 <option value="미니타워">미니타워</option>
             </select>
         </div>
-
-
         <div class="flex justify-between w-[50%] mt-[50px] text-4xl">
             <button
                 class="bg-[skyblue] w-[45%] py-[10px] mr-[2%] hover:bg-[#33adff] hover:text-white"
@@ -223,5 +223,19 @@
     <h1 class="text-center text-7xl">잠시만 기다려주세요..</h1>
 </div>
 <script th:src="@{/product/js/product-manage.js}"></script>
+<script th:src="@{/product/js/global.js}"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const originBrand = /*[[${product.brand}]]*/ 'null';
+  /*]]>*/
+
+  const brandOptions = brand.getElementsByTagName("option");
+  for (let i = 0; i < brandOptions.length; i++) {
+    if (brandOptions[i].value === originBrand) {
+      brandOptions[i].selected = true;
+      break;
+    }
+  }
+</script>
 </body>
 </html>

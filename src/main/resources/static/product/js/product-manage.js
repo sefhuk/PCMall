@@ -26,7 +26,7 @@ for (let i = 0; i < selected.length; i++) {
 for (let i = 0; i < previewImages.length; i++) {
   const name = previewImages[i].getAttribute("imageName");
 
-  const file = new File([], name, {type: "image/name"})
+  const file = new File([], name, {type: "image/name"});
 
   images.push(file);
 }
@@ -55,7 +55,7 @@ function cancel(productId) {
     return;
   }
 
-  location.href = `/user/product/${productId}`;
+  location.href = `/admin/product`;
 }
 
 // 상품 삭제 요청 버튼
@@ -72,13 +72,12 @@ function deleteReq(productId) {
     method: "DELETE"
   })
   .then((res) => {
-    return res.json();
-  })
-  .then((data) => {
-    alert("삭제 되었습니다.");
-    location.href = "/admin/product";
-  })
-  .catch((err) => {
+    if (res.ok) {
+      alert("삭제 되었습니다.");
+      location.href = "/admin/product";
+      return;
+    }
+
     alert("서버가 원할하지 않습니다. 잠시후에 이용해주세요.");
     document.getElementById("modal").classList.add("hidden");
   });
@@ -173,7 +172,7 @@ function updateReq(productId) {
     return;
   }
 
-  const formData= new FormData();
+  const formData = new FormData();
 
   images.forEach((e) => {
     formData.append('images', e);
@@ -199,19 +198,20 @@ function updateReq(productId) {
       return;
     }
 
-    description[keyNode.innerText] = valueNode.value;
-    // }
+    description[keyNode.children[0] ? keyNode.children[0].value
+        : keyNode.innerText] = valueNode.value;
   }
 
   formData.append("description", JSON.stringify(description));
 
   document.getElementById("modal").classList.remove("hidden");
+
   fetch(`/admin/product?productId=${productId}`, {
     method: "PUT",
     body: formData,
   })
   .then((res) => {
-      return res.json();
+    return res.json();
   })
   .then((data) => {
     alert("수정되었습니다.");

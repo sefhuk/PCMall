@@ -1,24 +1,27 @@
 package com.team5.project2.user.service;
 
+import com.team5.project2.order.dto.OrderDto;
 import com.team5.project2.user.domain.User;
 import com.team5.project2.user.repository.UserRepository;
-import java.security.Principal;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository jpaUserRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository jpaUserRepository, PasswordEncoder passwordEncoder) {
-        this.jpaUserRepository = jpaUserRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
     public List<User> findUserAll() {
         return jpaUserRepository.findAll();
+    }
+
+    public Page<User> findUserAll(Pageable pageable) {
+        return jpaUserRepository.findAll(pageable);
     }
 
     public User findUserById(Long id) {
@@ -30,13 +33,26 @@ public class UserService {
         return jpaUserRepository.findByEmail(email);
     }
 
-    public User createUser(User user) {
-        return jpaUserRepository.save(user);
+    public boolean createUser(User user) {
+        User existingUserByPhoneNumber = jpaUserRepository.findByPhoneNumber(user.getPhoneNumber());
+        User existingUserByEmail = jpaUserRepository.findByEmail(user.getEmail());
+
+        if (existingUserByPhoneNumber != null || existingUserByEmail != null) {
+            return false;
+        }
+
+        jpaUserRepository.save(user);
+        return true;
     }
 
-    public void updateUserEmail(User user, String email) {
+    public boolean updateUserEmail(User user, String email) {
+        User existingUserByEmail = jpaUserRepository.findByEmail(email);
+        if (existingUserByEmail != null) {
+            return false;
+        }
         user.updateEmail(email);
         jpaUserRepository.save(user);
+        return true;
     }
 
     public void updateUserName(User user, String name) {
@@ -44,9 +60,15 @@ public class UserService {
         jpaUserRepository.save(user);
     }
 
-    public void updateUserPhoneNumber(User user, String phone_number) {
-        user.updatePhoneNumber(phone_number);
+    public boolean updateUserPhoneNumber(User user, String phoneNumber) {
+        User existingUserByPhoneNumber = jpaUserRepository.findByPhoneNumber(phoneNumber);
+
+        if (existingUserByPhoneNumber != null) {
+            return false;
+        }
+        user.updatePhoneNumber(phoneNumber);
         jpaUserRepository.save(user);
+        return true;
     }
 
     public boolean checkIfValidOldPassword(User user, String oldPassword) {
@@ -67,16 +89,4 @@ public class UserService {
     public void deleteUser(Long userId) {
         jpaUserRepository.deleteById(userId);
     }
-
-//    public User login(String email, String password) {
-//
-//        // 지시사항을 참고하여 코드를 작성해 보세요.
-//        User findUser = jpaUserRepository.findByEmail(email);
-//
-//        if(!findUser.getPassword().equals(password)) {
-//            return null;
-//        }
-//
-//        return findUser;
-//    }
 }

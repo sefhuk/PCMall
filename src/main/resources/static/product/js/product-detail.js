@@ -18,6 +18,16 @@ if (prevButton && prevButton && nextButton) {
 
     imageContainer.style.transform = `translateX(-${--currentPage * 400}px)`;
     imagePage.innerHTML = `${currentPage + 1}/${imageCount}`;
+
+    if (currentPage === 0) {
+      nextButton.classList.remove('opacity-30');
+      prevButton.classList.add('opacity-30');
+      return;
+    }
+
+    if (currentPage === imageCount - 2) {
+      nextButton.classList.remove('opacity-30');
+    }
   });
 
   nextButton.addEventListener("click", function (event) {
@@ -29,6 +39,16 @@ if (prevButton && prevButton && nextButton) {
 
     imageContainer.style.transform = `translateX(-${++currentPage * 400}px)`;
     imagePage.innerHTML = `${currentPage + 1}/${imageCount}`;
+
+    if (currentPage + 1 === imageCount) {
+      nextButton.classList.add('opacity-30');
+      prevButton.classList.remove('opacity-30');
+      return;
+    }
+
+    if (currentPage === 1) {
+      prevButton.classList.remove('opacity-30');
+    }
   });
 }
 
@@ -52,11 +72,38 @@ buyCount.addEventListener("input", function (event) {
 
 // 상품 주문
 function order(productId) {
-  const confirmed = confirm("주문 페이지로 이동합니다");
+  const isConfirmed = confirm("주문 페이지로 이동합니다");
 
-  if (!confirmed) {
+  if (!isConfirmed) {
     return;
   }
 
   location.href = `/user/order/sheet?productIds=${productId}&counts=${buyCount.value}`
+}
+
+// 장바구니 담기
+function addToCart(userId, productId) {
+  const isConfirmed = confirm(`장바구니에 상품을 담으시겠습니까? (총 ${buyCount.value}개)`);
+
+  if (!isConfirmed) {
+    return;
+  }
+
+  fetch(
+      `/api/cart/add?userId=${userId}&productId=${productId}&quantity=${buyCount.value}`,
+      {method: "POST"})
+  .then(res => {
+    if (!res.ok) {
+      alert("요청에 문제가 발생했습니다. 새로고침 후 다시 시도해주세요.");
+      return;
+    }
+
+    const isConfirmed = confirm("장바구니에 추가되었습니다. 장바구니로 이동하시겠습니까?");
+
+    if (!isConfirmed) {
+      return;
+    }
+
+    location.href = `/user/cart?userId=${userId}`;
+  });
 }

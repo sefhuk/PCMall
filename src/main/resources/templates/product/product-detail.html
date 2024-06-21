@@ -15,7 +15,7 @@
             <p class="flex justify-end items-center">
                 <img th:src="@{/product/img/user.png}" width="25px" height="25px" alt="유저이미지">
                 <span class="block ml-[10px] font-bold"
-                      th:text="|${role == 'ROLE_ADMIN' ? '(관리자)' : ''} ${user.getUsername()} 님|"/>
+                      th:text="|${role == 'ROLE_ADMIN' ? '(관리자)' : ''} ${username} 님|"/>
             </p>
             <div class="flex mt-[10px]">
                 <a href="/user/myPage" class="hover:underline hover:italic">마이페이지</a>
@@ -24,15 +24,14 @@
                         onclick="logout()">
                     <span>로그아웃</span>
                 </button>
-                <a th:if="${role == 'ROLE_ADMIN'}" class="ml-[20px] hover:underline hover:italicg"
-                   href="/admin/product">상품 관리</a>
             </div>
         </div>
     </div>
 
     <div class="flex justify-evenly items-center h-[120px] bg-[skyblue] text-xl px-[150px]">
         <a th:each="category: ${categories}"
-           class="flex justify-center items-center w-[10%] bg-[skyblue] hover:text-white h-[100%] hover:bg-[#33adff]"
+           th:class="|flex justify-center items-center w-[10%] hover:text-white h-[100%] hover:bg-[#33adff]
+           ${product.part == category.name ? 'text-white bg-[#33adff]' : 'bg-[skyblue]'}|"
            th:href="@{/user/product(category=${category.name})}"><span
             th:text="${category.name}">CPU</span>
         </a>
@@ -53,12 +52,12 @@
             </div>
             <div class="flex w-[100%] h-[80%] pl-[30px]">
                 <div
-                    class="relative w-[400px] box-border border-2 border-solid border-[skyblue] overflow-hidden mr-[100px]">
+                    class="relative w-[400px] box-border border-2 border-solid border-[skyblue] overflow-hidden mr-[180px]">
                     <div id="image-container" style="transition: transform 0.5s ease-in-out;"
                          th:class="|flex w-[${product.images.isEmpty() ? 400 : product.images.size() * 400}px] h-[400px]|">
                         <div th:if="${!product.images.isEmpty()}"
                              th:each="image: ${product.images}"
-                             th:class="|images w-[400px] bg-[url('${image.url}')] bg-no-repeat bg-cover|"
+                             th:class="|images w-[400px] bg-[url('${image.url}')] bg-no-repeat bg-contain|"
                         ></div>
                         <div th:if="${product.images.isEmpty()}"
                              class="text-center leading-[400px] w-[400px] font-bold text-xl">
@@ -67,20 +66,19 @@
                     </div>
                     <div th:if="${!product.images.isEmpty()}"
                          class="flex justify-evenly items-center w-[60%] mx-auto py-[10px]">
-                        <button id="prevButton" class="w-[40px] h-[40px]"><img
+                        <button id="prevButton" class="w-[40px] h-[40px] opacity-30"><img
                             th:src="@{/product/img/prev.png}"
                             alt="앞으로"></button>
                         <div id="imagePage" class="text-xl" th:text="|1/${product.images.size()}|">
                             1/4
                         </div>
-                        <button id="nextButton" class="w-[40px] h-[40px]"><img
+                        <button id="nextButton" th:class="|w-[40px] h-[40px] ${product.images.size() == 1 ? 'opacity-30' : ''}|"><img
                             th:src="@{/product/img/next.png}"
                             alt="뒤로"></button>
                     </div>
                 </div>
                 <div
                     class="flex flex-col justify-around w-[58%] h-[95%] pl-[30px]">
-
                     <div class="w-[70%] h-[150px]">
                         <p class="font-semibold text-4xl border-b-2 border-black pb-[45px]"
                            th:text="${#numbers.formatCurrency(product.price)}"></p>
@@ -96,7 +94,7 @@
                         <div
                             class="flex items-center w-[100%] h-[50px] text-2xl text-left font-bold border-b-2 border-black py-[15px]">
                             <label for="brand" class="w-[30%]">제조사</label>
-                            <div id="brand" class="w-[10%] font-light text-center"
+                            <div id="brand" class="w-[70%] font-light text-left"
                                  th:text="${product.brand}">
                             </div>
                         </div>
@@ -104,13 +102,17 @@
                             class="flex justify-between items-center h-[95%] text-2xl font-semibold mt-[100px]">
                             <button
                                 class="buyButton w-[40%] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white"
-                                th:onclick="order([[${product.id}]]);">
+                                th:onclick="order([[${product.id}]]);"
+                                th:if="${product.stock > 0}">
                                 주문 요청
                             </button>
                             <button
-                                class="cartButton w-[40%] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white">
+                                class="cartButton w-[40%] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white"
+                                th:onclick="addToCart([[${userId}]], [[${product.id}]])"
+                                th:if="${product.stock > 0}">
                                 장바구니 담기
                             </button>
+                            <p class="text-[red] font-bold text-xl" th:if="${product.stock == 0}">이 상품은 현재 품절입니다</p>
                         </div>
                     </div>
                 </div>
