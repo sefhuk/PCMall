@@ -1,5 +1,6 @@
 package com.team5.project2.cart.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.team5.project2.common.entity.BaseTime;
 import com.team5.project2.user.domain.User;
 import jakarta.persistence.CascadeType;
@@ -26,6 +27,7 @@ public class Cart extends BaseTime {
     private User user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<CartItem> items = new ArrayList<>();
 
     public void setUser(User user) {

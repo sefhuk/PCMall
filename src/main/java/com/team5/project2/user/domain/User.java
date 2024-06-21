@@ -2,6 +2,7 @@ package com.team5.project2.user.domain;
 
 import com.team5.project2.cart.entity.Cart;
 import com.team5.project2.common.entity.BaseTime;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,7 +41,7 @@ public class User extends BaseTime {
 
     private String role;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Cart cart;
 
 //    public void setId(Long id) {

@@ -1,6 +1,6 @@
 package com.team5.project2.cart.entity;
 
-import com.team5.project2.cart.dto.CartItemDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.team5.project2.common.entity.BaseTime;
 import com.team5.project2.product.entity.Product;
 import jakarta.persistence.Entity;
@@ -22,6 +22,7 @@ public class CartItem extends BaseTime {
 
     @ManyToOne
     @JoinColumn(name = "cart_id")
+    @JsonBackReference
     private Cart cart;
 
     @ManyToOne
