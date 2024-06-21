@@ -32,14 +32,26 @@
         </div>
     </div>
     <div class="flex justify-between items-center h-[120px] bg-[skyblue] text-xl px-[150px]">
-        <a th:each="category: ${categories}"
-           class="flex justify-center items-center w-[10%] bg-[skyblue] hover:text-white h-[100%] hover:bg-[#33adff]"
-           th:href="@{/admin/product(category=${category.name})}"><span
-            th:text="${category.name}">CPU</span></a>
+        <a th:each="categoryELement: ${categories}"
+           th:class="|flex justify-center items-center w-[10%] hover:text-white h-[100%] hover:bg-[#33adff]
+           ${category == categoryELement.name ? 'text-white bg-[#33adff]' : 'bg-[skyblue]'}|"
+           th:href="@{/admin/product(category=${categoryELement.name})}"><span
+            th:text="${categoryELement.name}">CPU</span></a>
     </div>
 </header>
 <main class="my-[30px]">
     <div class="flex flex-col justify-center items-center w-[100%]">
+        <div class="flex justify-end items-center w-[88%] h-[90px]">
+            <select id="search-category" class="border-2 border-black h-[40%]">
+                <option value="제품명" th:selected="${searchType == '제품명'}">제품명</option>
+                <option value="제품ID" th:selected="${searchType == '제품ID'}">제품ID</option>
+            </select>
+            <input id="search-content" class="text-left pl-[10px] outline outline-[skyblue] focus:outline-[#33adff] focus:outline-2 font-light
+            h-[40%] placeholder:text-[15px] ml-[20px]" type="text" th:value="${search}">
+            <button id="search-button" class="flex justify-center items-center ml-[20px] bg-[skyblue] w-[40px] h-[40%]" type="button">
+                <img th:src="@{/product/img/search.png}" alt="검색" width="30px" height="30px">
+            </button>
+        </div>
         <div
             class="flex justify-between items-center text-center p-1 w-[90%] h-[120px] border-2 border-solid border-[skyblue]
                 mb-[30px]"
@@ -67,12 +79,18 @@
     <div th:if="${!products.isEmpty()}" class="flex justify-evenly w-[70%] overflow-hidden m-auto">
         <a class="block w-[60px] h-[70px] text-center leading-[70px] border-2 border-black border-solid font-bold text-2xl"
            th:each="pageNo: ${#numbers.sequence(1, totalPages)}" th:text="${pageNo}"
-           th:href="@{/admin/product(category=${category}, page=${pageNo - 1}, size=${size})}">
+           th:href="@{/admin/product(category=${category}, page=${pageNo - 1}, size=${size},
+           search=${search}, searchType=${searchType})}">
         </a>
     </div>
 </main>
-<script th:src=" @{/product/js/product-list.js}"></script>
+<script th:src=" @{/product/js/product-admin.js}"></script>
 <script th:src=" @{/product/js/global.js}"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const category = /*[[${category}]]*/ 'null';
+  /*]]>*/
+</script>
 </body>
 </html>
 `

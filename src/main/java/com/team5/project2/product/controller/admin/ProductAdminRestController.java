@@ -62,7 +62,6 @@ public class ProductAdminRestController {
         @RequestPart(value = "images", required = false) List<MultipartFile> images,
         @RequestParam("productId") Long productId,
         @RequestParam("brand") String brand,
-        @RequestParam("part") String part,
         @RequestParam("name") String name,
         @RequestParam("stock") Long stock,
         @RequestParam("price") Long price,
