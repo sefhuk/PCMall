@@ -13,6 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 
 @Entity
@@ -30,6 +31,12 @@ public class Cart extends BaseTime {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<CartItem> items = new ArrayList<>();
+
+    public Optional<CartItem> findItemByProductId(Long productId) {
+        return items.stream()
+            .filter(item -> item.getProduct().getId().equals(productId))
+            .findFirst();
+    }
 
     public void setUser(User user) {
         this.user = user;

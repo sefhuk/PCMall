@@ -88,17 +88,18 @@ public class CartService {
     public void removeCartItemByProductId(Long userId, Long productId) {
         System.out.println("Removing item with product ID " + productId + " from cart for user ID " + userId);
         Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Cart not found"));
-        List<CartItem> items = cartItemRepository.findByProductId(productId);
 
-        if (!items.isEmpty()) {
-            for (CartItem item : items) {
-                cart.removeItem(item);
-                cartItemRepository.delete(item);
-            }
+        Optional<CartItem> itemOptional = cart.findItemByProductId(productId);
+
+        if (itemOptional.isPresent()) {
+            CartItem item = itemOptional.get();
+            cart.removeItem(item);
+            cartItemRepository.delete(item);
             cartRepository.save(cart);
-            System.out.println("Items with product ID " + productId + " successfully removed from cart for user ID " + userId);
+            System.out.println("Item with product ID " + productId + " successfully removed from cart for user ID " + userId);
         } else {
             System.out.println("Item with product ID " + productId + " not found in cart for user ID " + userId);
+            // 아이템이 없을 경우 예외를 던지지 않고 메서드를 종료합니다.
         }
     }
 }
