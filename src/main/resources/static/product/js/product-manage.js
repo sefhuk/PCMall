@@ -26,7 +26,7 @@ for (let i = 0; i < selected.length; i++) {
 for (let i = 0; i < previewImages.length; i++) {
   const name = previewImages[i].getAttribute("imageName");
 
-  const file = new File([], name, {type: "image/name"})
+  const file = new File([], name, {type: "image/name"});
 
   images.push(file);
 }

@@ -224,5 +224,18 @@
 </div>
 <script th:src="@{/product/js/product-manage.js}"></script>
 <script th:src="@{/product/js/global.js}"></script>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const originBrand = /*[[${product.brand}]]*/ 'null';
+  /*]]>*/
+
+  const brandOptions = brand.getElementsByTagName("option");
+  for (let i = 0; i < brandOptions.length; i++) {
+    if (brandOptions[i].value === originBrand) {
+      brandOptions[i].selected = true;
+      break;
+    }
+  }
+</script>
 </body>
 </html>
