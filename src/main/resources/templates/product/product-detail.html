@@ -52,7 +52,7 @@
             </div>
             <div class="flex w-[100%] h-[80%] pl-[30px]">
                 <div
-                    class="relative w-[400px] box-border border-2 border-solid border-[skyblue] overflow-hidden mr-[100px]">
+                    class="relative w-[400px] box-border border-2 border-solid border-[skyblue] overflow-hidden mr-[180px]">
                     <div id="image-container" style="transition: transform 0.5s ease-in-out;"
                          th:class="|flex w-[${product.images.isEmpty() ? 400 : product.images.size() * 400}px] h-[400px]|">
                         <div th:if="${!product.images.isEmpty()}"
@@ -79,7 +79,6 @@
                 </div>
                 <div
                     class="flex flex-col justify-around w-[58%] h-[95%] pl-[30px]">
-
                     <div class="w-[70%] h-[150px]">
                         <p class="font-semibold text-4xl border-b-2 border-black pb-[45px]"
                            th:text="${#numbers.formatCurrency(product.price)}"></p>
