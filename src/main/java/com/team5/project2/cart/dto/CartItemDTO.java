@@ -8,7 +8,7 @@ public class CartItemDTO {
     private Long id;
     private Long productId;
     private String productName;
-    private double productPrice;
+    private Long productPrice;
     private int quantity;
     private Product product;
 }
