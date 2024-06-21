@@ -83,6 +83,11 @@
         display: none;
     }
 
+    .verify-email {
+        display: none;
+        align-items: left;
+    }
+
     .password-container {
         display: flex;
         flex-direction: column;
@@ -91,17 +96,6 @@
         box-sizing: border-box;
     }
   </style>
-  <script>
-    function toggleEdit(field) {
-        const editField = document.getElementById(field + '-edit');
-        if(editField.style.display === 'none') {
-            editField.style.display = 'block'
-        }
-        else {
-            editField.style.display = 'none'
-        }
-    }
-  </script>
 </head>
 <body>
 <header>
@@ -125,9 +119,13 @@
         <th>아이디(이메일)</th>
         <td>
           <span id="email-display" th:text="${user.email}">이메일</span>
-          <button type="button" onclick="toggleEdit('email')">이메일 변경</button>
+          <button type="button" onclick="toggleBtn('email')">이메일 변경</button>
           <div id="email-edit" class="edit-field">
             <input type="email" id="new-email" placeholder="새 이메일 입력">
+            <button type="button" onclick="sendVerificationCode()">인증코드 발송</button>
+          </div>
+          <div id="verify-email" class="verify-email">
+            <input type="email" id="verification-code" placeholder="인증코드 입력">
             <button type="button" onclick="updateEmail()">저장</button>
           </div>
         </td>
@@ -185,6 +183,16 @@
 <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script>
+  function toggleEdit(field) {
+        const editField = document.getElementById(field + '-edit');
+        if(editField.style.display === 'none') {
+            editField.style.display = 'block'
+        }
+        else {
+            editField.style.display = 'none'
+        }
+  }
+
   function toggleBtn(field) {
 	  const btn1 = document.getElementById(field + '-edit');
 
@@ -206,13 +214,32 @@
       }).open();
   }
 
+  async function sendVerificationCode() {
+      const email = document.getElementById('new-email').value;
+
+      const response = await fetch(`/mail`, {
+          method: "POST",
+          body: JSON.stringify({ email: email }),
+          headers: { "Content-Type": "application/json" }
+      });
+
+      const data = await response.text();
+
+      if (response.ok) {
+          alert('인증 코드가 전송되었습니다.');
+          document.querySelector('.verify-email').style.display = 'flex';
+      } else {
+          alert('인증 코드 전송에 실패했습니다.');
+      }
+  }
+
   const updateEmail = async () => {
       const email = document.getElementById('new-email').value;
 
       try {
           const updateResult = await fetch(`/user/editEmail`, {
               method: "PUT",
-              body: JSON.stringify({ email: email }),
+              body: JSON.stringify({ email }),
               headers: { "Content-Type": "application/json" }
           });
 
