@@ -22,7 +22,7 @@ public class Cart extends BaseTime {
     private Long id;
 
 
-    @OneToOne
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private User user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
