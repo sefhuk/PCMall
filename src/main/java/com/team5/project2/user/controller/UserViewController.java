@@ -51,7 +51,7 @@ public class UserViewController {
 
         User user = userMapper.userPostDtoToUser(userPostDto);
         Email email = mailService.findByEmail(user.getEmail());
-        if(!email.getEmailStatus()) {
+        if(email == null || !email.getEmailStatus()) {
             model.addAttribute("error", "이메일 인증을 진행해주세요.");
             return "user/sign-up";
         }
