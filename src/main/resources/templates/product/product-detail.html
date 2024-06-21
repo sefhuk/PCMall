@@ -57,7 +57,7 @@
                          th:class="|flex w-[${product.images.isEmpty() ? 400 : product.images.size() * 400}px] h-[400px]|">
                         <div th:if="${!product.images.isEmpty()}"
                              th:each="image: ${product.images}"
-                             th:class="|images w-[400px] bg-[url('${image.url}')] bg-no-repeat bg-cover|"
+                             th:class="|images w-[400px] bg-[url('${image.url}')] bg-no-repeat bg-contain|"
                         ></div>
                         <div th:if="${product.images.isEmpty()}"
                              class="text-center leading-[400px] w-[400px] font-bold text-xl">
