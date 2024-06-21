@@ -7,10 +7,11 @@ import com.team5.project2.order.entity.Order;
 import com.team5.project2.order.entity.OrderStatus;
 import java.util.List;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
     OrderDto createOrder(OrderRequest orderRequest, Long userId);
-    List<OrderDto> getAllOrders();
+    Page<OrderDto> getAllOrders(Pageable pageable);
     OrderDto getOrderById(Long orderId);
     Page<OrderDto> getOrders(Long userId, int page, int size);
     List<OrderDetailDto> getOrderDetails(Long orderId);

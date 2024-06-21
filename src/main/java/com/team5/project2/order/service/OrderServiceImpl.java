@@ -77,10 +77,9 @@ public class OrderServiceImpl implements OrderService {
         return orderDto;
     }
 
-    public List<OrderDto> getAllOrders() {
-        return orderRepository.findAll().stream()
-            .map(orderMapper::OrderToOrderDto)
-            .collect(Collectors.toList());
+    public Page<OrderDto> getAllOrders(Pageable pageable) {
+        return orderRepository.findAll(pageable)
+            .map(orderMapper::OrderToOrderDto);
     }
 
     @Override

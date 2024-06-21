@@ -72,13 +72,12 @@ function deleteReq(productId) {
     method: "DELETE"
   })
   .then((res) => {
-    return res.json();
-  })
-  .then((data) => {
-    alert("삭제 되었습니다.");
-    location.href = "/admin/product";
-  })
-  .catch((err) => {
+    if (res.ok) {
+      alert("삭제 되었습니다.");
+      location.href = "/admin/product";
+      return;
+    }
+
     alert("서버가 원할하지 않습니다. 잠시후에 이용해주세요.");
     document.getElementById("modal").classList.add("hidden");
   });

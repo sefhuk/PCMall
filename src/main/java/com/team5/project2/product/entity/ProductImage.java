@@ -25,10 +25,10 @@ public class ProductImage extends BaseTime {
     @Column(nullable = false)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "longtext")
     private String url;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "longtext")
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
