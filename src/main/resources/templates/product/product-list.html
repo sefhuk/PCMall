@@ -15,15 +15,14 @@
             <p class="flex justify-end items-center">
                 <img th:src="@{/product/img/user.png}" width="25px" height="25px" alt="유저이미지">
                 <span class="block ml-[10px] font-bold"
-                      th:text="|${role == 'ROLE_ADMIN' ? '(관리자)' : ''} ${user.getUsername()} 님|"/>
+                      th:text="|${role == 'ROLE_ADMIN' ? '(관리자)' : ''} ${username} 님|"/>
             </p>
             <div class="flex mt-[10px]">
-                <a href="/myPage" class="hover:underline hover:italic">마이페이지</a>
+                <a href="/user/myPage" class="hover:underline hover:italic">마이페이지</a>
                 <button type="button" class="flex justify-center items-center ml-[20px] hover:underline hover:italic"
                         onclick="logout()">
                     <span>로그아웃</span>
                 </button>
-                <a th:if="${role == 'ROLE_ADMIN'}" class="ml-[20px] hover:underline hover:italicg" href="/admin/product">상품 관리</a>
             </div>
 
         </div>
@@ -76,7 +75,6 @@
         </a>
     </div>
 </main>
-<script th:src=" @{/product/js/product-list.js}"></script>
 <script th:src=" @{/product/js/global.js}"></script>
 </body>
 </html>

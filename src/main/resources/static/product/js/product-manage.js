@@ -55,7 +55,7 @@ function cancel(productId) {
     return;
   }
 
-  location.href = `/user/product/${productId}`;
+  location.href = `/admin/product`;
 }
 
 // 상품 삭제 요청 버튼
@@ -173,7 +173,7 @@ function updateReq(productId) {
     return;
   }
 
-  const formData= new FormData();
+  const formData = new FormData();
 
   images.forEach((e) => {
     formData.append('images', e);
@@ -199,19 +199,20 @@ function updateReq(productId) {
       return;
     }
 
-    description[keyNode.innerText] = valueNode.value;
-    // }
+    description[keyNode.children[0] ? keyNode.children[0].value
+        : keyNode.innerText] = valueNode.value;
   }
 
   formData.append("description", JSON.stringify(description));
 
   document.getElementById("modal").classList.remove("hidden");
+
   fetch(`/admin/product?productId=${productId}`, {
     method: "PUT",
     body: formData,
   })
   .then((res) => {
-      return res.json();
+    return res.json();
   })
   .then((data) => {
     alert("수정되었습니다.");

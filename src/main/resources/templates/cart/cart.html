@@ -13,11 +13,11 @@
   <div class="cart-items" id="cartItems">
     <!-- 장바구니 아이템이 여기에 추가됩니다 -->
     <div th:each="item : ${cart.items}" class="cart-item">
-      <input type="checkbox" class="item-checkbox">
-      <img th:src="@{${item.product.image1}}" alt="제품 이미지" class="item-image">
+      <input type="checkbox" class="item-checkbox" th:data-product-id="${item.productId}" onchange="updateTotalPrice()">
+      <img th:if="${item.product.images.size() != 0}" th:each="image: ${item.product.images}" th:src="${image.url}" alt="제품 이미지" class="item-image">
       <div class="item-details">
-        <p class="item-name" th:text="${item.product.name}">제품 이름</p>
-        <p class="item-price" th:text="${item.product.price}">[가격]</p>
+        <p class="item-name" th:text="${item.productName}">제품 이름</p>
+        <p class="item-price" th:text="'가격: ' + ${item.productPrice} + '원'">가격: 123.0원</p>
         <p class="item-quantity">수량: <input type="number" th:value="${item.quantity}" class="quantity-input" min="1" onchange="updateCartItem(${item.id}, this.value)"></p>
       </div>
       <button class="item-remove" th:onclick="'removeItem(' + ${item.id} + ')'">−</button>
@@ -26,8 +26,9 @@
   <button class="clear-cart-button" onclick="clearCart()">전체 삭제</button>
   <div class="cart-total">
     <p>총 결제금액</p>
-    <p id="totalPrice" th:text="${cart.totalPrice}">100,000원</p>
+    <p id="totalPrice">0원</p>
   </div>
+  <button class="order-button" onclick="toOrder()">주문하기</button>
 </div>
 
 <script src="/cart/js/cart.js"></script>

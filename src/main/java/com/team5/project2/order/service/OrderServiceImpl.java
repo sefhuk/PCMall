@@ -6,6 +6,7 @@ import com.team5.project2.order.dto.OrderRequest;
 import com.team5.project2.order.entity.Order;
 import com.team5.project2.order.entity.OrderDetail;
 import com.team5.project2.order.entity.OrderStatus;
+import com.team5.project2.order.exception.InsufficientStockException;
 import com.team5.project2.order.mapper.OrderDetailMapper;
 import com.team5.project2.order.mapper.OrderMapper;
 import com.team5.project2.order.repository.OrderRepository;
@@ -17,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
 
             // 재고 확인
             if (product.getStock() < orderDetailDto.getCount()) {
-                throw new IllegalArgumentException("Not enough stock for product: " + product.getName());
+                throw new InsufficientStockException(product.getName());
             }
 
             // 재고 감소
@@ -68,9 +72,10 @@ public class OrderServiceImpl implements OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
-        return orderMapper.OrderToOrderDto(savedOrder);
+        OrderDto orderDto = orderMapper.OrderToOrderDto(savedOrder);
+        orderDto.setCreatedAt(savedOrder.getCreatedAt());
+        return orderDto;
     }
-
 
     public List<OrderDto> getAllOrders() {
         return orderRepository.findAll().stream()
@@ -86,10 +91,11 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.OrderToOrderDto(order);
     }
 
-    public List<OrderDto> getOrders(Long userId) {
-        return orderRepository.findByUserId(userId).stream()
-            .map(orderMapper::OrderToOrderDto)
-            .collect(Collectors.toList());
+    @Transactional
+    public Page<OrderDto> getOrders(Long userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Order> orderPage = orderRepository.findByUserIdOrderByCreatedAtDesc(userId, pageable);
+        return orderPage.map(orderMapper::OrderToOrderDto);
     }
 
     public List<OrderDetailDto> getOrderDetails(Long orderId) {
@@ -112,13 +118,20 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto findOrderById(Long id) {
         Order order = orderRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("orderId " + id + ": not found"));
+
         return orderMapper.OrderToOrderDto(order);
     }
 
     public OrderDto updateOrder(OrderDto orderDto) {
-        Order order = orderMapper.OrderDtoToOrder(orderDto);
+//        Order order = orderMapper.OrderDtoToOrder(orderDto);
+        // order을 입력받은 orderDto에서 Mapper를 통해 변환하면 새로 생성된 Order인데 해당 id의 createdAt이 있으니까 null을 반환?
+        Order order = orderRepository.findById(orderDto.getId())
+            .orElseThrow(() -> new RuntimeException("order not found"));
+        order.setStatus(orderDto.getStatus());
         order = orderRepository.save(order);
-        return orderMapper.OrderToOrderDto(order);
+
+        OrderDto savedOrderDto = orderMapper.OrderToOrderDto(order);
+        return savedOrderDto;
     }
 
     public void deleteOrder(Long id) {

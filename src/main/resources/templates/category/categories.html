@@ -1,35 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>장바구니</title>
-  <link rel="stylesheet" href="/cart/css/cart.css">
+  <meta charset="UTF-8">
+  <title>Category Management</title>
+  <link rel="stylesheet" th:href="@{/category/css/category.css}">
 </head>
-<body>
-<div class="cart-container">
-  <div class="cart-header">
-    <button class="back-button" onclick="goBack()">←</button>
-    <h1>장바구니</h1>
-    <button class="options-button">⋮</button>
-  </div>
-  <div class="cart-items" id="cartItems">
-    <!-- 장바구니 아이템이 여기에 추가됩니다 -->
-    <div th:each="item : ${cart.items}" class="cart-item">
-      <input type="checkbox" class="item-checkbox">
-      <img th:src="@{${item.product.image1}}" alt="제품 이미지" class="item-image">
-      <div class="item-details">
-        <p class="item-name" th:text="${item.product.name}">제품 이름</p>
-        <p class="item-price" th:text="${item.product.price}">[가격]</p>
-        <p class="item-quantity">수량: <input type="number" th:value="${item.quantity}" class="quantity-input" min="1"></p>
-      </div>
-      <button class="item-remove" th:onclick="'removeItem(' + ${item.id} + ')'">−</button>
+<body onload="loadDefaultManufacturers()">
+<div class="container">
+  <header>
+    <h1>Category Management</h1>
+    <a href="/user/product" class="home-btn">홈으로</a>
+  </header>
+  <div class="content">
+    <div class="form-group">
+      <label for="categorySelect">카테고리 선택:</label>
+      <select id="categorySelect" th:value="${selectedCategory}" onchange="loadManufacturers()">
+        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+      </select>
+    </div>
+    <h2>카테고리 수정 및 추가</h2>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>제조사 이름</th>
+        <th>수정</th>
+        <th>삭제</th>
+      </tr>
+      </thead>
+      <tbody id="categoryTable">
+      <!-- Manufacturers will be loaded here dynamically -->
+      </tbody>
+    </table>
+    <div class="form-group">
+      <label for="newManufacturer">제조사 이름:</label>
+      <input type="text" id="newManufacturer" placeholder="내용을 입력해주세요">
+      <button onclick="addManufacturer()" class="add-btn">추가</button>
     </div>
   </div>
-  <div class="cart-total">
-    <p>총 결제금액</p>
-    <p id="totalPrice" th:text="${cart.totalPrice}">100,000원</p>
-  </div>
 </div>
-
-<script src="/cart/js/cart.js"></script>
+<script th:src="@{/category/js/app.js}"></script>
 </body>
 </html>

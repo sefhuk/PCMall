@@ -2,20 +2,16 @@ package com.team5.project2.user.service;
 
 import com.team5.project2.user.domain.User;
 import com.team5.project2.user.repository.UserRepository;
-import java.security.Principal;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository jpaUserRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository jpaUserRepository, PasswordEncoder passwordEncoder) {
-        this.jpaUserRepository = jpaUserRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public List<User> findUserAll() {
         return jpaUserRepository.findAll();
@@ -30,8 +26,16 @@ public class UserService {
         return jpaUserRepository.findByEmail(email);
     }
 
-    public User createUser(User user) {
-        return jpaUserRepository.save(user);
+    public boolean createUser(User user) {
+        User existingUserByUsername = jpaUserRepository.findByPhoneNumber(user.getPhoneNumber());
+        User existingUserByEmail = jpaUserRepository.findByEmail(user.getEmail());
+
+        if (existingUserByUsername != null || existingUserByEmail != null) {
+            return false;
+        }
+
+        jpaUserRepository.save(user);
+        return true;
     }
 
     public void updateUserEmail(User user, String email) {
@@ -67,16 +71,4 @@ public class UserService {
     public void deleteUser(Long userId) {
         jpaUserRepository.deleteById(userId);
     }
-
-//    public User login(String email, String password) {
-//
-//        // 지시사항을 참고하여 코드를 작성해 보세요.
-//        User findUser = jpaUserRepository.findByEmail(email);
-//
-//        if(!findUser.getPassword().equals(password)) {
-//            return null;
-//        }
-//
-//        return findUser;
-//    }
 }

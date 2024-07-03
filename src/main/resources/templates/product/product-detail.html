@@ -15,17 +15,15 @@
             <p class="flex justify-end items-center">
                 <img th:src="@{/product/img/user.png}" width="25px" height="25px" alt="유저이미지">
                 <span class="block ml-[10px] font-bold"
-                      th:text="|${role == 'ROLE_ADMIN' ? '(관리자)' : ''} ${user.getUsername()} 님|"/>
+                      th:text="|${role == 'ROLE_ADMIN' ? '(관리자)' : ''} ${username} 님|"/>
             </p>
             <div class="flex mt-[10px]">
-                <a href="/myPage" class="hover:underline hover:italic">마이페이지</a>
+                <a href="/user/myPage" class="hover:underline hover:italic">마이페이지</a>
                 <button type="button"
                         class="flex justify-center items-center ml-[20px] hover:underline hover:italic"
                         onclick="logout()">
                     <span>로그아웃</span>
                 </button>
-                <a th:if="${role == 'ROLE_ADMIN'}" class="ml-[20px] hover:underline hover:italicg"
-                   href="/admin/product">상품 관리</a>
             </div>
         </div>
     </div>
@@ -96,7 +94,7 @@
                         <div
                             class="flex items-center w-[100%] h-[50px] text-2xl text-left font-bold border-b-2 border-black py-[15px]">
                             <label for="brand" class="w-[30%]">제조사</label>
-                            <div id="brand" class="w-[10%] font-light text-center"
+                            <div id="brand" class="w-[70%] font-light text-left"
                                  th:text="${product.brand}">
                             </div>
                         </div>
@@ -104,13 +102,17 @@
                             class="flex justify-between items-center h-[95%] text-2xl font-semibold mt-[100px]">
                             <button
                                 class="buyButton w-[40%] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white"
-                                th:onclick="order([[${product.id}]]);">
+                                th:onclick="order([[${product.id}]]);"
+                                th:if="${product.stock > 0}">
                                 주문 요청
                             </button>
                             <button
-                                class="cartButton w-[40%] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white">
+                                class="cartButton w-[40%] h-[60px] bg-[skyblue] hover:bg-[#33adff] hover:text-white"
+                                th:onclick="addToCart([[${userId}]], [[${product.id}]])"
+                                th:if="${product.stock > 0}">
                                 장바구니 담기
                             </button>
+                            <p class="text-[red] font-bold text-xl" th:if="${product.stock == 0}">이 상품은 현재 품절입니다</p>
                         </div>
                     </div>
                 </div>
