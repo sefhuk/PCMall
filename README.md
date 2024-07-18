@@ -74,17 +74,11 @@ http://htproject.shop
     | 기능 | 메서드 | API 경로 | 요청 | 응답 |
     | --- | --- | --- | --- | --- |
     | 전체 주문목록 | GET | /api/order |  | 200 |
-    | 유저 주문생성 | POST | /api/order/{userId} | OrderRequest {
-        ”name” : String,
-        “address” : String,
-        “phoneNumber” : String,
-        “orderDetailDtos”: List<OrderDetailDto>
-    } | 200 |
+    | 유저 주문생성 | POST | /api/order/{userId} | {"name" : String, "address" : String, "phoneNumber" : String, "orderDetailDtos": List<OrderDetailDto> } | 200 |
     | 유저 주문조회 | GET | /api/order/{userId} |  | 200 |
-    | 주문 상태변경 | PUT | /api/order/{orderId} | Status { “orderStatus” : String } | 200 |
+    | 주문 상태변경 | PUT | /api/order/{orderId} | Status { "orderStatus" : String } | 200 |
     | 주문 삭제 | DELETE | /api/order/{orderId} |  | 200 |
     | 유저 주문 목록 페이지 | GET | /user/order |  |  |
     | 주문 페이지 | GET | /user/order/sheet | (RequestParam) List<Long> productIds, List<Long> counts |  |
     | 주문상세 페이지 | GET | /user/order/{orderId} |  |  |
     | 관리자 페이지 | GET | /admin/order |  |  |
-    |  |  |  |  |  |
