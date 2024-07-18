@@ -18,23 +18,17 @@ http://htproject.shop
     | 수정 페이지 | /user/editPage |  |  | GET |
     | 삭제 페이지 | /user/deletePage |  |  | GET |
     | 전체 유저 목록 페이지 | /admin/user |  |  | GET |
-    | 로그인 | /login | {”email”: “String,
-    ”password”:”String} |  | POST |
-    | 회원가입 | /sign-up | {”name”: “String”,
-    ”email”: “String”,
-    ”password”: ”String”,
-    ”confirmPassword”: “String”,
-    ”phoneNumber”: “String”} |  | POST |
+    | 로그인 | /login | {”email”: “String, ”password”:”String} |  | POST |
+    | 회원가입 | /sign-up | {”name”: “String”, ”email”: “String”, ”password”: ”String”, ”confirmPassword”: “String”, ”phoneNumber”: “String”} |  | POST |
     | 이름 수정 | /user/editName | {”name”: “String”} | 200 OK | PUT |
     | 이메일 수정 | /user/editEmail | {”email”: “String”} | 200 OK | PUT |
-    | 비밀번호 수정 | /user/editPassword | {”oldPassword”: “String”,
-    ”newPassword”: “String”} | 200 OK | PUT |
+    | 비밀번호 수정 | /user/editPassword | {”oldPassword”: “String”, ”newPassword”: “String”} | 200 OK | PUT |
     | 전화번호 수정 | /user/editPhoneNumber | {”phoneNumber”: “String”} | 200 OK | PUT |
     | 주소 수정 | /user/editAddress | {”address”: “String”} | 200 OK | PUT |
     | 유저 삭제 | /user/deleteUser |  |  | GET |
     | 인증 메일 발송 | /mail | {”email”: “String”} | 200 OK | POST |
-    | 인증 코드 확인 | /mailCheck | {”email”: “String”,
-    ”code”:  “String”) | 200 OK | POST |
+    | 인증 코드 확인 | /mailCheck | {”email”: “String”, ”code”:  “String”) | 200 OK | POST |
+  
 - 상품
     ### 관리자
     | 기능 | API 경로 | 요청 Param | 요청 Body | 응답 | HTTP 메소드 |
